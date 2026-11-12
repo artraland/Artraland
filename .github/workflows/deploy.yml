@@ -1,0 +1,31 @@
+# Deploys artraland.com to Vercel (project "artraland" in the artedelara team) on every push to main.
+# Needs a repository secret holding a Vercel access token for that team: VERCEL_TOKEN.
+name: Deploy to Vercel
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: vercel-production
+  cancel-in-progress: false
+
+env:
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+  VERCEL_ORG_ID: team_nXwzNgaNC6ot9TwAgTTYmUkv
+  VERCEL_PROJECT_ID: prj_dYYJZKiPYHSeLJp2aLpezqwFMy94
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check for the Vercel token
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error::Add a VERCEL_TOKEN repository secret (Settings → Secrets and variables → Actions)."
+            exit 1
+          fi
+      - run: npm install --global vercel@latest
+      - run: vercel deploy --prod --yes --token="$VERCEL_TOKEN"

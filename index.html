@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ARTRA — Royal handicrafts</title>
+  <meta name="description" content="ARTRA: royal art pieces made by hand — gilded enamel, inlaid khatam, engraved brass, filigree, mirror mosaic and silk.">
+  <meta name="theme-color" content="#111824">
+  <link rel="canonical" href="https://artraland.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ARTRA">
+  <meta property="og:title" content="ARTRA — Royal handicrafts">
+  <meta property="og:description" content="Royal art pieces made by hand: engraved metal, gilded enamel, inlay, filigree, mirror mosaic and silk.">
+  <meta property="og:url" content="https://artraland.com/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23111824'/%3E%3Cpath d='M12 44 L16 22 L26 32 L32 16 L38 32 L48 22 L52 44 Z' fill='%23c9a24a'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/royal.css?v=8">
+  <script>document.documentElement.className += " js";</script>
+</head>
+<body>
+
+
+<canvas id="dust" aria-hidden="true"></canvas>
+
+<header class="top" id="top">
+  <div class="wrap top-in">
+    <a href="#top" class="mark" aria-label="ARTRA home">
+      <svg viewBox="0 0 64 40" aria-hidden="true"><path d="M6 34 L10 10 L22 22 L32 4 L42 22 L54 10 L58 34 Z" fill="url(#gGold)"/><rect x="6" y="35" width="52" height="3" fill="url(#gGold)"/></svg>
+      <span>ART<em>RA</em></span>
+    </a>
+    <nav class="nav" id="nav">
+      <a href="#collection">Collection</a>
+      <a href="#showcase">Showcase</a>
+      <a href="#craft">The craft</a>
+      <a href="#commission" class="nav-cta">Commission</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span><span></span></button>
+  </div>
+</header>
+
+<main>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="wrap hero-in">
+    <div class="hero-copy">
+      <p class="eyebrow reveal">Royal handicrafts · Made by hand</p>
+      <h1 class="reveal"><span class="gold-text">Heirlooms</span> fit for a palace.</h1>
+      <p class="lede reveal">Each piece is drawn, cut, gilded and finished by a master artisan over weeks or months — enamel, inlay, filigree and silk, in editions no larger than a single hand can make.</p>
+      <div class="hero-actions reveal">
+        <a class="btn btn-gold" href="#collection">View the collection</a>
+        <a class="btn btn-ghost" href="#commission">Commission a piece</a>
+      </div>
+    </div>
+
+    <div class="medallion" aria-hidden="true">
+      <svg viewBox="-200 -200 400 400">
+        <circle r="190" fill="url(#gGlow)" opacity=".18"/>
+        <g class="m-ring m-ring-1" id="ringDots"></g>
+        <circle r="168" fill="none" stroke="url(#gGold)" stroke-width="1"/>
+        <g class="m-ring m-ring-2" id="ringPetals"></g>
+        <circle r="118" fill="none" stroke="url(#gGold)" stroke-width="1.2" stroke-dasharray="2 6"/>
+        <g class="m-ring m-ring-3" id="ringArcs"></g>
+        <path class="m-star draw" pathLength="1" d="M0 -92 L26 -26 L92 0 L26 26 L0 92 L-26 26 L-92 0 L-26 -26 Z M-65 -65 L0 -36 L65 -65 L36 0 L65 65 L0 36 L-65 65 L-36 0 Z" fill="none" stroke="url(#gGold)" stroke-width="2"/>
+        <circle class="m-core" r="22" fill="url(#gGold)"/>
+        <circle r="12" fill="#0b0a09"/>
+        <circle r="5" fill="url(#gGold)"/>
+      </svg>
+    </div>
+  </div>
+  <a href="#collection" class="scroll-cue" aria-label="Scroll to the collection"><span></span></a>
+</section>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Gilded enamel</span><i>✦</i><span>Khatam inlay</span><i>✦</i><span>Engraved brass</span><i>✦</i><span>Silver filigree</span><i>✦</i><span>Mirror mosaic</span><i>✦</i><span>Hand-knotted silk</span><i>✦</i>
+    <span>Gilded enamel</span><i>✦</i><span>Khatam inlay</span><i>✦</i><span>Engraved brass</span><i>✦</i><span>Silver filigree</span><i>✦</i><span>Mirror mosaic</span><i>✦</i><span>Hand-knotted silk</span><i>✦</i>
+  </div>
+</div>
+
+<!-- Collection -->
+<section class="section" id="collection">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">The collection</p>
+      <h2>One piece at a time.</h2>
+      <p class="muted">Select a piece to open its page: its story, the craft up close, and full specifications.</p>
+    </div>
+
+    <div class="grid" id="grid">
+
+      <a class="piece reveal" data-piece="vase" href="/piece?p=vase">
+        <div class="piece-art">
+          <div class="art-slot" data-art="vase"></div>
+        </div>
+        <div class="piece-info">
+          <span class="piece-craft">Gilded enamel</span>
+          <h3>The Sovereign Vase</h3>
+          <span class="piece-meta">Copper, enamel, 24k gold leaf</span>
+        </div>
+      </a>
+
+      <a class="piece reveal" data-piece="box" href="/piece?p=box">
+        <div class="piece-art">
+          <div class="art-slot" data-art="box"></div>
+        </div>
+        <div class="piece-info">
+          <span class="piece-craft">Khatam inlay</span>
+          <h3>The Treasury Casket</h3>
+          <span class="piece-meta">Walnut, camel bone, brass — 400 pieces per cm²</span>
+        </div>
+      </a>
+
+      <a class="piece reveal" data-piece="tray" href="/piece?p=tray">
+        <div class="piece-art">
+          <div class="art-slot" data-art="tray"></div>
+        </div>
+        <div class="piece-info">
+          <span class="piece-craft">Engraved brass</span>
+          <h3>The Court Tray</h3>
+          <span class="piece-meta">Hand-chased brass, 52 cm</span>
+        </div>
+      </a>
+
+      <a class="piece reveal" data-piece="lantern" href="/piece?p=lantern">
+        <div class="piece-art">
+          <div class="art-slot" data-art="lantern"></div>
+        </div>
+        <div class="piece-info">
+          <span class="piece-craft">Silver filigree</span>
+          <h3>The Vigil Lantern</h3>
+          <span class="piece-meta">Gilded silver wire, hand-twisted</span>
+        </div>
+      </a>
+
+      <a class="piece reveal" data-piece="mirror" href="/piece?p=mirror">
+        <div class="piece-art">
+          <div class="art-slot" data-art="mirror"></div>
+        </div>
+        <div class="piece-info">
+          <span class="piece-craft">Mirror mosaic</span>
+          <h3>The Hall of Light</h3>
+          <span class="piece-meta">Hand-cut mirror on gilded plaster</span>
+        </div>
+      </a>
+
+      <a class="piece reveal" data-piece="carpet" href="/piece?p=carpet">
+        <div class="piece-art">
+          <div class="art-slot" data-art="carpet"></div>
+        </div>
+        <div class="piece-info">
+          <span class="piece-craft">Hand-knotted silk</span>
+          <h3>The Throne Rug</h3>
+          <span class="piece-meta">Silk on silk, 1.2 million knots</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- Showcase -->
+<section class="section showcase" id="showcase">
+  <div class="wrap showcase-in">
+    <div class="stage reveal" id="stage" aria-live="polite">
+      <div class="stage-plinth"></div>
+      <div class="stage-art" id="stageArt"></div>
+      <div class="stage-ring"></div>
+    </div>
+    <div class="stage-copy reveal">
+      <p class="eyebrow" id="sCraft">Gilded enamel</p>
+      <h2 id="sName">The Sovereign Vase</h2>
+      <p class="muted" id="sStory"></p>
+      <dl class="specs" id="sSpecs"></dl>
+      <div class="stage-nav">
+        <button class="round" id="prev" aria-label="Previous piece">‹</button>
+        <span class="stage-count" id="sCount">01 / 06</span>
+        <button class="round" id="next" aria-label="Next piece">›</button>
+        <a class="btn btn-ghost" id="sMore" href="/piece?p=vase">Full details</a>
+        <a class="btn btn-gold" href="#commission" id="sAsk">Enquire</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Craft -->
+<section class="section" id="craft">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">The craft</p>
+      <h2>From first line to final polish.</h2>
+    </div>
+    <ol class="steps">
+      <li class="step reveal">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><g class="draw-on" fill="none" stroke="url(#gGold)" stroke-width="2" stroke-linecap="round"><circle cx="32" cy="12" r="5" pathLength="1"/><path d="M29 16 L14 54 M35 16 L50 54 M20 40 Q32 46 44 40" pathLength="1"/></g></svg>
+        <span class="step-n">I</span>
+        <h3>Design</h3>
+        <p>Every motif is drawn by hand with compass and pen, proportioned to the old geometric canons.</p>
+      </li>
+      <li class="step reveal">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><g class="draw-on" fill="none" stroke="url(#gGold)" stroke-width="2" stroke-linecap="round"><path d="M10 54 L40 24 M36 20 L44 28 L54 18 L46 10 Z" pathLength="1"/><path d="M14 46 l4 4" pathLength="1"/></g></svg>
+        <span class="step-n">II</span>
+        <h3>Shape</h3>
+        <p>Metal is raised and chased, wood cut into slivers finer than a match, silk dyed with plants and roots.</p>
+      </li>
+      <li class="step reveal">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><g class="draw-on" fill="none" stroke="url(#gGold)" stroke-width="2" stroke-linecap="round"><path d="M32 6 C46 20 50 34 32 58 C14 34 18 20 32 6 Z" pathLength="1"/><path d="M32 18 V50" pathLength="1"/></g></svg>
+        <span class="step-n">III</span>
+        <h3>Gild</h3>
+        <p>Leaves of 24-carat gold are laid on with a squirrel-hair brush and burnished with agate.</p>
+      </li>
+      <li class="step reveal">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><g class="draw-on" fill="none" stroke="url(#gGold)" stroke-width="2" stroke-linecap="round"><circle cx="32" cy="28" r="18" pathLength="1"/><path d="M32 16 L35 25 L44 28 L35 31 L32 40 L29 31 L20 28 L29 25 Z M24 44 L20 58 L32 52 L44 58 L40 44" pathLength="1"/></g></svg>
+        <span class="step-n">IV</span>
+        <h3>Seal</h3>
+        <p>The master signs and numbers each piece, and it leaves with a certificate of its making.</p>
+      </li>
+    </ol>
+
+    <div class="stats reveal">
+      <div><strong data-count="38">0</strong><span>master artisans</span></div>
+      <div><strong data-count="6">0</strong><span>living crafts</span></div>
+      <div><strong data-count="1200">0</strong><span>hours, our longest piece</span></div>
+      <div><strong data-count="12">0</strong><span>pieces per edition, at most</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Commission -->
+<section class="section commission" id="commission">
+  <div class="wrap commission-in">
+    <div class="reveal">
+      <p class="eyebrow">Private commission</p>
+      <h2>A piece made for one house.</h2>
+      <p class="muted">Tell us the room, the occasion or the story. A master artisan will reply with sketches, materials and a timeline.</p>
+    </div>
+    <form class="form reveal" id="form">
+      <label>Name<input name="name" required autocomplete="name"></label>
+      <label>Email<input name="email" type="email" required autocomplete="email"></label>
+      <label>Craft
+        <select name="craft">
+          <option>Gilded enamel</option><option>Khatam inlay</option><option>Engraved brass</option>
+          <option>Silver filigree</option><option>Mirror mosaic</option><option>Hand-knotted silk</option><option>Not sure yet</option>
+        </select>
+      </label>
+      <label>Your idea<textarea name="idea" rows="4" required></textarea></label>
+      <button class="btn btn-gold" type="submit">Send the request</button>
+      <p class="form-note" id="formNote">Opens your email app with the request ready to send.</p>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <span class="mark mark-sm"><svg viewBox="0 0 64 40" aria-hidden="true"><path d="M6 34 L10 10 L22 22 L32 4 L42 22 L54 10 L58 34 Z" fill="url(#gGold)"/><rect x="6" y="35" width="52" height="3" fill="url(#gGold)"/></svg><span>ART<em>RA</em></span></span>
+    <span class="muted">© <span id="year">2026</span> · Royal handicrafts, made by hand.</span>
+    <a href="#top" class="muted">Back to top ↑</a>
+  </div>
+</footer>
+
+<script src="/products.js?v=4"></script>
+<script src="/art.js?v=2"></script>
+<script src="/royal.js?v=5"></script>
+</body>
+</html>
