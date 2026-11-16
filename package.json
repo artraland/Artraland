@@ -1,0 +1,11 @@
+{
+  "name": "artraland",
+  "private": true,
+  "description": "artraland.com — the ARTRA site and its account server (Vercel Functions in api/).",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "@neondatabase/serverless": "1.2.0",
+    "@vercel/blob": "2.8.2"
+  }
+}

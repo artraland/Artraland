@@ -332,3 +332,8 @@ html:lang(ar) .nav, html:lang(fa) .nav { font-size: 15px; }
 [dir="rtl"] .marquee-track span { direction: rtl; unicode-bidi: isolate; }
 /* Arrows point the way the page reads. */
 [dir="rtl"] .round { transform: scaleX(-1); }
+
+/* ---- Accounts ---- */
+.nav-account { position: relative; }
+/* A field only bots fill in. */
+.hp { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; opacity: 0; }

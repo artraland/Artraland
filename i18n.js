@@ -13,6 +13,7 @@
   var S = {
     en: {
       "nav.collection": "Collection", "nav.showcase": "Showcase", "nav.craft": "The craft", "nav.commission": "Commission",
+      "nav.account": "Account", "fav.save": "Save", "fav.saved": "Saved", "enq.message": "Your message", "enq.send": "Send enquiry", "enq.sent": "Thank you — we'll reply by email.", "enq.error": "Couldn't send. Please try again, or email us.", "enq.or_email": "Or write to us by email", "lang.en": "English", "lang.fr": "Français", "lang.es": "Español", "lang.ar": "العربية", "lang.fa": "فارسی",
       "aria.menu": "Menu", "aria.home": "ARTRA home", "aria.lang": "Language", "aria.scroll": "Scroll to the collection",
       "aria.prev": "Previous piece", "aria.next": "Next piece", "aria.back": "Scroll back", "aria.fwd": "Scroll forward",
       "meta.title": "ARTRA — Royal handicrafts",
@@ -44,8 +45,8 @@
       "com.eyebrow": "Private commission", "com.title": "A piece made for one house.",
       "com.lede": "Tell us the room, the occasion or the story. A master artisan will reply with sketches, materials and a timeline.",
       "f.name": "Name", "f.email": "Email", "f.craft": "Craft", "f.idea": "Your idea", "f.send": "Send the request",
-      "f.note": "Opens your email app with the request ready to send.",
-      "f.thanks": "Thank you — your email app should now open with the request.",
+      "f.note": "We reply by email.",
+      "f.thanks": "Thank you — your request has reached us. We'll reply by email.",
       "mail.commission": "ARTRA commission request — {craft}",
 
       "foot.tag": "Royal handicrafts, made by hand.", "foot.top": "Back to top ↑", "foot.collection": "The collection →",
@@ -69,6 +70,7 @@
 
     fr: {
       "nav.collection": "Collection", "nav.showcase": "Vitrine", "nav.craft": "Le savoir-faire", "nav.commission": "Commande",
+      "nav.account": "Compte", "fav.save": "Enregistrer", "fav.saved": "Enregistrée", "enq.message": "Votre message", "enq.send": "Envoyer la demande", "enq.sent": "Merci — nous vous répondrons par e-mail.", "enq.error": "Envoi impossible. Réessayez ou écrivez-nous.", "enq.or_email": "Ou écrivez-nous par e-mail",
       "aria.menu": "Menu", "aria.home": "Accueil ARTRA", "aria.lang": "Langue", "aria.scroll": "Aller à la collection",
       "aria.prev": "Pièce précédente", "aria.next": "Pièce suivante", "aria.back": "Défiler en arrière", "aria.fwd": "Défiler en avant",
       "meta.title": "ARTRA — Artisanat royal",
@@ -100,8 +102,8 @@
       "com.eyebrow": "Commande privée", "com.title": "Une pièce pour une seule maison.",
       "com.lede": "Parlez-nous de la pièce, de l'occasion ou de l'histoire. Un maître artisan vous répondra avec croquis, matériaux et calendrier.",
       "f.name": "Nom", "f.email": "E-mail", "f.craft": "Métier", "f.idea": "Votre idée", "f.send": "Envoyer la demande",
-      "f.note": "Ouvre votre messagerie avec la demande prête à envoyer.",
-      "f.thanks": "Merci — votre messagerie devrait maintenant s'ouvrir avec la demande.",
+      "f.note": "Nous répondons par e-mail.",
+      "f.thanks": "Merci — votre demande nous est bien parvenue. Nous vous répondrons par e-mail.",
       "mail.commission": "Demande de commande ARTRA — {craft}",
 
       "foot.tag": "Artisanat royal, fait à la main.", "foot.top": "Haut de page ↑", "foot.collection": "La collection →",
@@ -125,6 +127,7 @@
 
     es: {
       "nav.collection": "Colección", "nav.showcase": "Vitrina", "nav.craft": "El oficio", "nav.commission": "Encargo",
+      "nav.account": "Cuenta", "fav.save": "Guardar", "fav.saved": "Guardada", "enq.message": "Su mensaje", "enq.send": "Enviar consulta", "enq.sent": "Gracias — le responderemos por correo.", "enq.error": "No se pudo enviar. Inténtelo de nuevo o escríbanos.", "enq.or_email": "O escríbanos por correo",
       "aria.menu": "Menú", "aria.home": "Inicio de ARTRA", "aria.lang": "Idioma", "aria.scroll": "Ir a la colección",
       "aria.prev": "Pieza anterior", "aria.next": "Pieza siguiente", "aria.back": "Desplazar atrás", "aria.fwd": "Desplazar adelante",
       "meta.title": "ARTRA — Artesanía real",
@@ -156,8 +159,8 @@
       "com.eyebrow": "Encargo privado", "com.title": "Una pieza hecha para una sola casa.",
       "com.lede": "Cuéntenos la estancia, la ocasión o la historia. Un maestro artesano le responderá con bocetos, materiales y plazos.",
       "f.name": "Nombre", "f.email": "Correo electrónico", "f.craft": "Oficio", "f.idea": "Su idea", "f.send": "Enviar la solicitud",
-      "f.note": "Abre su aplicación de correo con la solicitud lista para enviar.",
-      "f.thanks": "Gracias — su aplicación de correo debería abrirse ahora con la solicitud.",
+      "f.note": "Respondemos por correo.",
+      "f.thanks": "Gracias — hemos recibido su solicitud. Le responderemos por correo.",
       "mail.commission": "Solicitud de encargo ARTRA — {craft}",
 
       "foot.tag": "Artesanía real, hecha a mano.", "foot.top": "Volver arriba ↑", "foot.collection": "La colección →",
@@ -181,6 +184,7 @@
 
     ar: {
       "nav.collection": "المجموعة", "nav.showcase": "المعرض", "nav.craft": "الحرفة", "nav.commission": "طلب خاص",
+      "nav.account": "حسابي", "fav.save": "حفظ", "fav.saved": "محفوظة", "enq.message": "رسالتك", "enq.send": "أرسل الاستفسار", "enq.sent": "شكرًا لك — سنرد عليك بالبريد الإلكتروني.", "enq.error": "تعذّر الإرسال. حاول مجددًا أو راسلنا بالبريد.", "enq.or_email": "أو راسلنا بالبريد الإلكتروني",
       "aria.menu": "القائمة", "aria.home": "الصفحة الرئيسية لآرترا", "aria.lang": "اللغة", "aria.scroll": "الانتقال إلى المجموعة",
       "aria.prev": "القطعة السابقة", "aria.next": "القطعة التالية", "aria.back": "التمرير للخلف", "aria.fwd": "التمرير للأمام",
       "meta.title": "آرترا — حِرف ملكية",
@@ -212,8 +216,8 @@
       "com.eyebrow": "طلب خاص", "com.title": "قطعة تُصنع لبيت واحد.",
       "com.lede": "حدّثنا عن المكان أو المناسبة أو القصة. سيرد عليك معلّم حِرفي برسوم أولية والخامات والجدول الزمني.",
       "f.name": "الاسم", "f.email": "البريد الإلكتروني", "f.craft": "الحرفة", "f.idea": "فكرتك", "f.send": "أرسل الطلب",
-      "f.note": "يفتح تطبيق البريد لديك والطلب جاهز للإرسال.",
-      "f.thanks": "شكرًا لك — يُفترض أن يُفتح تطبيق البريد الآن مع الطلب.",
+      "f.note": "نرد عليك بالبريد الإلكتروني.",
+      "f.thanks": "شكرًا لك — وصلنا طلبك وسنرد عليك بالبريد الإلكتروني.",
       "mail.commission": "طلب خاص من آرترا — {craft}",
 
       "foot.tag": "حِرف ملكية، صُنعت يدوياً.", "foot.top": "العودة إلى الأعلى ↑", "foot.collection": "المجموعة ←",
@@ -237,6 +241,7 @@
 
     fa: {
       "nav.collection": "مجموعه", "nav.showcase": "ویترین", "nav.craft": "هنر و صناعت", "nav.commission": "سفارش",
+      "nav.account": "حساب کاربری", "fav.save": "ذخیره", "fav.saved": "ذخیره شد", "enq.message": "پیام شما", "enq.send": "ارسال پرس‌وجو", "enq.sent": "سپاس — با ایمیل پاسخ می‌دهیم.", "enq.error": "ارسال نشد. دوباره تلاش کنید یا به ما ایمیل بزنید.", "enq.or_email": "یا به ما ایمیل بزنید",
       "aria.menu": "منو", "aria.home": "صفحهٔ اصلی آرترا", "aria.lang": "زبان", "aria.scroll": "رفتن به مجموعه",
       "aria.prev": "اثر قبلی", "aria.next": "اثر بعدی", "aria.back": "پیمایش به عقب", "aria.fwd": "پیمایش به جلو",
       "meta.title": "آرترا — صنایع‌دستی شاهانه",
@@ -268,8 +273,8 @@
       "com.eyebrow": "سفارش ویژه", "com.title": "اثری برای یک خانه.",
       "com.lede": "از فضا، مناسبت یا داستان‌تان بگویید. استادکاری با طرح‌های اولیه، مواد و زمان‌بندی پاسخ می‌دهد.",
       "f.name": "نام", "f.email": "ایمیل", "f.craft": "هنر", "f.idea": "ایدهٔ شما", "f.send": "ارسال درخواست",
-      "f.note": "برنامهٔ ایمیل شما با درخواستی آمادهٔ ارسال باز می‌شود.",
-      "f.thanks": "سپاس — اکنون برنامهٔ ایمیل شما باید با درخواست باز شود.",
+      "f.note": "با ایمیل پاسخ می‌دهیم.",
+      "f.thanks": "سپاس — درخواست شما به ما رسید. با ایمیل پاسخ می‌دهیم.",
       "mail.commission": "درخواست سفارش آرترا — {craft}",
 
       "foot.tag": "صنایع‌دستی شاهانه، ساخت دست.", "foot.top": "بازگشت به بالا ↑", "foot.collection": "مجموعه ←",
@@ -291,6 +296,10 @@
       "piece.desc": "اثر هنری شاهانهٔ آرترا: داستانش، هنرش از نزدیک و مشخصات کامل."
     }
   };
+
+  // Extra wording a page loads first (the account page: i18n-account.js).
+  var EXTRA = window.ARTRA_I18N_EXTRA || {};
+  LANGS.forEach(function (l) { var x = EXTRA[l]; if (x) for (var k in x) S[l][k] = x[k]; });
 
   var html = document.documentElement;
   var lang = LANGS.indexOf(html.lang) > -1 ? html.lang : "en";

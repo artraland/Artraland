@@ -141,6 +141,44 @@
   var body = t("mail.body", { name: p.name, id: p.id ? t("mail.id", { id: p.id }) : "", url: location.href });
   $("#ctaMail").href = "mailto:" + ARTRA_ART.email + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
 
+  // ---- Account: who is signed in (for Save, and to skip the name and email in the enquiry form) ----
+  var me = null, favBtn = $("#favBtn");
+  function call(method, path, data) {
+    return fetch(path, { method: method, credentials: "same-origin", headers: data ? { "Content-Type": "application/json", "X-Artra": "1" } : method !== "GET" ? { "X-Artra": "1" } : {}, body: data ? JSON.stringify(data) : undefined })
+      .then(function (r) { if (!r.ok) throw r; return r.json(); });
+  }
+  function showFav(on) {
+    favBtn.setAttribute("aria-pressed", on);
+    favBtn.querySelector("span").textContent = on ? "♥" : "♡";
+    favBtn.querySelector("b").textContent = t(on ? "fav.saved" : "fav.save");
+  }
+  call("GET", "/api/auth").then(function (j) {
+    me = j.user;
+    if (!me) return;
+    $("#enqWho").hidden = true;
+    return call("GET", "/api/favorites").then(function (f) { showFav(f.favorites.indexOf(p.slug) > -1); });
+  }).catch(function () {});
+  favBtn.addEventListener("click", function () {
+    if (!me) { location.assign("/account?next=" + encodeURIComponent(location.pathname + location.search)); return; }
+    var on = favBtn.getAttribute("aria-pressed") !== "true";
+    showFav(on);
+    (on ? call("POST", "/api/favorites", { slug: p.slug }) : call("DELETE", "/api/favorites?slug=" + encodeURIComponent(p.slug)))
+      .catch(function () { showFav(!on); });
+  });
+
+  // ---- Enquiry: straight to the sales desk (and into the client's account when signed in) ----
+  $("#enqForm").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var f = ev.target, note = $("#enqNote"), btn = f.querySelector("button");
+    var data = { kind: "enquiry", product_slug: p.slug, message: f.message.value, lang: T.lang, website: f.website.value };
+    if (!me) { data.name = f.name.value; data.email = f.email.value; }
+    btn.disabled = true;
+    call("POST", "/api/enquiries", data)
+      .then(function () { f.reset(); note.textContent = t("enq.sent"); })
+      .catch(function () { note.textContent = t("enq.error"); })
+      .finally(function () { btn.disabled = false; });
+  });
+
   // ---- Pause looping drawings that are off screen ----
   var pauseIO = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) { e.target.classList.toggle("paused", !e.isIntersecting); });

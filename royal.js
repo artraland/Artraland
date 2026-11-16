@@ -180,11 +180,22 @@
   // ---- Commission form ----
   $("#form").addEventListener("submit", function (ev) {
     ev.preventDefault();
-    var f = ev.target;
+    var f = ev.target, btn = f.querySelector("button[type=submit]");
     var craft = f.craft.options[f.craft.selectedIndex].text;
-    var body = t("f.name") + ": " + f.name.value + "\n" + t("f.email") + ": " + f.email.value + "\n" + t("f.craft") + ": " + craft + "\n\n" + f.idea.value;
-    location.href = "mailto:" + ATELIER_EMAIL + "?subject=" + encodeURIComponent(t("mail.commission", { craft: craft })) + "&body=" + encodeURIComponent(body);
-    $("#formNote").textContent = t("f.thanks");
+    function byEmail() {
+      var body = t("f.name") + ": " + f.name.value + "\n" + t("f.email") + ": " + f.email.value + "\n" + t("f.craft") + ": " + craft + "\n\n" + f.idea.value;
+      location.href = "mailto:" + ATELIER_EMAIL + "?subject=" + encodeURIComponent(t("mail.commission", { craft: craft })) + "&body=" + encodeURIComponent(body);
+    }
+    btn.disabled = true;
+    fetch("/api/enquiries", {
+      method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json", "X-Artra": "1" },
+      body: JSON.stringify({ kind: "commission", name: f.name.value, email: f.email.value, craft: craft, message: f.idea.value, lang: T.lang, website: f.website ? f.website.value : "" })
+    }).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      f.reset();
+      $("#formNote").textContent = t("f.thanks");
+    }).catch(function () { byEmail(); $("#formNote").textContent = t("enq.error"); })
+      .finally(function () { btn.disabled = false; });
   });
 
   $("#year").textContent = new Date().getFullYear();

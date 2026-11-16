@@ -28,6 +28,31 @@ language; elements carry `data-i18n` (text), `data-i18n-html` (text with markup)
 `products.js` a text field can be one text for every language or `{ en, fr, es, ar, fa }`; a missing language shows
 the English, so a form response can go in as English first and gain translations later.
 
+**Accounts.** `account.html` (artraland.com/account) is where people sign up and sign in. Everyone signs up as a
+**Client**; an **Admin** changes roles in the People tab. What each role sees:
+
+- Client: profile (details, delivery address, language, password), saved pieces (♡ Save on any piece page), their
+  orders with a progress bar and tracking history, and their enquiries and commission requests with status.
+- Product provider: also *My pieces* — add a piece with the questions of the Product Detail form, a photo (upload or
+  link) and a tab per language; send it for review. An approved piece appears on the site within a minute; editing it
+  sends it back for review.
+- Sales: also the *Enquiries desk* (every enquiry and commission request: status, assignee, internal notes, reply by
+  email) and the *Orders desk* (record a sale against a client's account, then update its status, carrier and tracking).
+- Admin: everything above, plus *Review pieces* and *People*.
+
+The account server is in `api/` (Vercel Functions, Node): `auth` (sign up, sign in, sign out), `profile`, `favorites`,
+`enquiries`, `orders`, `products`, `users`, `upload` and `catalog` (approved pieces, added to the pages after
+`products.js`). Data lives in Neon Postgres (`DATABASE_URL`, connected in Vercel → Storage); the tables are created
+on first use (`api/_lib/db.js`). Passwords are stored as scrypt hashes; sign-in sets an HttpOnly, Secure cookie whose
+token is stored only as a hash; five wrong passwords lock an account for 15 minutes; every change needs the `X-Artra`
+header (a guard against cross-site requests); every endpoint checks the role on the server.
+
+Settings in Vercel (project → Settings → Environment Variables): `DATABASE_URL` (added by the Neon connection);
+`ADMIN_EMAILS` — comma-separated addresses that become Admin when they sign up or sign in (the way to get the first
+admin); `BLOB_READ_WRITE_TOKEN` — added by connecting a Blob store (Storage → Blob), needed for photo uploads (without
+it, providers paste a photo link). The commission form and the enquiry form on piece pages now send straight to the
+Enquiries desk; if that fails, they fall back to the visitor's email app.
+
 **Photos.** Photos of pieces live in `photos/` (strip location metadata before adding one). A piece with a `cutout`
 (its photo with the background removed, as a transparent WebP or PNG) shows the cut-out everywhere and keeps the full
 photo for the close-up. Otherwise a piece with a photo link shows its photo (Google Drive links work if the file is

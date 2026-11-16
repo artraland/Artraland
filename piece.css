@@ -220,3 +220,17 @@ html:lang(ar) .p-statement, html:lang(fa) .p-statement { line-height: 1.7; }
   [dir="rtl"] .p-closeup.has-photo .p-closeup-art .photo { -webkit-mask-image: none; mask-image: none; }
   [dir="rtl"] .p-closeup-veil { background: linear-gradient(180deg, var(--black) 0%, rgba(13, 20, 32, .55) 30%, rgba(13, 20, 32, .8) 75%, var(--black) 100%); }
 }
+
+/* ---- Save (♡) and the enquiry form ---- */
+.fav-btn { display: inline-flex; align-items: center; gap: 6px; min-height: 38px; padding: 0 14px; background: none; border: 1px solid rgba(212, 180, 103, .5);
+  color: var(--gold-2); cursor: pointer; font: 500 11px var(--sans); letter-spacing: .2em; text-transform: uppercase; }
+.fav-btn span { font-size: 16px; letter-spacing: 0; }
+.fav-btn[aria-pressed="true"] { background: rgba(212, 180, 103, .14); }
+.pbar-in .fav-btn { margin-inline-start: auto; }
+.pbar-links + .fav-btn { margin-inline-start: 0; }
+.p-enquiry { display: grid; gap: 16px; max-width: 620px; margin: 0 auto 26px; text-align: start; padding: 28px; background: rgba(13, 20, 32, .6); border: 1px solid rgba(212, 180, 103, .3); }
+.p-enquiry .btn { justify-self: center; }
+.p-enquiry .form-note { text-align: center; }
+.p-enq-who { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.p-enq-who[hidden] { display: none; }
+@media (max-width: 720px) { .p-enq-who { grid-template-columns: 1fr; } .fav-btn b { display: none; } .fav-btn { padding: 0 10px; } }
