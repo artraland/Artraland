@@ -17,6 +17,8 @@ and gold.
   opens, the brass tray's engraving rotates, the filigree lantern swings, the mirror mosaic glints, the silk rug weaves
   itself), and `EMAIL`, the address enquiries and commission requests open in the visitor's email app.
 - `royal.css`, `royal.js` — the collection page's styles and motion; `piece.css`, `piece.js` — the piece page's.
+- `brand/` — the ARTRA logo (`logo.webp`, `logo.png`), the tab and home-screen icons (the gold and blue T pair), and
+  `og-artra.jpg`, the picture shown when artraland.com is shared.
 
 **Photos.** Photos of pieces live in `photos/` (strip location metadata before adding one). A piece with a `cutout`
 (its photo with the background removed, as a transparent WebP or PNG) shows the cut-out everywhere and keeps the full
