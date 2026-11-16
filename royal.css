@@ -263,6 +263,8 @@ main, .foot, .top { position: relative; z-index: 1; }
   .stats { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 720px) {
+  .mark img { height: 28px; }
+  .mark-sm img { height: 24px; }
   .burger { display: block; }
   .nav { position: fixed; inset: 76px 0 auto; flex-direction: column; gap: 0; background: rgba(13, 20, 32, .97); border-bottom: 1px solid rgba(212, 180, 103,.25);
     max-height: 0; overflow: hidden; transition: max-height .5s var(--ease); }
