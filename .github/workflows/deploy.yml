@@ -34,27 +34,20 @@ jobs:
       - name: Find the Vercel team and project (create the project on the first run)
         run: |
           api() { curl -sS -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" "$@"; }
-          teams=$(api https://api.vercel.com/v2/teams)
-          team_id=$(echo "$teams" | jq -r --arg s "$VERCEL_SCOPE" '.teams[]? | select(.slug == $s) | .id' | head -n1)
-          if [ -z "$team_id" ]; then
-            echo "Teams this token can use: $(echo "$teams" | jq -c '[.teams[]? | {slug, id}]')"
-            team_id=$(echo "$teams" | jq -r '.teams[0].id // empty')
-          fi
-          if [ -z "$team_id" ]; then
-            echo "::error::The ARTRALAND token cannot reach any Vercel team: $(echo "$teams" | jq -c '.error // .')"
-            exit 1
-          fi
-          project=$(api "https://api.vercel.com/v9/projects/$VERCEL_PROJECT?teamId=$team_id")
+          # The team is named by its slug; a team-scoped token may not list teams, but it can use its own team.
+          project=$(api "https://api.vercel.com/v9/projects/$VERCEL_PROJECT?slug=$VERCEL_SCOPE")
           project_id=$(echo "$project" | jq -r '.id // empty')
           if [ -z "$project_id" ]; then
+            echo "Project lookup: $(echo "$project" | jq -c '.error // .')"
             echo "Creating the Vercel project $VERCEL_PROJECT"
-            project=$(api -X POST "https://api.vercel.com/v11/projects?teamId=$team_id" -d "{\"name\":\"$VERCEL_PROJECT\",\"framework\":null}")
+            project=$(api -X POST "https://api.vercel.com/v11/projects?slug=$VERCEL_SCOPE" -d "{\"name\":\"$VERCEL_PROJECT\",\"framework\":null}")
             project_id=$(echo "$project" | jq -r '.id // empty')
           fi
           if [ -z "$project_id" ]; then
-            echo "::error::Could not find or create the Vercel project: $(echo "$project" | jq -c '.error // .')"
+            echo "::error::Could not find or create the Vercel project in the '$VERCEL_SCOPE' team: $(echo "$project" | jq -c '.error // .')"
             exit 1
           fi
+          team_id=$(echo "$project" | jq -r '.accountId')
           echo "Team $team_id, project $project_id"
           echo "VERCEL_ORG_ID=$team_id" >> "$GITHUB_ENV"
           echo "VERCEL_PROJECT_ID=$project_id" >> "$GITHUB_ENV"
