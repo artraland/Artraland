@@ -147,3 +147,32 @@ table.people { width: 100%; border-collapse: collapse; font-size: 15px; }
 }
 
 @media (max-width: 560px) { .order-art .thumb { overflow: hidden; } .order-head .pill { margin-top: 4px; } }
+
+/* ---- The order as a caravan journey ---- */
+.jr { display: block; width: 100%; height: auto; margin: 18px 0 4px; overflow: visible; }
+.jr-t { font: 500 21px var(--serif); fill: var(--ivory); text-anchor: middle; }
+.jr-t.off { fill: var(--beige-2); }
+.jr-t.now { fill: var(--gold-2); }
+.jr-s { font: 400 13px var(--sans); fill: var(--beige-2); text-anchor: middle; }
+.jr-pulse { animation: jrPulse 2.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes jrPulse { 50% { opacity: .05; transform: scale(1.4); } }
+.jr-more { display: grid; grid-template-columns: 1.35fr 1fr; gap: 22px; margin-top: 20px; }
+.jr-origin { padding: 24px 26px; border: 1px solid rgba(110, 132, 168, .35); background: #111824; }
+.jr-origin h3 { font: 400 28px/1.2 var(--serif); margin: 0 0 6px; }
+.jr-origin .muted { margin: 0 0 12px; }
+.tq { color: #4cc3b9; }
+.jr-mini { display: block; width: 100%; height: auto; }
+.pass { position: relative; padding: 22px; background: #f3eee4; color: #111824; border: 1px solid #cfc6b4; }
+.pass-in { border: 1px solid #9a7a35; outline: 1px solid #9a7a35; outline-offset: 5px; padding: 22px 20px; text-align: center; }
+.pass-kicker { margin: 0; font-size: 11px; font-weight: 500; letter-spacing: .3em; text-transform: uppercase; color: #6e5f47; }
+.pass-fa { margin: 4px 0 0; font: 400 24px/2 "Noto Nastaliq Urdu", serif; color: #6e5f47; }
+.pass h3 { margin: 2px 0; font: 500 28px var(--serif); color: #111824; }
+.pass-sub { margin: 0 0 16px; font-size: 13px; color: #3f4655; }
+.pass dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 0; text-align: start; font-size: 15px; }
+.pass dt { color: #6e5f47; }
+.pass dd { margin: 0; }
+.seal { display: block; width: 84px; height: 84px; margin: 18px auto 0; }
+html:lang(ar) .pass h3, html:lang(fa) .pass h3 { font-family: "Noto Nastaliq Urdu", var(--serif); font-size: 26px; line-height: 2; }
+@media (max-width: 860px) { .jr-more { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .jr { margin: 6px -10px 0; width: calc(100% + 20px); } .jr-t { font-size: 40px; } .jr-t.now { font-size: 36px; } .jr-s { font-size: 27px; } }
+@media (prefers-reduced-motion: reduce) { .jr-pulse { animation: none; } }

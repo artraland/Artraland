@@ -18,7 +18,7 @@ function clean(d) {
   if (!d || typeof d !== "object") fail(400, "bad_input");
   const out = {
     name: ml(d.name, 200), category: ml(d.category, 120), id: str(d.id, 60),
-    photo: url(d.photo), cutout: url(d.cutout),
+    photo: url(d.photo), cutout: url(d.cutout), city: /^[a-z-]{0,40}$/.test(str(d.city, 40)) ? str(d.city, 40) : fail(400, "bad_input"),
     artist: ml(d.artist, 200), origin: ml(d.origin, 200),
     history: ml(d.history), description: ml(d.description), medium: ml(d.medium, 300),
     dimensions: ml(d.dimensions, 300), packaging: ml(d.packaging, 300), additional: ml(d.additional),

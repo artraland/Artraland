@@ -224,11 +224,85 @@
     return '<div class="track"><span>' + esc(t("o.tracking")) + "</span> " + esc(o.carrier) + (o.tracking_number ? ' <code dir="ltr">' + esc(o.tracking_number) + "</code>" : "") +
       (o.tracking_url ? ' <a href="' + attr(o.tracking_url) + '" target="_blank" rel="noopener">' + esc(t("o.track_link")) + " ↗</a>" : "") + "</div>";
   }
-  var STEPS = ["confirmed", "in_production", "shipped", "delivered"];
-  function progress(o) {
+  // ---- The order as a caravan journey: the atelier → the caravanserai → with the caravan → arrived ----
+  var ROAD_D = "M70 128 C 250 78 380 170 560 128 S 860 88 1030 128";
+  var AT = { confirmed: 0, in_production: 0.14, shipped: 0.66, delivered: 1 };
+  function journey(o, p) {
     if (o.status === "cancelled") return "";
-    var at = STEPS.indexOf(o.status);
-    return '<ol class="steps-bar">' + STEPS.map(function (s, i) { return '<li class="' + (i <= at ? "done" : "") + '">' + esc(t("os." + s)) + "</li>"; }).join("") + "</ol>";
+    var rtl = T.rtl, city = p && p.city && window.ARTRA_ROAD ? ARTRA_ROAD.city(p.city) : null;
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", o.status === "in_production" || o.status === "shipped" ? "0 0 1100 230" : "0 60 1100 170");
+    svg.setAttribute("class", "jr");
+    svg.setAttribute("role", "img");
+    var at = AT[o.status] || 0;
+    svg.setAttribute("aria-label", t("j.aria", { status: t(o.status === "shipped" ? "j.caravan" : "os." + o.status) }));
+    var flip = rtl ? ' transform="matrix(-1 0 0 1 1100 0)"' : "";
+    svg.innerHTML =
+      '<defs><linearGradient id="jrGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1d98e"/><stop offset=".5" stop-color="#d4b467"/><stop offset="1" stop-color="#9a7a35"/></linearGradient></defs>' +
+      '<g' + flip + '><path d="' + ROAD_D + '" fill="none" stroke="#4a5a75" stroke-width="2" stroke-dasharray="4 7"/>' +
+      '<path class="jr-gold" d="' + ROAD_D + '" pathLength="1" fill="none" stroke="url(#jrGold)" stroke-width="3" stroke-linecap="round" stroke-dasharray="' + at + ' 1"/></g>';
+    // Positions along the road (measured once the svg is in the page).
+    svg._draw = function () {
+      var path = svg.querySelector(".jr-gold"), L = path.getTotalLength();
+      function pos(f) { var q = path.getPointAtLength(L * f); return { x: rtl ? 1100 - q.x : q.x, y: q.y }; }
+      function arch(f, reached) {
+        var q = pos(f), c = reached ? "#d4b467" : "#4a5a75";
+        return '<path d="M' + (q.x - 18) + " " + (q.y + 20) + " V" + (q.y - 8) + " Q" + (q.x - 18) + " " + (q.y - 22) + " " + q.x + " " + (q.y - 28) + " Q" + (q.x + 18) + " " + (q.y - 22) + " " + (q.x + 18) + " " + (q.y - 8) + " V" + (q.y + 20) + '" fill="' + (reached ? "#162030" : "#111824") + '" stroke="' + c + '" stroke-width="1.6"/>' +
+          (reached ? '<circle cx="' + q.x + '" cy="' + (q.y + 2) + '" r="5" fill="#d4b467"/>' : '<circle cx="' + q.x + '" cy="' + (q.y + 2) + '" r="4" fill="none" stroke="#4a5a75" stroke-width="1.5"/>');
+      }
+      function label(f, title, sub, reached, dy) {
+        var q = pos(f);
+        return '<text x="' + q.x + '" y="' + (q.y + dy) + '" class="jr-t' + (reached ? "" : " off") + '">' + esc(title) + "</text>" +
+          (sub ? '<text x="' + q.x + '" y="' + (q.y + dy + 20) + '" class="jr-s" direction="' + (rtl ? "rtl" : "ltr") + '">' + esc(sub) + "</text>" : "");
+      }
+      var shipped = at >= AT.shipped, delivered = at >= 1, out = "";
+      out += arch(0, true) + arch(0.32, shipped) + arch(1, delivered);
+      out += label(0, t("j.atelier"), [city ? ARTRA_ROAD.name(city.key) : "", date(o.created_at)].filter(Boolean).join(" · "), true, 50);
+      out += label(0.32, t("j.caravanserai"), shipped ? o.carrier : "", shipped, 62);
+      out += label(1, t("j.arrived"), user.country || "", delivered, 50);
+      // Where the piece is now: a lantern on the road.
+      var now = pos(at), nowTitle = o.status === "shipped" ? t("j.caravan") : t("os." + o.status);
+      out += '<circle cx="' + now.x + '" cy="' + now.y + '" r="22" fill="#f1d98e" opacity=".18" class="jr-pulse"/>' +
+        '<circle cx="' + now.x + '" cy="' + now.y + '" r="7" fill="#f1d98e"/>';
+      if (o.status === "confirmed" || o.status === "delivered") {
+        // At a stop: the stop's own label is enough; the state shows in the pill.
+      } else {
+        out += '<text x="' + now.x + '" y="' + (now.y - 44) + '" class="jr-t now">' + esc(nowTitle) + "</text>";
+        if (o.status === "shipped" && (o.carrier || o.tracking_number)) out += '<text x="' + now.x + '" y="' + (now.y - 68) + '" class="jr-s" direction="ltr">' + esc([o.carrier, o.tracking_number].filter(Boolean).join(" · ")) + "</text>";
+      }
+      svg.insertAdjacentHTML("beforeend", out);
+    };
+    return svg;
+  }
+
+  // ---- Where the piece comes from, and its Caravan Pass ----
+  function originAndPass(o, p) {
+    var box = document.createElement("div");
+    box.className = "jr-more";
+    var city = p && p.city && window.ARTRA_ROAD ? ARTRA_ROAD.city(p.city) : null;
+    if (city) {
+      var made = esc(t("j.made_in", { city: "\u0000" })).replace("\u0000", '<span class="tq">' + esc(ARTRA_ROAD.name(city.key)) + "</span>");
+      var crafts = (city.crafts || []).map(function (k) { return t("c." + k); }).join(" · ");
+      box.insertAdjacentHTML("beforeend",
+        '<section class="jr-origin"><p class="eyebrow">' + esc(t("j.origin")) + "</p><h3>" + made + "</h3>" +
+        '<p class="muted">' + esc(ARTRA_ROAD.region(city.key)) + (crafts ? " · " + esc(crafts) : "") + "</p>" +
+        '<svg class="jr-mini" role="img" aria-label="' + attr(t("j.made_in", { city: ARTRA_ROAD.name(city.key) })) + '"></svg></section>');
+      ARTRA_ROAD.draw($(".jr-mini", box), { mini: true, highlight: city.key });
+    }
+    var rows = [["j.piece", (p && p.name) || o.title], ["j.atelier_l", city ? ARTRA_ROAD.name(city.key) + ", " + ARTRA_ROAD.region(city.key) : ""],
+      ["j.master", p && p.artist], ["j.number", (p && p.id) || o.number]].filter(function (r) { return r[1]; });
+    box.insertAdjacentHTML("beforeend",
+      '<section class="pass"><div class="pass-in">' +
+        '<p class="pass-kicker">' + esc(t("j.pass_kicker")) + "</p>" +
+        (T.lang === "fa" ? "" : '<p class="pass-fa" lang="fa" dir="rtl">گذرنامهٔ کاروان</p>') +
+        "<h3>" + esc(t("j.pass_title")) + "</h3>" +
+        '<p class="pass-sub">' + esc(t("j.pass_sub")) + "</p>" +
+        "<dl>" + rows.map(function (r) { return "<dt>" + esc(t(r[0])) + "</dt><dd>" + esc(r[1]) + "</dd>"; }).join("") + "</dl>" +
+        '<svg class="seal" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54" fill="#8c2f28"/><circle cx="60" cy="60" r="46" fill="none" stroke="#e8cf8a" stroke-width="1.2" stroke-dasharray="3 3"/>' +
+          '<path d="M60 22 L68 50 L96 60 L68 70 L60 98 L52 70 L24 60 L52 50 Z" fill="none" stroke="#e8cf8a" stroke-width="1.6"/>' +
+          '<text x="60" y="66" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="16" fill="#f3eee4" letter-spacing="2">ARTRA</text></svg>' +
+      "</div></section>");
+    return box;
   }
   RENDER.orders = function (panel) {
     return api("GET", "/api/orders").then(function (j) {
@@ -242,13 +316,17 @@
         el.innerHTML =
           '<div class="order-head"><div class="order-art"></div><div class="order-main">' +
             '<p class="order-no">' + esc(t("o.number")) + ' <span dir="ltr">' + esc(o.number) + "</span> · " + esc(date(o.created_at)) + "</p>" +
-            "<h3>" + esc(o.title) + "</h3>" +
+            "<h3>" + esc((BY_SLUG[o.product_slug] && BY_SLUG[o.product_slug].name) || o.title) + "</h3>" +
             (o.amount != null ? '<p class="muted">' + esc(money(o.amount, o.currency)) + "</p>" : "") +
           "</div>" + pill("os", o.status) + "</div>" +
-          progress(o) + trackingBox(o) +
+          '<div class="jr-slot"></div>' + trackingBox(o) + '<div class="jr-more-slot"></div>' +
           "<details><summary>" + esc(t("o.history")) + "</summary>" + timeline(o) + "</details>";
         $(".order-art", el).appendChild(thumb(o.product_slug));
+        var piece = BY_SLUG[o.product_slug], road = journey(o, piece);
+        if (road) $(".jr-slot", el).appendChild(road);
+        $(".jr-more-slot", el).appendChild(originAndPass(o, piece));
         box.appendChild(el);
+        if (road) road._draw();
       });
     });
   };
@@ -318,6 +396,9 @@
           '<label class="btn btn-ghost upload"><input type="file" id="edFile" accept="image/jpeg,image/png,image/webp" hidden>' + esc(t("pr.upload")) + "</label>" +
           '<label><span>' + esc(t("pr.or_link")) + '</span><input name="photo" dir="ltr" placeholder="https://" value="' + attr(data.photo || "") + '"></label>' +
           '<p class="note" id="edPhotoNote" role="status"></p></div></div>' +
+        '<label><span>' + esc(t("pf.city")) + '</span><select name="city"><option value="">—</option>' +
+          (window.ARTRA_ROAD ? ARTRA_ROAD.cities.map(function (c) { return '<option value="' + c.key + '"' + (c.key === data.city ? " selected" : "") + ">" + esc(ARTRA_ROAD.name(c.key)) + "</option>"; }).join("") : "") +
+        "</select></label>" +
         '<div class="ed-row"><label><span>' + esc(t("l.id")) + '</span><input name="id" dir="ltr" value="' + attr(data.id || "") + '"></label>' +
           '<label><span>' + esc(t("l.updated")) + '</span><input name="updated" value="' + attr(data.updated || "") + '"></label></div>' +
         '<p class="muted small">' + esc(t("pr.lang_note")) + "</p>" +
@@ -365,7 +446,7 @@
     });
     function save(submit) {
       keep();
-      var out = { id: form.id.value, updated: form.updated.value, photo: form.photo.value.trim(), cutout: form.photo.value.trim() === (product && product.data.photo) ? (data.cutout || "") : "" };
+      var out = { id: form.id.value, updated: form.updated.value, city: form.city.value, photo: form.photo.value.trim(), cutout: form.photo.value.trim() === (product && product.data.photo) ? (data.cutout || "") : "" };
       ML_FIELDS.forEach(function (f) { out[f[0]] = data[f[0]]; });
       if (!out.name.en) { flash($("#edNote"), t("err.name_required"), true); return; }
       var req = product ? api("PATCH", "/api/products", { id: product.id, data: out, submit: submit }) : api("POST", "/api/products", { data: out, submit: submit });

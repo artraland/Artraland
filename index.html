@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&family=Vazirmatn:wght@300;400;500;600&family=Noto+Naskh+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/royal.css?v=14">
+  <link rel="stylesheet" href="/royal.css?v=17">
   <script>
     // Picks the language before the page paints: the ?lang= address, then the visitor's last choice,
     // then their browser's language, else English. Arabic and Persian read right to left.
@@ -55,6 +55,7 @@
     <nav class="nav" id="nav">
       <a href="#collection" data-i18n="nav.collection">Collection</a>
       <a href="#showcase" data-i18n="nav.showcase">Showcase</a>
+      <a href="#road" data-i18n="nav.road">The Road</a>
       <a href="#craft" data-i18n="nav.craft">The craft</a>
       <a href="/account" class="nav-account" data-i18n="nav.account">Account</a>
       <a href="#commission" class="nav-cta" data-i18n="nav.commission">Commission</a>
@@ -104,6 +105,25 @@
   </div>
 </div>
 
+<!-- The Road: the Silk Road map -->
+<section class="section road" id="road">
+  <div class="wrap">
+    <div class="road-head reveal">
+      <div>
+        <p class="eyebrow" data-i18n="road.eyebrow">The Road</p>
+        <h2 data-i18n="road.title">Every piece has a city.</h2>
+        <p class="muted" data-i18n="road.lede">Touch a city to see the crafts that grew up along the caravan route, and the pieces made there today.</p>
+      </div>
+      <p class="road-count" id="roadCount"></p>
+    </div>
+    <div class="road-map reveal">
+      <svg id="roadSvg" role="img" data-i18n-aria="road.aria" aria-label="Map of the Silk Road from Venice to Xi'an"></svg>
+      <div class="road-card" id="roadCard" hidden></div>
+    </div>
+    <div class="road-chips" id="roadChips" role="group" data-i18n-aria="road.cities" aria-label="Cities"></div>
+  </div>
+</section>
+
 <!-- Collection -->
 <section class="section" id="collection">
   <div class="wrap">
@@ -113,6 +133,7 @@
       <p class="muted" data-i18n="col.lede">Select a piece to open its page: its story, the craft up close, and full specifications.</p>
     </div>
 
+    <div class="road-filter" id="roadFilter" hidden><span id="roadFilterText"></span> <button type="button" class="link-btn" id="roadFilterAll" data-i18n="road.all">Show all pieces</button></div>
     <div class="grid" id="grid">
 
       <a class="piece reveal" data-piece="vase" href="/piece?p=vase">
@@ -287,10 +308,11 @@
   </div>
 </footer>
 
-<script src="/i18n.js?v=2"></script>
-<script src="/products.js?v=5"></script>
+<script src="/i18n.js?v=3"></script>
+<script src="/products.js?v=6"></script>
 <script src="/api/catalog"></script>
 <script src="/art.js?v=3"></script>
-<script src="/royal.js?v=7"></script>
+<script src="/silkroad.js?v=3"></script>
+<script src="/royal.js?v=9"></script>
 </body>
 </html>

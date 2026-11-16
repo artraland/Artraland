@@ -14,6 +14,7 @@
     en: {
       "nav.collection": "Collection", "nav.showcase": "Showcase", "nav.craft": "The craft", "nav.commission": "Commission",
       "nav.account": "Account", "fav.save": "Save", "fav.saved": "Saved", "enq.message": "Your message", "enq.send": "Send enquiry", "enq.sent": "Thank you — we'll reply by email.", "enq.error": "Couldn't send. Please try again, or email us.", "enq.or_email": "Or write to us by email", "lang.en": "English", "lang.fr": "Français", "lang.es": "Español", "lang.ar": "العربية", "lang.fa": "فارسی",
+      "nav.road": "The Road", "road.eyebrow": "The Road", "road.title": "Every piece has a city.", "road.lede": "Touch a city to see the crafts that grew up along the caravan route, and the pieces made there today.", "road.count": "{cities} cities · {crafts} living crafts", "road.aria": "Map of the Silk Road from Venice to Xi'an", "road.cities": "Cities", "road.on_route": "A city of the caravan road", "road.pieces": "{n} pieces in the collection", "road.pieces_one": "1 piece in the collection", "road.none": "No pieces from here yet.", "road.showing": "Showing the pieces from {city}.", "road.all": "Show all pieces",
       "aria.menu": "Menu", "aria.home": "ARTRA home", "aria.lang": "Language", "aria.scroll": "Scroll to the collection",
       "aria.prev": "Previous piece", "aria.next": "Next piece", "aria.back": "Scroll back", "aria.fwd": "Scroll forward",
       "meta.title": "ARTRA — Royal handicrafts",
@@ -71,6 +72,7 @@
     fr: {
       "nav.collection": "Collection", "nav.showcase": "Vitrine", "nav.craft": "Le savoir-faire", "nav.commission": "Commande",
       "nav.account": "Compte", "fav.save": "Enregistrer", "fav.saved": "Enregistrée", "enq.message": "Votre message", "enq.send": "Envoyer la demande", "enq.sent": "Merci — nous vous répondrons par e-mail.", "enq.error": "Envoi impossible. Réessayez ou écrivez-nous.", "enq.or_email": "Ou écrivez-nous par e-mail",
+      "nav.road": "La Route", "road.eyebrow": "La Route", "road.title": "Chaque pièce a sa ville.", "road.lede": "Touchez une ville pour découvrir les métiers nés le long de la route des caravanes, et les pièces qui y sont faites aujourd'hui.", "road.count": "{cities} villes · {crafts} métiers vivants", "road.aria": "Carte de la route de la soie, de Venise à Xi'an", "road.cities": "Villes", "road.on_route": "Une ville de la route des caravanes", "road.pieces": "{n} pièces dans la collection", "road.pieces_one": "1 pièce dans la collection", "road.none": "Pas encore de pièce d'ici.", "road.showing": "Pièces de {city}.", "road.all": "Voir toutes les pièces",
       "aria.menu": "Menu", "aria.home": "Accueil ARTRA", "aria.lang": "Langue", "aria.scroll": "Aller à la collection",
       "aria.prev": "Pièce précédente", "aria.next": "Pièce suivante", "aria.back": "Défiler en arrière", "aria.fwd": "Défiler en avant",
       "meta.title": "ARTRA — Artisanat royal",
@@ -128,6 +130,7 @@
     es: {
       "nav.collection": "Colección", "nav.showcase": "Vitrina", "nav.craft": "El oficio", "nav.commission": "Encargo",
       "nav.account": "Cuenta", "fav.save": "Guardar", "fav.saved": "Guardada", "enq.message": "Su mensaje", "enq.send": "Enviar consulta", "enq.sent": "Gracias — le responderemos por correo.", "enq.error": "No se pudo enviar. Inténtelo de nuevo o escríbanos.", "enq.or_email": "O escríbanos por correo",
+      "nav.road": "La Ruta", "road.eyebrow": "La Ruta", "road.title": "Cada pieza tiene su ciudad.", "road.lede": "Toque una ciudad para ver los oficios que nacieron a lo largo de la ruta de las caravanas y las piezas que se hacen allí hoy.", "road.count": "{cities} ciudades · {crafts} oficios vivos", "road.aria": "Mapa de la Ruta de la Seda, de Venecia a Xi'an", "road.cities": "Ciudades", "road.on_route": "Una ciudad de la ruta de las caravanas", "road.pieces": "{n} piezas en la colección", "road.pieces_one": "1 pieza en la colección", "road.none": "Aún no hay piezas de aquí.", "road.showing": "Piezas de {city}.", "road.all": "Ver todas las piezas",
       "aria.menu": "Menú", "aria.home": "Inicio de ARTRA", "aria.lang": "Idioma", "aria.scroll": "Ir a la colección",
       "aria.prev": "Pieza anterior", "aria.next": "Pieza siguiente", "aria.back": "Desplazar atrás", "aria.fwd": "Desplazar adelante",
       "meta.title": "ARTRA — Artesanía real",
@@ -185,6 +188,7 @@
     ar: {
       "nav.collection": "المجموعة", "nav.showcase": "المعرض", "nav.craft": "الحرفة", "nav.commission": "طلب خاص",
       "nav.account": "حسابي", "fav.save": "حفظ", "fav.saved": "محفوظة", "enq.message": "رسالتك", "enq.send": "أرسل الاستفسار", "enq.sent": "شكرًا لك — سنرد عليك بالبريد الإلكتروني.", "enq.error": "تعذّر الإرسال. حاول مجددًا أو راسلنا بالبريد.", "enq.or_email": "أو راسلنا بالبريد الإلكتروني",
+      "nav.road": "الطريق", "road.eyebrow": "الطريق", "road.title": "لكل قطعة مدينتها.", "road.lede": "اضغط على مدينة لترى الحِرف التي نشأت على طريق القوافل، والقطع التي تُصنع فيها اليوم.", "road.count": "{cities} مدينة · {crafts} حِرف حيّة", "road.aria": "خريطة طريق الحرير من البندقية إلى شيان", "road.cities": "المدن", "road.on_route": "مدينة على طريق القوافل", "road.pieces": "{n} قطع في المجموعة", "road.pieces_one": "قطعة واحدة في المجموعة", "road.none": "لا توجد قطع من هنا بعد.", "road.showing": "قطع من {city}.", "road.all": "اعرض كل القطع",
       "aria.menu": "القائمة", "aria.home": "الصفحة الرئيسية لآرترا", "aria.lang": "اللغة", "aria.scroll": "الانتقال إلى المجموعة",
       "aria.prev": "القطعة السابقة", "aria.next": "القطعة التالية", "aria.back": "التمرير للخلف", "aria.fwd": "التمرير للأمام",
       "meta.title": "آرترا — حِرف ملكية",
@@ -242,6 +246,7 @@
     fa: {
       "nav.collection": "مجموعه", "nav.showcase": "ویترین", "nav.craft": "هنر و صناعت", "nav.commission": "سفارش",
       "nav.account": "حساب کاربری", "fav.save": "ذخیره", "fav.saved": "ذخیره شد", "enq.message": "پیام شما", "enq.send": "ارسال پرس‌وجو", "enq.sent": "سپاس — با ایمیل پاسخ می‌دهیم.", "enq.error": "ارسال نشد. دوباره تلاش کنید یا به ما ایمیل بزنید.", "enq.or_email": "یا به ما ایمیل بزنید",
+      "nav.road": "جادهٔ ابریشم", "road.eyebrow": "جادهٔ ابریشم", "road.title": "هر اثر شهری دارد.", "road.lede": "شهری را لمس کنید تا هنرهایی را که در مسیر کاروان‌ها پا گرفتند، و آثاری را که امروز آنجا ساخته می‌شوند ببینید.", "road.count": "{cities} شهر · {crafts} هنر زنده", "road.aria": "نقشهٔ جادهٔ ابریشم از ونیز تا شی‌آن", "road.cities": "شهرها", "road.on_route": "شهری بر سر راه کاروان‌ها", "road.pieces": "{n} اثر در مجموعه", "road.pieces_one": "۱ اثر در مجموعه", "road.none": "هنوز اثری از اینجا نداریم.", "road.showing": "آثار {city}.", "road.all": "دیدن همهٔ آثار",
       "aria.menu": "منو", "aria.home": "صفحهٔ اصلی آرترا", "aria.lang": "زبان", "aria.scroll": "رفتن به مجموعه",
       "aria.prev": "اثر قبلی", "aria.next": "اثر بعدی", "aria.back": "پیمایش به عقب", "aria.fwd": "پیمایش به جلو",
       "meta.title": "آرترا — صنایع‌دستی شاهانه",

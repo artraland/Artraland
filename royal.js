@@ -135,6 +135,68 @@
   // Cards follow the order of products.js.
   PRODUCTS.forEach(function (p) { grid.appendChild(p.card); });
 
+  // ---- The Road: the Silk Road map; choosing a city filters the collection ----
+  (function road() {
+    var R = window.ARTRA_ROAD, svg = $("#roadSvg");
+    if (!R || !svg) return;
+    var counts = {}, crafts = {};
+    PRODUCTS.forEach(function (p) {
+      if (!p.city) return;
+      counts[p.city] = (counts[p.city] || 0) + 1;
+      if (p.category) crafts[p.category] = 1;
+    });
+    var nCities = R.cities.length, nCrafts = Object.keys(crafts).length;
+    $("#roadCount").textContent = t("road.count", { cities: nCities.toLocaleString(T.lang), crafts: nCrafts.toLocaleString(T.lang) });
+
+    var card = $("#roadCard"), chips = $("#roadChips"), picked = null, drawn = false;
+    function render() { R.draw(svg, { highlight: picked, counts: counts, onPick: pick, animate: !reduced && drawn }); }
+
+    function pick(key) {
+      picked = key;
+      render();
+      var c = R.city(key), n = counts[key] || 0;
+      var craftNames = (c.crafts || []).map(function (k) { return t("c." + k); }).join(" · ");
+      card.innerHTML =
+        '<p class="rc-region">' + esc(R.name(key)) + " · " + esc(R.region(key)) + "</p>" +
+        '<p class="rc-crafts">' + esc(craftNames || t("road.on_route")) + "</p>" +
+        (n ? '<button type="button" class="link-btn rc-go">' + esc(t(n === 1 ? "road.pieces_one" : "road.pieces", { n: n.toLocaleString(T.lang) })) + " →</button>"
+           : '<p class="rc-none">' + esc(t("road.none")) + "</p>");
+      card.hidden = false;
+      if (n) $(".rc-go", card).addEventListener("click", function () { filter(key); });
+      $$("button", chips).forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-city") === key); });
+    }
+
+    // The collection, showing only one city's pieces.
+    function filter(key) {
+      var shown = 0;
+      PRODUCTS.forEach(function (p) { var on = !key || p.city === key; p.card.hidden = !on; if (on) shown++; });
+      $("#roadFilter").hidden = !key;
+      if (key) $("#roadFilterText").textContent = t("road.showing", { city: R.name(key) });
+      if (key) $("#collection").scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
+    }
+    $("#roadFilterAll").addEventListener("click", function () { filter(null); });
+
+    // A button per city (for phones and keyboards), with how many pieces come from there.
+    R.cities.forEach(function (c) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip" + (counts[c.key] ? " has" : "");
+      b.setAttribute("data-city", c.key);
+      b.setAttribute("aria-pressed", "false");
+      b.textContent = R.name(c.key) + (counts[c.key] ? " · " + counts[c.key].toLocaleString(T.lang) : "");
+      b.addEventListener("click", function () { pick(c.key); });
+      chips.appendChild(b);
+    });
+
+    render();
+    // The route draws itself, and the caravan sets off, when the map comes into view.
+    new IntersectionObserver(function (es, io) {
+      if (!es[0].isIntersecting) return;
+      io.disconnect(); drawn = true; render();
+      if (!picked) { var first = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; })[0]; if (first) pick(first); }
+    }, { threshold: 0.3 }).observe(svg);
+  })();
+
   // ---- Showcase ----
   var current = 0, stageArt = $("#stageArt"), copy = $(".stage-copy");
 

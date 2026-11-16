@@ -53,6 +53,14 @@ admin); `BLOB_READ_WRITE_TOKEN` — added by connecting a Blob store (Storage �
 it, providers paste a photo link). The commission form and the enquiry form on piece pages now send straight to the
 Enquiries desk; if that fails, they fall back to the visitor's email app.
 
+**The Silk Road.** `silkroad.js` holds the caravan cities from Venice to Xi'an (names and regions in five languages,
+the crafts each is known for, and their place on a simple chart, spread evenly west to east, not to scale). The home
+page's *The Road* section draws the route with a travelling caravan; tapping a city (or its button below the map)
+shows its crafts and how many pieces come from there, and can filter the collection to them. Each product names its
+city with `city` in `products.js` (product providers choose it in their piece form). In a client's orders, each
+order is drawn as a caravan journey (the atelier → the caravanserai → with the caravan → arrived), with the piece's
+origin on a small map and its certificate of making as a *Caravan Pass*.
+
 **Photos.** Photos of pieces live in `photos/` (strip location metadata before adding one). A piece with a `cutout`
 (its photo with the background removed, as a transparent WebP or PNG) shows the cut-out everywhere and keeps the full
 photo for the close-up. Otherwise a piece with a photo link shows its photo (Google Drive links work if the file is

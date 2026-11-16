@@ -9,6 +9,8 @@
 //
 //   key          which animated drawing to show when there is no photo (vase, box, tray, lantern, mirror, carpet);
 //                leave it "" for a piece shown from its photo
+//   city         the Silk Road city it comes from, shown on the map (keys in silkroad.js: isfahan, shiraz, kashan,
+//                zanjan, tabriz, samarkand, bukhara, …)
 //   slug         the piece's address, /piece?p=<slug> (optional; otherwise made from key, ID or English name)
 //   name         Product Name
 //   category     Product Category
@@ -35,6 +37,7 @@ window.ARTRA_PRODUCTS = [
     // A real piece, shown from its photo. Fill in the empty fields from its form response.
     key: "",
     slug: "engraved-lidded-vase",
+    city: "isfahan",
     name: {
       en: "Engraved Lidded Vase",
       fr: "Vase couvert gravé",
@@ -84,6 +87,7 @@ window.ARTRA_PRODUCTS = [
   },
   {
     key: "vase",
+    city: "isfahan",
     name: { en: "The Sovereign Vase", fr: "Le Vase Souverain", es: "El Jarrón Soberano", ar: "مزهرية السلطان", fa: "گلدان شهریار" },
     category: { en: "Gilded enamel", fr: "Émail doré", es: "Esmalte dorado", ar: "المينا المذهّبة", fa: "میناکاری" },
     id: "",
@@ -126,6 +130,7 @@ window.ARTRA_PRODUCTS = [
   },
   {
     key: "box",
+    city: "shiraz",
     name: { en: "The Treasury Casket", fr: "Le Coffret du Trésor", es: "El Cofre del Tesoro", ar: "صندوق الخزانة", fa: "صندوقچهٔ خزانه" },
     category: { en: "Khatam inlay", fr: "Marqueterie khatam", es: "Taracea khatam", ar: "تطعيم الخاتم", fa: "خاتم‌کاری" },
     id: "",
@@ -168,6 +173,7 @@ window.ARTRA_PRODUCTS = [
   },
   {
     key: "tray",
+    city: "isfahan",
     name: { en: "The Court Tray", fr: "Le Plateau de la Cour", es: "La Bandeja de la Corte", ar: "صينية البلاط", fa: "سینی دربار" },
     category: { en: "Engraved brass", fr: "Laiton gravé", es: "Latón grabado", ar: "النحاس المنقوش", fa: "قلم‌زنی روی برنج" },
     id: "",
@@ -204,6 +210,7 @@ window.ARTRA_PRODUCTS = [
   },
   {
     key: "lantern",
+    city: "zanjan",
     name: { en: "The Vigil Lantern", fr: "La Lanterne de Veille", es: "El Farol de la Vigilia", ar: "فانوس السهر", fa: "فانوس شب‌زنده‌داری" },
     category: { en: "Silver filigree", fr: "Filigrane d'argent", es: "Filigrana de plata", ar: "التخريم الفضي", fa: "ملیله‌کاری نقره" },
     id: "",
@@ -240,6 +247,7 @@ window.ARTRA_PRODUCTS = [
   },
   {
     key: "mirror",
+    city: "shiraz",
     name: { en: "The Hall of Light", fr: "La Salle de Lumière", es: "La Sala de la Luz", ar: "قاعة النور", fa: "تالار نور" },
     category: { en: "Mirror mosaic", fr: "Mosaïque de miroirs", es: "Mosaico de espejos", ar: "فسيفساء المرايا", fa: "آینه‌کاری" },
     id: "",
@@ -276,6 +284,7 @@ window.ARTRA_PRODUCTS = [
   },
   {
     key: "carpet",
+    city: "kashan",
     name: { en: "The Throne Rug", fr: "Le Tapis du Trône", es: "La Alfombra del Trono", ar: "سجادة العرش", fa: "قالیچهٔ تخت" },
     category: { en: "Hand-knotted silk", fr: "Soie nouée main", es: "Seda anudada a mano", ar: "حرير معقود يدوياً", fa: "ابریشم دست‌بافت" },
     id: "",

@@ -2,6 +2,7 @@
 window.ARTRA_I18N_EXTRA = {
   en: {
     "a.title": "Your account", "a.signin": "Sign in", "a.signup": "Create an account",
+    "j.atelier": "The atelier", "j.caravanserai": "The caravanserai", "j.caravan": "With the caravan", "j.arrived": "Arrived", "j.aria": "Your order's journey: {status}", "j.origin": "Origin", "j.made_in": "Made in {city}, on the Silk Road", "j.pass_kicker": "Certificate of making", "j.pass_title": "The Caravan Pass", "j.pass_sub": "Issued with every ARTRA piece", "j.piece": "Piece", "j.atelier_l": "Atelier", "j.master": "Master", "j.number": "Number", "pf.city": "City on the Silk Road",
     "a.lede_out": "Save the pieces you love, follow your orders as they travel to you, and see every enquiry in one place.",
     "a.name": "Full name", "a.email": "Email", "a.password": "Password", "a.password_hint": "At least 8 characters.",
     "a.signin_btn": "Sign in", "a.signup_btn": "Create my account", "a.signout": "Sign out", "a.welcome": "Welcome, {name}", "a.loading": "Loading…",
@@ -35,6 +36,7 @@ window.ARTRA_I18N_EXTRA = {
   },
   fr: {
     "a.title": "Votre compte", "a.signin": "Se connecter", "a.signup": "Créer un compte",
+    "j.atelier": "L'atelier", "j.caravanserai": "Le caravansérail", "j.caravan": "Avec la caravane", "j.arrived": "Arrivée", "j.aria": "Le voyage de votre commande : {status}", "j.origin": "Origine", "j.made_in": "Fait à {city}, sur la route de la soie", "j.pass_kicker": "Certificat de fabrication", "j.pass_title": "Le Laissez-passer de la caravane", "j.pass_sub": "Remis avec chaque pièce ARTRA", "j.piece": "Pièce", "j.atelier_l": "Atelier", "j.master": "Maître", "j.number": "Numéro", "pf.city": "Ville sur la route de la soie",
     "a.lede_out": "Gardez les pièces que vous aimez, suivez vos commandes jusqu'à chez vous et retrouvez toutes vos demandes au même endroit.",
     "a.name": "Nom complet", "a.email": "E-mail", "a.password": "Mot de passe", "a.password_hint": "8 caractères au moins.",
     "a.signin_btn": "Se connecter", "a.signup_btn": "Créer mon compte", "a.signout": "Se déconnecter", "a.welcome": "Bienvenue, {name}", "a.loading": "Chargement…",
@@ -68,6 +70,7 @@ window.ARTRA_I18N_EXTRA = {
   },
   es: {
     "a.title": "Su cuenta", "a.signin": "Iniciar sesión", "a.signup": "Crear una cuenta",
+    "j.atelier": "El taller", "j.caravanserai": "El caravasar", "j.caravan": "Con la caravana", "j.arrived": "Llegada", "j.aria": "El viaje de su pedido: {status}", "j.origin": "Origen", "j.made_in": "Hecho en {city}, en la Ruta de la Seda", "j.pass_kicker": "Certificado de elaboración", "j.pass_title": "El Salvoconducto de la caravana", "j.pass_sub": "Se entrega con cada pieza ARTRA", "j.piece": "Pieza", "j.atelier_l": "Taller", "j.master": "Maestro", "j.number": "Número", "pf.city": "Ciudad en la Ruta de la Seda",
     "a.lede_out": "Guarde las piezas que le gustan, siga sus pedidos hasta su puerta y vea todas sus consultas en un solo lugar.",
     "a.name": "Nombre completo", "a.email": "Correo electrónico", "a.password": "Contraseña", "a.password_hint": "Al menos 8 caracteres.",
     "a.signin_btn": "Iniciar sesión", "a.signup_btn": "Crear mi cuenta", "a.signout": "Cerrar sesión", "a.welcome": "Bienvenido/a, {name}", "a.loading": "Cargando…",
@@ -101,6 +104,7 @@ window.ARTRA_I18N_EXTRA = {
   },
   ar: {
     "a.title": "حسابك", "a.signin": "تسجيل الدخول", "a.signup": "إنشاء حساب",
+    "j.atelier": "الورشة", "j.caravanserai": "الخان", "j.caravan": "مع القافلة", "j.arrived": "الوصول", "j.aria": "رحلة طلبك: {status}", "j.origin": "المنشأ", "j.made_in": "صُنعت في {city}، على طريق الحرير", "j.pass_kicker": "شهادة الصنع", "j.pass_title": "جواز القافلة", "j.pass_sub": "يُرفق مع كل قطعة من آرترا", "j.piece": "القطعة", "j.atelier_l": "الورشة", "j.master": "المعلّم", "j.number": "الرقم", "pf.city": "المدينة على طريق الحرير",
     "a.lede_out": "احفظ القطع التي تحبها، وتابع طلباتك حتى تصل إليك، واطّلع على جميع استفساراتك في مكان واحد.",
     "a.name": "الاسم الكامل", "a.email": "البريد الإلكتروني", "a.password": "كلمة المرور", "a.password_hint": "٨ أحرف على الأقل.",
     "a.signin_btn": "تسجيل الدخول", "a.signup_btn": "أنشئ حسابي", "a.signout": "تسجيل الخروج", "a.welcome": "أهلاً بك، {name}", "a.loading": "جارٍ التحميل…",
@@ -134,6 +138,7 @@ window.ARTRA_I18N_EXTRA = {
   },
   fa: {
     "a.title": "حساب شما", "a.signin": "ورود", "a.signup": "ساخت حساب",
+    "j.atelier": "کارگاه", "j.caravanserai": "کاروانسرا", "j.caravan": "همراه کاروان", "j.arrived": "رسید", "j.aria": "سفر سفارش شما: {status}", "j.origin": "خاستگاه", "j.made_in": "ساخت {city}، بر جادهٔ ابریشم", "j.pass_kicker": "شناسنامهٔ ساخت", "j.pass_title": "گذرنامهٔ کاروان", "j.pass_sub": "همراه هر اثر آرترا", "j.piece": "اثر", "j.atelier_l": "کارگاه", "j.master": "استاد", "j.number": "شماره", "pf.city": "شهر بر جادهٔ ابریشم",
     "a.lede_out": "آثاری را که دوست دارید نگه دارید، سفارش‌هایتان را تا رسیدن به دستتان دنبال کنید و همهٔ پرس‌وجوهایتان را یک‌جا ببینید.",
     "a.name": "نام و نام خانوادگی", "a.email": "ایمیل", "a.password": "رمز عبور", "a.password_hint": "دست‌کم ۸ نویسه.",
     "a.signin_btn": "ورود", "a.signup_btn": "ساخت حساب من", "a.signout": "خروج", "a.welcome": "خوش آمدید، {name}", "a.loading": "در حال بارگذاری…",
