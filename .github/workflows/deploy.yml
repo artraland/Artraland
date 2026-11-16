@@ -1,5 +1,6 @@
-# Deploys artraland.com to Vercel (project "artraland" in the artedelara team) on every push to main.
-# Needs a repository secret holding a Vercel access token for that team: VERCEL_TOKEN.
+# Deploys artraland.com to Vercel (project "artraland" in the "artraland" Vercel team) on every push to main.
+# Needs a repository secret holding a Vercel access token scoped to that team: ARTRALAND.
+# The first run creates the Vercel project if it does not exist yet, and attaches artraland.com to it.
 name: Deploy to Vercel
 
 on:
@@ -12,9 +13,9 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-  VERCEL_ORG_ID: team_nXwzNgaNC6ot9TwAgTTYmUkv
-  VERCEL_PROJECT_ID: prj_dYYJZKiPYHSeLJp2aLpezqwFMy94
+  VERCEL_TOKEN: ${{ secrets.ARTRALAND }}
+  VERCEL_SCOPE: artraland
+  VERCEL_PROJECT: artraland
 
 jobs:
   deploy:
@@ -24,8 +25,16 @@ jobs:
       - name: Check for the Vercel token
         run: |
           if [ -z "$VERCEL_TOKEN" ]; then
-            echo "::error::Add a VERCEL_TOKEN repository secret (Settings → Secrets and variables → Actions)."
+            echo "::error::Add an ARTRALAND repository secret holding a Vercel token (Settings → Secrets and variables → Actions)."
             exit 1
           fi
       - run: npm install --global vercel@latest
-      - run: vercel deploy --prod --yes --token="$VERCEL_TOKEN"
+      - name: Link the Vercel project (created on the first run)
+        run: vercel link --yes --project "$VERCEL_PROJECT" --scope "$VERCEL_SCOPE" --token="$VERCEL_TOKEN"
+      - name: Deploy to production
+        run: vercel deploy --prod --yes --scope "$VERCEL_SCOPE" --token="$VERCEL_TOKEN"
+      - name: Attach the domains (already attached is fine)
+        run: |
+          for d in artraland.com www.artraland.com; do
+            vercel domains add "$d" "$VERCEL_PROJECT" --scope "$VERCEL_SCOPE" --token="$VERCEL_TOKEN" || echo "::warning::Could not attach $d — see the message above."
+          done
