@@ -105,7 +105,7 @@
     '</g>' +
     // Deserts.
     '<g fill="url(#srSand)" opacity=".9">' +
-      '<ellipse cx="1040" cy="214" rx="58" ry="22"/><ellipse cx="740" cy="150" rx="40" ry="14"/><ellipse cx="596" cy="236" rx="34" ry="14"/><ellipse cx="300" cy="380" rx="70" ry="30"/>' +
+      '<ellipse cx="1040" cy="214" rx="58" ry="22"/><ellipse cx="740" cy="150" rx="40" ry="14"/><ellipse cx="596" cy="236" rx="34" ry="14"/><ellipse cx="430" cy="440" rx="70" ry="26"/>' +
     '</g>' +
     // Old names.
     '<g font-family="Cormorant Garamond, serif" font-style="italic" fill="#d9c08a" text-anchor="middle">' +
@@ -116,7 +116,7 @@
       '<text x="790" y="500" font-size="14" letter-spacing="4">MARE ERYTHRAEUM</text>' +
       '<text x="1040" y="246" font-size="11" letter-spacing="3">TAKLAMAKAN</text>' +
       '<text x="836" y="186" font-size="10" letter-spacing="2" transform="rotate(42 836 186)">OXUS</text>' +
-      '<text x="330" y="440" font-size="22" letter-spacing="10">ARABIA</text>' +
+      '<text x="455" y="470" font-size="22" letter-spacing="10">ARABIA</text>' +
       '<text x="700" y="300" font-size="24" letter-spacing="12">PERSIA</text>' +
       '<text x="660" y="44" font-size="22" letter-spacing="12">SCYTHIA</text>' +
       '<text x="1080" y="96" font-size="24" letter-spacing="12">SERICA</text>' +
