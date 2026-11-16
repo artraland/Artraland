@@ -7,6 +7,7 @@
 
   var NS = "http://www.w3.org/2000/svg";
   var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var T = window.ARTRA_I18N, t = T.t;
 
   function el(name, attrs, parent) {
     var n = document.createElementNS(NS, name);
@@ -68,11 +69,11 @@
   function countUp(scope) {
     $$("[data-count]", scope).forEach(function (n) {
       var end = +n.getAttribute("data-count"), t0 = null, dur = 1800;
-      if (reduced) { n.textContent = end.toLocaleString("en"); return; }
+      if (reduced) { n.textContent = end.toLocaleString(T.lang); return; }
       requestAnimationFrame(function step(t) {
         if (!t0) t0 = t;
         var p = Math.min(1, (t - t0) / dur), eased = 1 - Math.pow(1 - p, 3);
-        n.textContent = Math.round(end * eased).toLocaleString("en");
+        n.textContent = Math.round(end * eased).toLocaleString(T.lang);
         if (p < 1) requestAnimationFrame(step);
       });
     });
@@ -149,7 +150,7 @@
     $("#sCraft").textContent = p.category || "";
     $("#sName").textContent = p.name || "";
     $("#sStory").textContent = p.description || "";
-    var specs = [["Medium", p.medium], ["Origin", p.origin], ["Dimensions", p.dimensions], ["Product ID", p.id]]
+    var specs = [[t("l.medium"), p.medium], [t("l.origin"), p.origin], [t("l.dimensions"), p.dimensions], [t("l.id"), p.id]]
       .filter(function (f) { return f[1]; }).slice(0, 3);
     $("#sSpecs").innerHTML = specs.map(function (f) { return "<div><dt>" + f[0] + "</dt><dd>" + esc(f[1]) + "</dd></div>"; }).join("");
     $("#sSpecs").hidden = !specs.length;
@@ -180,9 +181,10 @@
   $("#form").addEventListener("submit", function (ev) {
     ev.preventDefault();
     var f = ev.target;
-    var body = "Name: " + f.name.value + "\nEmail: " + f.email.value + "\nCraft: " + f.craft.value + "\n\n" + f.idea.value;
-    location.href = "mailto:" + ATELIER_EMAIL + "?subject=" + encodeURIComponent("ARTRA commission request — " + f.craft.value) + "&body=" + encodeURIComponent(body);
-    $("#formNote").textContent = "Thank you — your email app should now open with the request.";
+    var craft = f.craft.options[f.craft.selectedIndex].text;
+    var body = t("f.name") + ": " + f.name.value + "\n" + t("f.email") + ": " + f.email.value + "\n" + t("f.craft") + ": " + craft + "\n\n" + f.idea.value;
+    location.href = "mailto:" + ATELIER_EMAIL + "?subject=" + encodeURIComponent(t("mail.commission", { craft: craft })) + "&body=" + encodeURIComponent(body);
+    $("#formNote").textContent = t("f.thanks");
   });
 
   $("#year").textContent = new Date().getFullYear();

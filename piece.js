@@ -2,6 +2,7 @@
 (function () {
   "use strict";
   var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var T = window.ARTRA_I18N, t = T.t;
   function $(s, r) { return (r || document).querySelector(s); }
   function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
   function esc(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
@@ -63,24 +64,24 @@
     $(".p-hero-ambient").style.backgroundImage = "url(\"" + p.photo.replace(/"/g, "%22") + "\")";
     $("#overview").classList.add("has-photo");
   }
-  var facts = [["Product ID", p.id], ["Medium", p.medium], ["Origin", p.origin]].filter(function (f) { return f[1]; });
+  var facts = [[t("l.id"), p.id], [t("l.medium"), p.medium], [t("l.origin"), p.origin]].filter(function (f) { return f[1]; });
   $("#heroFacts").innerHTML = facts.map(function (f) { return "<div>" + f[0] + "<b>" + esc(f[1]) + "</b></div>"; }).join("");
 
   // ---- Statement: the description, lit word by word ----
   var words = String(p.description || p.name).split(/\s+/);
   $("#statement").innerHTML = words.map(function (w, i) {
     // A few words in gold italics, for rhythm.
-    var gold = i > 0 && /^(gold|gilded|silk|silver|hand|light|lamp|stars?|water|lace|seam\.?)/i.test(w);
+    var gold = T.lang === "en" && i > 0 && /^(gold|gilded|silk|silver|hand|light|lamp|stars?|water|lace|seam\.?)/i.test(w);
     return '<span class="' + (gold ? "gold" : "") + '">' + esc(w) + "</span>";
   }).join(" ");
   var wordEls = $$("#statement span");
 
   // ---- Story chapters: only the fields the piece has ----
   var chapters = [];
-  if (p.history) chapters.push({ title: "Heritage", body: "<p>" + esc(p.history) + "</p>" });
-  if (p.artist || p.origin) chapters.push({ title: p.artist ? "The artist" : "Origin",
-    body: (p.artist ? '<p class="big">' + esc(p.artist) + "</p>" : "") + (p.origin ? "<p>" + (p.artist ? "Made in " : "") + esc(p.origin) + "</p>" : "") });
-  if (p.medium) chapters.push({ title: "The material", body: '<p class="big">' + esc(p.medium) + "</p>" + (p.dimensions ? "<p>" + esc(p.dimensions) + "</p>" : "") });
+  if (p.history) chapters.push({ title: t("ch.heritage"), body: "<p>" + esc(p.history) + "</p>" });
+  if (p.artist || p.origin) chapters.push({ title: p.artist ? t("ch.artist") : t("ch.origin"),
+    body: (p.artist ? '<p class="big">' + esc(p.artist) + "</p>" : "") + (p.origin ? "<p>" + esc(p.artist ? t("ch.madein", { origin: p.origin }) : p.origin) + "</p>" : "") });
+  if (p.medium) chapters.push({ title: t("ch.material"), body: '<p class="big">' + esc(p.medium) + "</p>" + (p.dimensions ? "<p>" + esc(p.dimensions) + "</p>" : "") });
   if (!chapters.length) { $("#story").hidden = true; $('[data-needs="story"]').hidden = true; }
   $("#chapters").innerHTML = chapters.map(function (c, i) {
     return '<article class="chapter"><div class="inner"><p class="num">' + ["I", "II", "III", "IV"][i] + "</p><h2>" + c.title + "</h2>" + c.body + "</div></article>";
@@ -93,22 +94,22 @@
   place("#closeArt", true, true);
   if (p.photo) $("#closeup").classList.add("has-photo");
   $("#closeText").textContent = p.medium
-    ? p.medium + (p.artist ? ", worked by " + p.artist : "") + ". Come closer: every motif was drawn, cut and finished by hand, and no two pieces are quite alike."
-    : "Every motif was drawn, cut and finished by hand, and no two pieces are quite alike.";
+    ? t(p.artist ? "close.artist" : "close.medium", { medium: p.medium, artist: p.artist, more: t("close.more") })
+    : t("close.more");
 
   // ---- Specifications ----
   $("#specName").textContent = p.name;
   place("#specArt", false);
   var specs = [
-    ["Product ID", p.id], ["Category", p.category], ["Artist", p.artist], ["Origin", p.origin], ["Medium", p.medium, true],
-    ["Dimensions", p.dimensions, true], ["Packaging dimensions", p.packaging, true], ["Last update", p.updated]
+    [t("l.id"), p.id], [t("l.category"), p.category], [t("l.artist"), p.artist], [t("l.origin"), p.origin], [t("l.medium"), p.medium, true],
+    [t("l.dimensions"), p.dimensions, true], [t("l.packaging"), p.packaging, true], [t("l.updated"), p.updated]
   ].filter(function (f) { return f[1]; });
   $("#specList").innerHTML = specs.map(function (f) {
     return '<div class="' + (f[2] && String(f[1]).length > 26 ? "wide" : "") + '"><dt>' + f[0] + "</dt><dd>" + esc(f[1]) + "</dd></div>";
   }).join("");
 
   // ---- Care, returns, more ----
-  var acc = [["Care instructions", p.care], ["Returns and exchanges", p.returns], ["Additional information", p.additional]].filter(function (f) { return f[1]; });
+  var acc = [[t("l.care"), p.care], [t("l.returns"), p.returns], [t("l.additional"), p.additional]].filter(function (f) { return f[1]; });
   if (!acc.length) { $("#care").hidden = true; $('[data-needs="care"]').hidden = true; }
   $("#accordion").innerHTML = acc.map(function (f, i) {
     return "<details" + (i === 0 ? " open" : "") + "><summary>" + f[0] + '</summary><div class="body">' + esc(f[1]) + "</div></details>";
@@ -129,15 +130,15 @@
     track.appendChild(a);
   });
   if (!track.children.length) $(".p-more").hidden = true;
-  function slide(dir) { track.scrollBy({ left: dir * Math.min(track.clientWidth * 0.8, 728), behavior: reduced ? "auto" : "smooth" }); }
+  function slide(dir) { track.scrollBy({ left: (T.rtl ? -dir : dir) * Math.min(track.clientWidth * 0.8, 728), behavior: reduced ? "auto" : "smooth" }); }
   $("#morePrev").addEventListener("click", function () { slide(-1); });
   $("#moreNext").addEventListener("click", function () { slide(1); });
 
   // ---- Enquire ----
-  $("#ctaTitle").textContent = "Enquire about " + p.name;
+  $("#ctaTitle").textContent = t("cta.title", { name: p.name });
   place("#ctaArt", false);
-  var subject = "Enquiry — " + p.name + (p.id ? " (" + p.id + ")" : "");
-  var body = "Hello ARTRA,\n\nI would like to know more about " + p.name + (p.id ? " (product ID " + p.id + ")" : "") + ".\n\n" + location.href + "\n";
+  var subject = t("mail.enquiry", { name: p.name }) + (p.id ? " (" + p.id + ")" : "");
+  var body = t("mail.body", { name: p.name, id: p.id ? t("mail.id", { id: p.id }) : "", url: location.href });
   $("#ctaMail").href = "mailto:" + ARTRA_ART.email + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
 
   // ---- Pause looping drawings that are off screen ----

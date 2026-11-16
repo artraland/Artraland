@@ -21,9 +21,28 @@
   <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/royal.css?v=12">
-  <script>document.documentElement.className += " js";</script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&family=Vazirmatn:wght@300;400;500;600&family=Noto+Naskh+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/royal.css?v=13">
+  <script>
+    // Picks the language before the page paints: the ?lang= address, then the visitor's last choice,
+    // then their browser's language, else English. Arabic and Persian read right to left.
+    (function () {
+      var L = ["en", "fr", "es", "ar", "fa"], l = null, d = document.documentElement;
+      try {
+        var q = new URLSearchParams(location.search).get("lang");
+        if (L.indexOf(q) > -1) { l = q; localStorage.setItem("artra-lang", q); }
+        else { var s = localStorage.getItem("artra-lang"); if (L.indexOf(s) > -1) l = s; }
+      } catch (e) {}
+      if (!l) {
+        var p = navigator.languages || [navigator.language || "en"];
+        for (var i = 0; i < p.length && !l; i++) { var c = String(p[i]).slice(0, 2).toLowerCase(); if (L.indexOf(c) > -1) l = c; }
+      }
+      l = l || "en";
+      d.lang = l;
+      d.dir = l === "ar" || l === "fa" ? "rtl" : "ltr";
+      d.className += " js";
+    })();
+  </script>
 </head>
 <body>
 
@@ -32,14 +51,15 @@
 
 <header class="top" id="top">
   <div class="wrap top-in">
-    <a href="#top" class="mark" aria-label="ARTRA home"><img src="/brand/logo.webp" alt="ARTRA" width="720" height="158"></a>
+    <a href="#top" class="mark" data-i18n-aria="aria.home" aria-label="ARTRA home"><img src="/brand/logo.webp" alt="ARTRA" width="720" height="158"></a>
     <nav class="nav" id="nav">
-      <a href="#collection">Collection</a>
-      <a href="#showcase">Showcase</a>
-      <a href="#craft">The craft</a>
-      <a href="#commission" class="nav-cta">Commission</a>
+      <a href="#collection" data-i18n="nav.collection">Collection</a>
+      <a href="#showcase" data-i18n="nav.showcase">Showcase</a>
+      <a href="#craft" data-i18n="nav.craft">The craft</a>
+      <a href="#commission" class="nav-cta" data-i18n="nav.commission">Commission</a>
     </nav>
-    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span><span></span></button>
+    <div class="lang" id="lang" role="group"></div>
+    <button class="burger" id="burger" data-i18n-aria="aria.menu" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span><span></span></button>
   </div>
 </header>
 
@@ -49,12 +69,12 @@
 <section class="hero">
   <div class="wrap hero-in">
     <div class="hero-copy">
-      <p class="eyebrow reveal">Royal handicrafts · Made by hand</p>
-      <h1 class="reveal"><span class="gold-text">Heirlooms</span> fit for a palace.</h1>
-      <p class="lede reveal">Each piece is drawn, cut, gilded and finished by a master artisan over weeks or months — enamel, inlay, filigree and silk, in editions no larger than a single hand can make.</p>
+      <p class="eyebrow reveal" data-i18n="hero.eyebrow">Royal handicrafts · Made by hand</p>
+      <h1 class="reveal" data-i18n-html="hero.title"><span class="gold-text">Heirlooms</span> fit for a palace.</h1>
+      <p class="lede reveal" data-i18n="hero.lede">Each piece is drawn, cut, gilded and finished by a master artisan over weeks or months — enamel, inlay, filigree and silk, in editions no larger than a single hand can make.</p>
       <div class="hero-actions reveal">
-        <a class="btn btn-gold" href="#collection">View the collection</a>
-        <a class="btn btn-ghost" href="#commission">Commission a piece</a>
+        <a class="btn btn-gold" href="#collection" data-i18n="hero.view">View the collection</a>
+        <a class="btn btn-ghost" href="#commission" data-i18n="hero.commission">Commission a piece</a>
       </div>
     </div>
 
@@ -73,13 +93,13 @@
       </svg>
     </div>
   </div>
-  <a href="#collection" class="scroll-cue" aria-label="Scroll to the collection"><span></span></a>
+  <a href="#collection" class="scroll-cue" data-i18n-aria="aria.scroll" aria-label="Scroll to the collection"><span></span></a>
 </section>
 
 <div class="marquee" aria-hidden="true">
   <div class="marquee-track">
-    <span>Gilded enamel</span><i>✦</i><span>Khatam inlay</span><i>✦</i><span>Engraved brass</span><i>✦</i><span>Silver filigree</span><i>✦</i><span>Mirror mosaic</span><i>✦</i><span>Hand-knotted silk</span><i>✦</i>
-    <span>Gilded enamel</span><i>✦</i><span>Khatam inlay</span><i>✦</i><span>Engraved brass</span><i>✦</i><span>Silver filigree</span><i>✦</i><span>Mirror mosaic</span><i>✦</i><span>Hand-knotted silk</span><i>✦</i>
+    <span data-i18n="c.enamel">Gilded enamel</span><i>✦</i><span data-i18n="c.khatam">Khatam inlay</span><i>✦</i><span data-i18n="c.brass">Engraved brass</span><i>✦</i><span data-i18n="c.filigree">Silver filigree</span><i>✦</i><span data-i18n="c.mirror">Mirror mosaic</span><i>✦</i><span data-i18n="c.silk">Hand-knotted silk</span><i>✦</i>
+    <span data-i18n="c.enamel">Gilded enamel</span><i>✦</i><span data-i18n="c.khatam">Khatam inlay</span><i>✦</i><span data-i18n="c.brass">Engraved brass</span><i>✦</i><span data-i18n="c.filigree">Silver filigree</span><i>✦</i><span data-i18n="c.mirror">Mirror mosaic</span><i>✦</i><span data-i18n="c.silk">Hand-knotted silk</span><i>✦</i>
   </div>
 </div>
 
@@ -87,9 +107,9 @@
 <section class="section" id="collection">
   <div class="wrap">
     <div class="section-head reveal">
-      <p class="eyebrow">The collection</p>
-      <h2>One piece at a time.</h2>
-      <p class="muted">Select a piece to open its page: its story, the craft up close, and full specifications.</p>
+      <p class="eyebrow" data-i18n="col.eyebrow">The collection</p>
+      <h2 data-i18n="col.title">One piece at a time.</h2>
+      <p class="muted" data-i18n="col.lede">Select a piece to open its page: its story, the craft up close, and full specifications.</p>
     </div>
 
     <div class="grid" id="grid">
@@ -178,11 +198,11 @@
       <p class="muted" id="sStory"></p>
       <dl class="specs" id="sSpecs"></dl>
       <div class="stage-nav">
-        <button class="round" id="prev" aria-label="Previous piece">‹</button>
+        <button class="round" id="prev" data-i18n-aria="aria.prev" aria-label="Previous piece">‹</button>
         <span class="stage-count" id="sCount">01 / 06</span>
-        <button class="round" id="next" aria-label="Next piece">›</button>
-        <a class="btn btn-ghost" id="sMore" href="/piece?p=vase">Full details</a>
-        <a class="btn btn-gold" href="#commission" id="sAsk">Enquire</a>
+        <button class="round" id="next" data-i18n-aria="aria.next" aria-label="Next piece">›</button>
+        <a class="btn btn-ghost" id="sMore" href="/piece?p=vase" data-i18n="show.more">Full details</a>
+        <a class="btn btn-gold" href="#commission" id="sAsk" data-i18n="show.enquire">Enquire</a>
       </div>
     </div>
   </div>
@@ -192,41 +212,41 @@
 <section class="section" id="craft">
   <div class="wrap">
     <div class="section-head reveal">
-      <p class="eyebrow">The craft</p>
-      <h2>From first line to final polish.</h2>
+      <p class="eyebrow" data-i18n="craft.eyebrow">The craft</p>
+      <h2 data-i18n="craft.title">From first line to final polish.</h2>
     </div>
     <ol class="steps">
       <li class="step reveal">
         <svg viewBox="0 0 64 64" aria-hidden="true"><g class="draw-on" fill="none" stroke="url(#gGold)" stroke-width="2" stroke-linecap="round"><circle cx="32" cy="12" r="5" pathLength="1"/><path d="M29 16 L14 54 M35 16 L50 54 M20 40 Q32 46 44 40" pathLength="1"/></g></svg>
         <span class="step-n">I</span>
-        <h3>Design</h3>
-        <p>Every motif is drawn by hand with compass and pen, proportioned to the old geometric canons.</p>
+        <h3 data-i18n="step1.t">Design</h3>
+        <p data-i18n="step1.p">Every motif is drawn by hand with compass and pen, proportioned to the old geometric canons.</p>
       </li>
       <li class="step reveal">
         <svg viewBox="0 0 64 64" aria-hidden="true"><g class="draw-on" fill="none" stroke="url(#gGold)" stroke-width="2" stroke-linecap="round"><path d="M10 54 L40 24 M36 20 L44 28 L54 18 L46 10 Z" pathLength="1"/><path d="M14 46 l4 4" pathLength="1"/></g></svg>
         <span class="step-n">II</span>
-        <h3>Shape</h3>
-        <p>Metal is raised and chased, wood cut into slivers finer than a match, silk dyed with plants and roots.</p>
+        <h3 data-i18n="step2.t">Shape</h3>
+        <p data-i18n="step2.p">Metal is raised and chased, wood cut into slivers finer than a match, silk dyed with plants and roots.</p>
       </li>
       <li class="step reveal">
         <svg viewBox="0 0 64 64" aria-hidden="true"><g class="draw-on" fill="none" stroke="url(#gGold)" stroke-width="2" stroke-linecap="round"><path d="M32 6 C46 20 50 34 32 58 C14 34 18 20 32 6 Z" pathLength="1"/><path d="M32 18 V50" pathLength="1"/></g></svg>
         <span class="step-n">III</span>
-        <h3>Gild</h3>
-        <p>Leaves of 24-carat gold are laid on with a squirrel-hair brush and burnished with agate.</p>
+        <h3 data-i18n="step3.t">Gild</h3>
+        <p data-i18n="step3.p">Leaves of 24-carat gold are laid on with a squirrel-hair brush and burnished with agate.</p>
       </li>
       <li class="step reveal">
         <svg viewBox="0 0 64 64" aria-hidden="true"><g class="draw-on" fill="none" stroke="url(#gGold)" stroke-width="2" stroke-linecap="round"><circle cx="32" cy="28" r="18" pathLength="1"/><path d="M32 16 L35 25 L44 28 L35 31 L32 40 L29 31 L20 28 L29 25 Z M24 44 L20 58 L32 52 L44 58 L40 44" pathLength="1"/></g></svg>
         <span class="step-n">IV</span>
-        <h3>Seal</h3>
-        <p>The master signs and numbers each piece, and it leaves with a certificate of its making.</p>
+        <h3 data-i18n="step4.t">Seal</h3>
+        <p data-i18n="step4.p">The master signs and numbers each piece, and it leaves with a certificate of its making.</p>
       </li>
     </ol>
 
     <div class="stats reveal">
-      <div><strong data-count="38">0</strong><span>master artisans</span></div>
-      <div><strong data-count="6">0</strong><span>living crafts</span></div>
-      <div><strong data-count="1200">0</strong><span>hours, our longest piece</span></div>
-      <div><strong data-count="12">0</strong><span>pieces per edition, at most</span></div>
+      <div><strong data-count="38">0</strong><span data-i18n="s.artisans">master artisans</span></div>
+      <div><strong data-count="6">0</strong><span data-i18n="s.crafts">living crafts</span></div>
+      <div><strong data-count="1200">0</strong><span data-i18n="s.hours">hours, our longest piece</span></div>
+      <div><strong data-count="12">0</strong><span data-i18n="s.edition">pieces per edition, at most</span></div>
     </div>
   </div>
 </section>
@@ -235,22 +255,22 @@
 <section class="section commission" id="commission">
   <div class="wrap commission-in">
     <div class="reveal">
-      <p class="eyebrow">Private commission</p>
-      <h2>A piece made for one house.</h2>
-      <p class="muted">Tell us the room, the occasion or the story. A master artisan will reply with sketches, materials and a timeline.</p>
+      <p class="eyebrow" data-i18n="com.eyebrow">Private commission</p>
+      <h2 data-i18n="com.title">A piece made for one house.</h2>
+      <p class="muted" data-i18n="com.lede">Tell us the room, the occasion or the story. A master artisan will reply with sketches, materials and a timeline.</p>
     </div>
     <form class="form reveal" id="form">
-      <label>Name<input name="name" required autocomplete="name"></label>
-      <label>Email<input name="email" type="email" required autocomplete="email"></label>
-      <label>Craft
+      <label><span data-i18n="f.name">Name</span><input name="name" required autocomplete="name"></label>
+      <label><span data-i18n="f.email">Email</span><input name="email" type="email" required autocomplete="email"></label>
+      <label><span data-i18n="f.craft">Craft</span>
         <select name="craft">
-          <option>Gilded enamel</option><option>Khatam inlay</option><option>Engraved brass</option>
-          <option>Silver filigree</option><option>Mirror mosaic</option><option>Hand-knotted silk</option><option>Not sure yet</option>
+          <option value="metal" data-i18n="c.metal">Engraved metal</option><option value="enamel" data-i18n="c.enamel">Gilded enamel</option><option value="khatam" data-i18n="c.khatam">Khatam inlay</option><option value="brass" data-i18n="c.brass">Engraved brass</option>
+          <option value="filigree" data-i18n="c.filigree">Silver filigree</option><option value="mirror" data-i18n="c.mirror">Mirror mosaic</option><option value="silk" data-i18n="c.silk">Hand-knotted silk</option><option value="unsure" data-i18n="c.unsure">Not sure yet</option>
         </select>
       </label>
-      <label>Your idea<textarea name="idea" rows="4" required></textarea></label>
-      <button class="btn btn-gold" type="submit">Send the request</button>
-      <p class="form-note" id="formNote">Opens your email app with the request ready to send.</p>
+      <label><span data-i18n="f.idea">Your idea</span><textarea name="idea" rows="4" required></textarea></label>
+      <button class="btn btn-gold" type="submit" data-i18n="f.send">Send the request</button>
+      <p class="form-note" id="formNote" data-i18n="f.note">Opens your email app with the request ready to send.</p>
     </form>
   </div>
 </section>
@@ -260,13 +280,14 @@
 <footer class="foot">
   <div class="wrap foot-in">
     <span class="mark mark-sm"><img src="/brand/logo.webp" alt="ARTRA" width="720" height="158"></span>
-    <span class="muted">© <span id="year">2026</span> · Royal handicrafts, made by hand.</span>
-    <a href="#top" class="muted">Back to top ↑</a>
+    <span class="muted">© <span id="year">2026</span> · <span data-i18n="foot.tag">Royal handicrafts, made by hand.</span></span>
+    <a href="#top" class="muted" data-i18n="foot.top">Back to top ↑</a>
   </div>
 </footer>
 
-<script src="/products.js?v=4"></script>
-<script src="/art.js?v=2"></script>
-<script src="/royal.js?v=5"></script>
+<script src="/i18n.js?v=1"></script>
+<script src="/products.js?v=5"></script>
+<script src="/art.js?v=3"></script>
+<script src="/royal.js?v=6"></script>
 </body>
 </html>

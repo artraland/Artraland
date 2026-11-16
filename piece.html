@@ -10,23 +10,43 @@
   <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/royal.css?v=12">
-  <link rel="stylesheet" href="/piece.css?v=5">
-  <script>document.documentElement.className += " js";</script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&family=Vazirmatn:wght@300;400;500;600&family=Noto+Naskh+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/royal.css?v=13">
+  <link rel="stylesheet" href="/piece.css?v=6">
+  <script>
+    // Picks the language before the page paints: the ?lang= address, then the visitor's last choice,
+    // then their browser's language, else English. Arabic and Persian read right to left.
+    (function () {
+      var L = ["en", "fr", "es", "ar", "fa"], l = null, d = document.documentElement;
+      try {
+        var q = new URLSearchParams(location.search).get("lang");
+        if (L.indexOf(q) > -1) { l = q; localStorage.setItem("artra-lang", q); }
+        else { var s = localStorage.getItem("artra-lang"); if (L.indexOf(s) > -1) l = s; }
+      } catch (e) {}
+      if (!l) {
+        var p = navigator.languages || [navigator.language || "en"];
+        for (var i = 0; i < p.length && !l; i++) { var c = String(p[i]).slice(0, 2).toLowerCase(); if (L.indexOf(c) > -1) l = c; }
+      }
+      l = l || "en";
+      d.lang = l;
+      d.dir = l === "ar" || l === "fa" ? "rtl" : "ltr";
+      d.className += " js";
+    })();
+  </script>
 </head>
 <body class="piece-page">
 
 <header class="top" id="top">
   <div class="wrap top-in">
-    <a href="/" class="mark" aria-label="ARTRA home"><img src="/brand/logo.webp" alt="ARTRA" width="720" height="158"></a>
+    <a href="/" class="mark" data-i18n-aria="aria.home" aria-label="ARTRA home"><img src="/brand/logo.webp" alt="ARTRA" width="720" height="158"></a>
     <nav class="nav" id="nav">
-      <a href="/#collection">Collection</a>
-      <a href="/#showcase">Showcase</a>
-      <a href="/#craft">The craft</a>
-      <a href="/#commission" class="nav-cta">Commission</a>
+      <a href="/#collection" data-i18n="nav.collection">Collection</a>
+      <a href="/#showcase" data-i18n="nav.showcase">Showcase</a>
+      <a href="/#craft" data-i18n="nav.craft">The craft</a>
+      <a href="/#commission" class="nav-cta" data-i18n="nav.commission">Commission</a>
     </nav>
-    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span><span></span></button>
+    <div class="lang" id="lang" role="group"></div>
+    <button class="burger" id="burger" data-i18n-aria="aria.menu" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span><span></span></button>
   </div>
 </header>
 
@@ -35,13 +55,13 @@
   <div class="wrap pbar-in">
     <a href="#overview" class="pbar-name" id="pbarName"></a>
     <nav class="pbar-links" id="pbarLinks">
-      <a href="#overview">Overview</a>
-      <a href="#story" data-needs="story">Story</a>
-      <a href="#closeup">Up close</a>
-      <a href="#specs">Specifications</a>
-      <a href="#care" data-needs="care">Care</a>
+      <a href="#overview" data-i18n="pbar.overview">Overview</a>
+      <a href="#story" data-needs="story" data-i18n="pbar.story">Story</a>
+      <a href="#closeup" data-i18n="pbar.closeup">Up close</a>
+      <a href="#specs" data-i18n="pbar.specs">Specifications</a>
+      <a href="#care" data-needs="care" data-i18n="pbar.care">Care</a>
     </nav>
-    <a class="btn btn-gold pbar-cta" id="pbarAsk" href="#enquire">Enquire</a>
+    <a class="btn btn-gold pbar-cta" id="pbarAsk" href="#enquire" data-i18n="show.enquire">Enquire</a>
   </div>
 </div>
 
@@ -58,7 +78,7 @@
     <div class="p-hero-art" id="heroArt"></div>
     <div class="wrap p-hero-foot" id="heroFoot">
       <div class="p-hero-facts" id="heroFacts"></div>
-      <a class="p-discover" href="#intro"><span>Discover</span><i aria-hidden="true"></i></a>
+      <a class="p-discover" href="#intro"><span data-i18n="discover">Discover</span><i aria-hidden="true"></i></a>
     </div>
   </section>
 
@@ -84,8 +104,8 @@
     <div class="p-closeup-art" id="closeArt" aria-hidden="true"></div>
     <div class="p-closeup-veil" aria-hidden="true"></div>
     <div class="wrap p-closeup-copy">
-      <p class="eyebrow">Up close</p>
-      <h2>Every line,<br><em>by hand.</em></h2>
+      <p class="eyebrow" data-i18n="pbar.closeup">Up close</p>
+      <h2 data-i18n-html="close.title">Every line,<br><em>by hand.</em></h2>
       <p id="closeText"></p>
     </div>
   </section>
@@ -94,7 +114,7 @@
   <section class="p-specs" id="specs">
     <div class="wrap p-specs-in">
       <div class="p-specs-head">
-        <p class="eyebrow">Specifications</p>
+        <p class="eyebrow" data-i18n="pbar.specs">Specifications</p>
         <h2 id="specName"></h2>
         <div class="p-specs-art" id="specArt" aria-hidden="true"></div>
       </div>
@@ -106,8 +126,8 @@
   <section class="p-care" id="care">
     <div class="wrap p-care-in">
       <div>
-        <p class="eyebrow">Care &amp; service</p>
-        <h2>Kept for generations.</h2>
+        <p class="eyebrow" data-i18n="care.eyebrow">Care &amp; service</p>
+        <h2 data-i18n="care.title">Kept for generations.</h2>
       </div>
       <div class="p-accordion" id="accordion"></div>
     </div>
@@ -118,12 +138,12 @@
     <div class="wrap">
       <div class="p-more-head">
         <div>
-          <p class="eyebrow">The collection</p>
-          <h2>Discover more pieces</h2>
+          <p class="eyebrow" data-i18n="col.eyebrow">The collection</p>
+          <h2 data-i18n="more.title">Discover more pieces</h2>
         </div>
         <div class="p-more-nav">
-          <button class="round" id="morePrev" aria-label="Scroll back">‹</button>
-          <button class="round" id="moreNext" aria-label="Scroll forward">›</button>
+          <button class="round" id="morePrev" data-i18n-aria="aria.back" aria-label="Scroll back">‹</button>
+          <button class="round" id="moreNext" data-i18n-aria="aria.fwd" aria-label="Scroll forward">›</button>
         </div>
       </div>
     </div>
@@ -134,12 +154,12 @@
   <section class="p-cta" id="enquire">
     <div class="p-cta-art" id="ctaArt" aria-hidden="true"></div>
     <div class="wrap p-cta-in">
-      <p class="eyebrow p-center">Private enquiry</p>
+      <p class="eyebrow p-center" data-i18n="cta.eyebrow">Private enquiry</p>
       <h2 id="ctaTitle"></h2>
-      <p class="muted">An artisan will reply with availability, delivery and the piece's certificate of making.</p>
+      <p class="muted" data-i18n="cta.lede">An artisan will reply with availability, delivery and the piece's certificate of making.</p>
       <div class="p-cta-actions">
-        <a class="btn btn-gold" id="ctaMail" href="#">Enquire by email</a>
-        <a class="btn btn-ghost" href="/#collection">Back to the collection</a>
+        <a class="btn btn-gold" id="ctaMail" href="#" data-i18n="cta.mail">Enquire by email</a>
+        <a class="btn btn-ghost" href="/#collection" data-i18n="cta.back">Back to the collection</a>
       </div>
     </div>
   </section>
@@ -147,9 +167,9 @@
   <!-- Shown when the address names no known piece -->
   <section class="p-missing" id="missing" hidden>
     <div class="wrap">
-      <p class="eyebrow p-center">Not found</p>
-      <h1>This piece is not in the collection.</h1>
-      <a class="btn btn-gold" href="/#collection">See the collection</a>
+      <p class="eyebrow p-center" data-i18n="missing.eyebrow">Not found</p>
+      <h1 data-i18n="missing.title">This piece is not in the collection.</h1>
+      <a class="btn btn-gold" href="/#collection" data-i18n="missing.cta">See the collection</a>
     </div>
   </section>
 
@@ -158,13 +178,14 @@
 <footer class="foot">
   <div class="wrap foot-in">
     <span class="mark mark-sm"><img src="/brand/logo.webp" alt="ARTRA" width="720" height="158"></span>
-    <span class="muted">© <span id="year">2026</span> · Royal handicrafts, made by hand.</span>
-    <a href="/#collection" class="muted">The collection →</a>
+    <span class="muted">© <span id="year">2026</span> · <span data-i18n="foot.tag">Royal handicrafts, made by hand.</span></span>
+    <a href="/#collection" class="muted" data-i18n="foot.collection">The collection →</a>
   </div>
 </footer>
 
-<script src="/products.js?v=4"></script>
-<script src="/art.js?v=2"></script>
-<script src="/piece.js?v=3"></script>
+<script src="/i18n.js?v=1"></script>
+<script src="/products.js?v=5"></script>
+<script src="/art.js?v=3"></script>
+<script src="/piece.js?v=4"></script>
 </body>
 </html>

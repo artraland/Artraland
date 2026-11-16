@@ -20,6 +20,14 @@ and gold.
 - `brand/` — the ARTRA logo as a gold outline on transparent (`logo.webp`, `logo.png`), the tab and home-screen icons (the mirrored ЯTR at its centre), and
   `og-artra.jpg`, the picture shown when artraland.com is shared.
 
+**Languages.** The site is in English, French, Spanish, Arabic and Persian. A visitor's language comes from the
+`?lang=` address (`en`, `fr`, `es`, `ar`, `fa`), then the choice they last made in the switch at the top of every page
+(EN · FR · ES · ع · فا), then their browser's language, else English. Arabic and Persian read right to left and use
+Noto Naskh Arabic for headings and Vazirmatn for text. All page wording is in `i18n.js`, keyed by name for every
+language; elements carry `data-i18n` (text), `data-i18n-html` (text with markup) or `data-i18n-aria` (labels). In
+`products.js` a text field can be one text for every language or `{ en, fr, es, ar, fa }`; a missing language shows
+the English, so a form response can go in as English first and gain translations later.
+
 **Photos.** Photos of pieces live in `photos/` (strip location metadata before adding one). A piece with a `cutout`
 (its photo with the background removed, as a transparent WebP or PNG) shows the cut-out everywhere and keeps the full
 photo for the close-up. Otherwise a piece with a photo link shows its photo (Google Drive links work if the file is
