@@ -372,3 +372,7 @@ html:lang(ar) .road-card, html:lang(fa) .road-card { text-align: right; }
 
 /* The turning ring in the showcase must not widen the page on phones. */
 .showcase { overflow-x: clip; }
+
+/* The old map behind the road: faint, so the route and cities stay in front. */
+.sr-old { opacity: .32; }
+.road-map { background: radial-gradient(ellipse at 50% 50%, rgba(201, 165, 106, .07), rgba(13, 20, 32, .6) 75%); }

@@ -56,6 +56,94 @@
   }
   var ROUTE_D = smooth(ROUTE);
 
+
+  // An old engraved chart behind the road, drawn to match the city layout above (not a real map):
+  // seas with engraved water lines, mountain ranges, deserts, rivers, compass lines and old Latin names,
+  // on parchment grain. Shown faintly (see .sr-old in royal.css).
+  var OLD_MAP =
+    '<defs>' +
+      '<pattern id="srWater" width="8" height="5" patternUnits="userSpaceOnUse"><path d="M0 2.5 Q2 1.5 4 2.5 T8 2.5" fill="none" stroke="#c9a56a" stroke-width=".6"/></pattern>' +
+      '<pattern id="srSand" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".7" fill="#c9a56a"/><circle cx="6.5" cy="6" r=".55" fill="#c9a56a"/></pattern>' +
+      '<radialGradient id="srVellum" cx=".5" cy=".5" r=".75"><stop offset="0" stop-color="#d9c08a" stop-opacity=".22"/><stop offset=".7" stop-color="#b8935a" stop-opacity=".14"/><stop offset="1" stop-color="#6b4f25" stop-opacity=".35"/></radialGradient>' +
+      '<filter id="srGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="7"/>' +
+        '<feColorMatrix values="0 0 0 0 .80  0 0 0 0 .66  0 0 0 0 .40  0 0 0 .5 -.12"/></filter>' +
+    '</defs>' +
+    // Parchment.
+    '<rect width="1200" height="520" fill="url(#srVellum)"/>' +
+    '<rect width="1200" height="520" filter="url(#srGrain)" opacity=".55"/>' +
+    // Compass lines, as on a portolan chart, from two roses.
+    '<g stroke="#c9a56a" stroke-width=".5" opacity=".6">' + rhumbs(180, 330) + rhumbs(1110, 440) + '</g>' +
+    // Seas: Mediterranean (with the Adriatic up to Venice), Black Sea, Caspian, Aral, Persian Gulf, Arabian Sea.
+    '<g fill="url(#srWater)" stroke="#c9a56a" stroke-width="1.2">' +
+      '<path d="M0 232 C34 206 52 166 66 124 C78 150 96 182 140 196 C180 206 214 198 236 214 C252 236 254 266 246 300 C240 340 204 362 150 372 C92 382 40 362 0 372 Z"/>' +
+      '<path d="M192 140 C204 104 258 88 318 96 C350 102 346 126 320 136 C280 146 232 150 192 140 Z"/>' +
+      '<path d="M522 0 C548 22 522 60 536 92 C548 120 562 140 590 150 C612 150 602 110 592 80 C576 40 592 16 578 0 Z"/>' +
+      '<path d="M736 70 C736 54 762 46 784 52 C804 58 800 82 782 88 C760 94 736 86 736 70 Z"/>' +
+      '<path d="M410 300 C452 312 502 340 560 360 C602 372 642 384 682 420 C660 440 612 424 570 406 C520 386 460 362 410 322 Z"/>' +
+      '<path d="M640 520 C660 470 720 456 800 468 C862 478 902 498 924 520 Z"/>' +
+    '</g>' +
+    // Coastlines a second time, finer, a little out from the shore: the engraver's double line.
+    '<g fill="none" stroke="#c9a56a" stroke-width=".5" opacity=".7" transform="translate(0 4)">' +
+      '<path d="M0 232 C34 206 52 166 66 124 C78 150 96 182 140 196 C180 206 214 198 236 214 C252 236 254 266 246 300"/>' +
+      '<path d="M410 300 C452 312 502 340 560 360 C602 372 642 384 682 420"/>' +
+    '</g>' +
+    // Rivers: Tigris and Euphrates, the Oxus to the Aral, the Yellow River.
+    '<g fill="none" stroke="#c9a56a" stroke-width="1.1" stroke-linecap="round">' +
+      '<path d="M330 172 C350 210 372 250 392 278 S 404 296 410 304"/>' +
+      '<path d="M352 168 C380 196 386 236 402 262 S 412 292 412 302"/>' +
+      '<path d="M906 214 C870 210 846 196 826 172 C808 150 796 110 780 88"/>' +
+      '<path d="M1040 92 C1090 74 1150 116 1120 156 C1098 186 1160 192 1200 168"/>' +
+    '</g>' +
+    // Mountain ranges: Caucasus, Zagros, Elburz, Hindu Kush, Pamir and Tian Shan, Kunlun.
+    '<g fill="none" stroke="#c9a56a" stroke-width=".9">' +
+      peaks([[322, 118], [346, 112], [370, 108], [394, 112], [418, 110]]) +
+      peaks([[438, 214], [454, 230], [470, 248], [486, 266], [502, 284], [522, 302], [544, 318]]) +
+      peaks([[498, 150], [522, 160], [600, 160], [624, 164]]) +
+      peaks([[748, 252], [772, 256], [798, 252], [822, 246], [848, 240]]) +
+      peaks([[888, 186], [904, 168], [922, 150], [940, 134], [960, 120]]) +
+      peaks([[1000, 244], [1026, 252], [1052, 256], [1078, 258], [1104, 262]]) +
+    '</g>' +
+    // Deserts.
+    '<g fill="url(#srSand)" opacity=".9">' +
+      '<ellipse cx="1040" cy="214" rx="58" ry="22"/><ellipse cx="740" cy="150" rx="40" ry="14"/><ellipse cx="596" cy="236" rx="34" ry="14"/><ellipse cx="300" cy="380" rx="70" ry="30"/>' +
+    '</g>' +
+    // Old names.
+    '<g font-family="Cormorant Garamond, serif" font-style="italic" fill="#d9c08a" text-anchor="middle">' +
+      '<text x="120" y="300" font-size="17" letter-spacing="4">MARE MEDITERRANEUM</text>' +
+      '<text x="262" y="122" font-size="11" letter-spacing="2">PONTUS EUXINUS</text>' +
+      '<text x="556" y="60" font-size="11" letter-spacing="3" transform="rotate(78 556 60)">MARE CASPIUM</text>' +
+      '<text x="548" y="384" font-size="12" letter-spacing="3" transform="rotate(24 548 384)">SINUS PERSICUS</text>' +
+      '<text x="790" y="500" font-size="14" letter-spacing="4">MARE ERYTHRAEUM</text>' +
+      '<text x="1040" y="246" font-size="11" letter-spacing="3">TAKLAMAKAN</text>' +
+      '<text x="836" y="186" font-size="10" letter-spacing="2" transform="rotate(42 836 186)">OXUS</text>' +
+      '<text x="330" y="440" font-size="22" letter-spacing="10">ARABIA</text>' +
+      '<text x="700" y="300" font-size="24" letter-spacing="12">PERSIA</text>' +
+      '<text x="660" y="44" font-size="22" letter-spacing="12">SCYTHIA</text>' +
+      '<text x="1080" y="96" font-size="24" letter-spacing="12">SERICA</text>' +
+      '<text x="900" y="380" font-size="22" letter-spacing="12">INDIA</text>' +
+    '</g>' +
+    // A dark, worn edge.
+    '<rect x="6" y="6" width="1188" height="508" fill="none" stroke="#c9a56a" stroke-width="1" opacity=".7"/>' +
+    '<rect x="12" y="12" width="1176" height="496" fill="none" stroke="#c9a56a" stroke-width=".5" opacity=".6"/>';
+
+  // Sixteen compass lines out from a point, to the edges of the chart.
+  function rhumbs(cx, cy) {
+    var d = "";
+    for (var i = 0; i < 16; i++) {
+      var a = i * Math.PI / 8;
+      d += "M" + cx + " " + cy + " L" + (cx + Math.cos(a) * 1400).toFixed(0) + " " + (cy + Math.sin(a) * 1400).toFixed(0) + " ";
+    }
+    return '<path d="' + d + '"/>';
+  }
+  // A range of small engraved peaks, each shaded on one side.
+  function peaks(pts) {
+    return pts.map(function (p) {
+      var x = p[0], y = p[1];
+      return '<path d="M' + (x - 9) + " " + (y + 6) + " L" + x + " " + (y - 8) + " L" + (x + 9) + " " + (y + 6) + '"/>' +
+        '<path d="M' + (x + 2) + " " + (y - 4) + " L" + (x + 6) + " " + (y + 5) + " M" + (x + 4) + " " + (y - 1) + " L" + (x + 7) + " " + (y + 5) + '" stroke-width=".5"/>';
+    }).join("");
+  }
+
   function lang() { return (window.ARTRA_I18N && window.ARTRA_I18N.lang) || "en"; }
   function pick(o) { return o ? o[lang()] || o.en : ""; }
   function el(name, attrs, parent, text) {
@@ -77,6 +165,8 @@
       '<linearGradient id="srGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1d98e"/><stop offset=".5" stop-color="#d4b467"/><stop offset="1" stop-color="#9a7a35"/></linearGradient>';
 
     if (!mini) {
+      // The old map, faint, behind everything.
+      el("g", { "class": "sr-old", "aria-hidden": "true" }, svg).innerHTML = OLD_MAP;
       // An old chart: lines of latitude and longitude, and a compass rose.
       var grid = el("g", { stroke: "#4a5a75", "stroke-width": ".6", "stroke-dasharray": "2 8", opacity: ".55" }, svg);
       [100, 200, 300, 400].forEach(function (y) { el("path", { d: "M0 " + y + " H" + W }, grid); });

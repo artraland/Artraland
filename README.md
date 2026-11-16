@@ -55,7 +55,8 @@ Enquiries desk; if that fails, they fall back to the visitor's email app.
 
 **The Silk Road.** `silkroad.js` holds the caravan cities from Venice to Xi'an (names and regions in five languages,
 the crafts each is known for, and their place on a simple chart, spread evenly west to east, not to scale). The home
-page's *The Road* section draws the route with a travelling caravan; tapping a city (or its button below the map)
+page's *The Road* section draws the route with a travelling caravan over a faint antique-style chart (seas,
+mountains, deserts, rivers and old Latin names, drawn to match the city layout); tapping a city (or its button below the map)
 shows its crafts and how many pieces come from there, and can filter the collection to them. Each product names its
 city with `city` in `products.js` (product providers choose it in their piece form). In a client's orders, each
 order is drawn as a caravan journey (the atelier → the caravanserai → with the caravan → arrived), with the piece's
