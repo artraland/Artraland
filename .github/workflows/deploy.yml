@@ -1,8 +1,5 @@
-# Deploys artraland.com to Vercel (project "artraland" in the "artraland" Vercel team) on every push to main.
-# Needs a repository secret holding a Vercel access token scoped to that team: ARTRALAND.
-# The first run creates the Vercel project if it does not exist yet, and attaches artraland.com to it.
-# (A team-scoped token cannot look up a personal user, so the team and project are found through the API
-# and handed to the Vercel CLI as VERCEL_ORG_ID and VERCEL_PROJECT_ID.)
+# Deploys artraland.com to Vercel (project "artraland" in the artedelara account) on every push to main.
+# Needs a repository secret holding a Vercel access token for the artedelara account: ARTRALAND.
 name: Deploy to Vercel
 
 on:
@@ -16,8 +13,8 @@ concurrency:
 
 env:
   VERCEL_TOKEN: ${{ secrets.ARTRALAND }}
-  VERCEL_SCOPE: artraland
-  VERCEL_PROJECT: artraland
+  VERCEL_ORG_ID: team_nXwzNgaNC6ot9TwAgTTYmUkv
+  VERCEL_PROJECT_ID: prj_8Iw698vDTcZkXuCj3Max7KpXGuKY
 
 jobs:
   deploy:
@@ -30,42 +27,5 @@ jobs:
             echo "::error::Add an ARTRALAND repository secret holding a Vercel token (Settings → Secrets and variables → Actions)."
             exit 1
           fi
-
-      - name: Find the Vercel team and project (create the project on the first run)
-        run: |
-          api() { curl -sS -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" "$@"; }
-          # The team is named by its slug; a team-scoped token may not list teams, but it can use its own team.
-          project=$(api "https://api.vercel.com/v9/projects/$VERCEL_PROJECT?slug=$VERCEL_SCOPE")
-          project_id=$(echo "$project" | jq -r '.id // empty')
-          if [ -z "$project_id" ]; then
-            echo "Project lookup: $(echo "$project" | jq -c '.error // .')"
-            echo "Creating the Vercel project $VERCEL_PROJECT"
-            project=$(api -X POST "https://api.vercel.com/v11/projects?slug=$VERCEL_SCOPE" -d "{\"name\":\"$VERCEL_PROJECT\",\"framework\":null}")
-            project_id=$(echo "$project" | jq -r '.id // empty')
-          fi
-          if [ -z "$project_id" ]; then
-            echo "::error::Could not find or create the Vercel project in the '$VERCEL_SCOPE' team: $(echo "$project" | jq -c '.error // .')"
-            exit 1
-          fi
-          team_id=$(echo "$project" | jq -r '.accountId')
-          echo "Team $team_id, project $project_id"
-          echo "VERCEL_ORG_ID=$team_id" >> "$GITHUB_ENV"
-          echo "VERCEL_PROJECT_ID=$project_id" >> "$GITHUB_ENV"
-
       - run: npm install --global vercel@latest
-      - name: Deploy to production
-        run: vercel deploy --prod --yes --token="$VERCEL_TOKEN"
-
-      - name: Attach the domains (already attached is fine)
-        run: |
-          api() { curl -sS -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" "$@"; }
-          url="https://api.vercel.com/v10/projects/$VERCEL_PROJECT_ID/domains?teamId=$VERCEL_ORG_ID"
-          for body in '{"name":"artraland.com"}' '{"name":"www.artraland.com","redirect":"artraland.com","redirectStatusCode":308}'; do
-            r=$(api -X POST "$url" -d "$body")
-            name=$(echo "$body" | jq -r .name)
-            if echo "$r" | jq -e '.error' > /dev/null; then
-              echo "::warning::$name: $(echo "$r" | jq -r '.error.code + " — " + .error.message')"
-            else
-              echo "$name attached (verified: $(echo "$r" | jq -r .verified))"
-            fi
-          done
+      - run: vercel deploy --prod --yes --token="$VERCEL_TOKEN"

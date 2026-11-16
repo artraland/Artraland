@@ -25,9 +25,9 @@ shared with "Anyone with the link"); a new entry without a `key` uses its photo 
 Animations stop off screen and are switched off for visitors who prefer reduced motion. After changing a CSS or JS
 file, raise its `?v=` number where the pages load it.
 
-**Hosting.** Pushing to `main` deploys to the Vercel project `artraland` in the `artraland` Vercel team (`.github/workflows/deploy.yml`); it needs an
-`ARTRALAND` repository secret holding a Vercel token for that team. The first run creates the project and attaches
-`artraland.com` and `www.artraland.com`; `www` redirects to `artraland.com`.
+**Hosting.** Pushing to `main` deploys to the Vercel project `artraland` in the artedelara account (`.github/workflows/deploy.yml`); it needs an
+`ARTRALAND` repository secret holding a Vercel token for that account (account scope, not a single project).
+`artraland.com` and `www.artraland.com` are attached to the project; `www` redirects to `artraland.com`.
 
 **DNS** (at ParsPack, where the domain's nameservers are): an `A` record for `artraland.com` to `216.150.1.1` (and a
 second to `216.150.16.1`), and a `CNAME` for `www` to `f3251a0e70c11f0d.vercel-dns-016.com`.
