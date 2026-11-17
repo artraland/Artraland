@@ -239,16 +239,16 @@
     var flip = rtl ? ' transform="matrix(-1 0 0 1 1100 0)"' : "";
     svg.innerHTML =
       '<defs><linearGradient id="jrGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1d98e"/><stop offset=".5" stop-color="#d4b467"/><stop offset="1" stop-color="#9a7a35"/></linearGradient></defs>' +
-      '<g' + flip + '><path d="' + ROAD_D + '" fill="none" stroke="#4a5a75" stroke-width="2" stroke-dasharray="4 7"/>' +
+      '<g' + flip + '><path d="' + ROAD_D + '" fill="none" stroke="#2e4a86" stroke-width="2" stroke-dasharray="4 7"/>' +
       '<path class="jr-gold" d="' + ROAD_D + '" pathLength="1" fill="none" stroke="url(#jrGold)" stroke-width="3" stroke-linecap="round" stroke-dasharray="' + at + ' 1"/></g>';
     // Positions along the road (measured once the svg is in the page).
     svg._draw = function () {
       var path = svg.querySelector(".jr-gold"), L = path.getTotalLength();
       function pos(f) { var q = path.getPointAtLength(L * f); return { x: rtl ? 1100 - q.x : q.x, y: q.y }; }
       function arch(f, reached) {
-        var q = pos(f), c = reached ? "#d4b467" : "#4a5a75";
-        return '<path d="M' + (q.x - 18) + " " + (q.y + 20) + " V" + (q.y - 8) + " Q" + (q.x - 18) + " " + (q.y - 22) + " " + q.x + " " + (q.y - 28) + " Q" + (q.x + 18) + " " + (q.y - 22) + " " + (q.x + 18) + " " + (q.y - 8) + " V" + (q.y + 20) + '" fill="' + (reached ? "#162030" : "#111824") + '" stroke="' + c + '" stroke-width="1.6"/>' +
-          (reached ? '<circle cx="' + q.x + '" cy="' + (q.y + 2) + '" r="5" fill="#d4b467"/>' : '<circle cx="' + q.x + '" cy="' + (q.y + 2) + '" r="4" fill="none" stroke="#4a5a75" stroke-width="1.5"/>');
+        var q = pos(f), c = reached ? "#d4b467" : "#2e4a86";
+        return '<path d="M' + (q.x - 18) + " " + (q.y + 20) + " V" + (q.y - 8) + " Q" + (q.x - 18) + " " + (q.y - 22) + " " + q.x + " " + (q.y - 28) + " Q" + (q.x + 18) + " " + (q.y - 22) + " " + (q.x + 18) + " " + (q.y - 8) + " V" + (q.y + 20) + '" fill="' + (reached ? "#081a42" : "#05112f") + '" stroke="' + c + '" stroke-width="1.6"/>' +
+          (reached ? '<circle cx="' + q.x + '" cy="' + (q.y + 2) + '" r="5" fill="#d4b467"/>' : '<circle cx="' + q.x + '" cy="' + (q.y + 2) + '" r="4" fill="none" stroke="#2e4a86" stroke-width="1.5"/>');
       }
       function label(f, title, sub, reached, dy) {
         var q = pos(f);

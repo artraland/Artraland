@@ -1,5 +1,5 @@
 /* ARTRA — the account page, in the Royal Ink colours of royal.css. */
-.account-page { background: radial-gradient(ellipse 80% 40% at 50% 0%, #1a2538 0%, var(--black) 70%); min-height: 100vh; }
+.account-page { background: radial-gradient(ellipse 80% 40% at 50% 0%, #0a1d4a 0%, var(--black) 70%); min-height: 100vh; }
 .nav a.on { color: var(--gold-2); }
 .acc { padding: 130px 0 110px; min-height: 70vh; }
 .acc h1 { font-size: clamp(38px, 5vw, 60px); margin-bottom: 10px; }
@@ -17,8 +17,8 @@
 .acc-auth { max-width: 480px; margin: 0 auto; }
 .seg { display: flex; border: 1px solid rgba(212, 180, 103, .4); margin: 26px 0 22px; }
 .seg button { flex: 1; min-height: 44px; background: none; border: 0; cursor: pointer; color: var(--beige-3); font: 500 13px var(--sans); letter-spacing: .14em; text-transform: uppercase; }
-.seg button[aria-selected="true"] { background: rgba(212, 180, 103, .14); color: var(--gold-2); }
-.acc-form { display: grid; gap: 16px; padding: 30px; background: rgba(13, 20, 32, .55); border: 1px solid rgba(212, 180, 103, .25); }
+.seg button[aria-selected="true"] { background: var(--gray); color: var(--gold-2); }
+.acc-form { display: grid; gap: 16px; padding: 30px; background: rgba(3, 12, 39, .55); border: 1px solid rgba(212, 180, 103, .25); }
 .acc-form h2 { margin: 0; }
 .acc-form small { text-transform: none; letter-spacing: 0; color: var(--beige-2); font-size: 12.5px; }
 .acc-form .btn { justify-self: start; }
@@ -28,7 +28,7 @@
 /* The welcome line and the tabs */
 .acc-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding-bottom: 26px; }
 .role { color: var(--gold-2); }
-.acc-tabs { display: flex; gap: 4px; overflow-x: auto; border-bottom: 1px solid rgba(110, 132, 168, .35); margin-bottom: 36px; scrollbar-width: none; }
+.acc-tabs { display: flex; gap: 4px; overflow-x: auto; border-bottom: 1px solid rgba(90, 120, 190, .35); margin-bottom: 36px; scrollbar-width: none; }
 .acc-tabs::-webkit-scrollbar { display: none; }
 .acc-tabs a { white-space: nowrap; padding: 14px 16px; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--beige-2); border-bottom: 2px solid transparent; }
 .acc-tabs a:hover { color: var(--gold-2); }
@@ -50,7 +50,7 @@
 
 /* Lists of cards */
 .cards { display: grid; gap: 18px; }
-.card { padding: 24px 26px; background: linear-gradient(160deg, var(--gray), var(--coal)); border: 1px solid rgba(110, 132, 168, .3); }
+.card { padding: 24px 26px; background: linear-gradient(160deg, var(--gray), var(--coal)); border: 1px solid rgba(90, 120, 190, .3); }
 .card-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 13px; color: var(--beige-2); margin-bottom: 10px; }
 .card a { color: var(--gold-2); }
 .msg { white-space: pre-line; color: var(--beige-3); margin: 10px 0; }
@@ -67,18 +67,18 @@ dl.mini dd { margin: 0; }
 
 /* Saved pieces */
 .fav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 22px; }
-.fav-card { background: linear-gradient(170deg, var(--gray), var(--coal)); border: 1px solid rgba(110, 132, 168, .3); padding-bottom: 18px; }
+.fav-card { background: linear-gradient(170deg, var(--gray), var(--coal)); border: 1px solid rgba(90, 120, 190, .3); padding-bottom: 18px; }
 .fav-card .thumb { height: 220px; }
 .fav-info { padding: 14px 18px 8px; display: grid; gap: 2px; }
 .fav-info span { font-size: 11px; letter-spacing: .26em; text-transform: uppercase; color: var(--gold); }
 .fav-info b { font: 500 22px var(--serif); }
 .fav-card .link-btn { margin-inline-start: 18px; }
-.thumb { display: grid; place-items: center; padding: 16px; background: radial-gradient(ellipse at 50% 60%, rgba(110, 132, 168, .25), transparent 70%); }
+.thumb { display: grid; place-items: center; padding: 16px; background: radial-gradient(ellipse at 50% 60%, rgba(90, 120, 190, .25), transparent 70%); }
 .thumb .art, .thumb img { width: 100%; height: 100%; max-height: 190px; object-fit: contain; overflow: visible; }
 
 /* Orders and tracking */
 .orders { display: grid; gap: 20px; }
-.order { padding: 22px 24px; background: linear-gradient(160deg, var(--gray), var(--coal)); border: 1px solid rgba(110, 132, 168, .3); }
+.order { padding: 22px 24px; background: linear-gradient(160deg, var(--gray), var(--coal)); border: 1px solid rgba(90, 120, 190, .3); }
 .order-head { display: grid; grid-template-columns: 90px 1fr auto; gap: 20px; align-items: center; }
 .order-art .thumb { height: 100px; padding: 6px; }
 .order-no { margin: 0 0 4px; font-size: 13px; letter-spacing: .1em; color: var(--beige-2); }
@@ -94,7 +94,7 @@ dl.mini dd { margin: 0; }
 .steps-bar li.done::before { background: var(--gold); border-color: var(--gold); box-shadow: 0 0 10px rgba(212, 180, 103, .6); }
 .steps-bar li.done::after { background: var(--gold); }
 [dir="rtl"] .steps-bar li::after { left: auto; right: -50%; }
-.track { margin-top: 12px; padding: 12px 14px; background: rgba(13, 20, 32, .5); font-size: 15px; }
+.track { margin-top: 12px; padding: 12px 14px; background: rgba(3, 12, 39, .5); font-size: 15px; }
 .track span { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--beige-2); margin-inline-end: 8px; }
 .track code { font-size: 14px; color: var(--ivory); }
 .track a { color: var(--gold-2); margin-inline-start: 10px; }
@@ -111,11 +111,11 @@ dl.mini dd { margin: 0; }
 
 /* A provider's pieces and the piece form */
 .prod { display: grid; grid-template-columns: 120px 1fr; gap: 22px; }
-.prod-photo { height: 140px; background: rgba(13, 20, 32, .5); display: grid; place-items: center; overflow: hidden; }
+.prod-photo { height: 140px; background: rgba(3, 12, 39, .5); display: grid; place-items: center; overflow: hidden; }
 .prod-photo img { width: 100%; height: 100%; object-fit: contain; }
 .editor { max-width: 860px; }
 .ed-photo { display: grid; grid-template-columns: 160px 1fr; gap: 22px; align-items: start; }
-.ed-preview { height: 180px; background: rgba(13, 20, 32, .5); border: 1px dashed rgba(212, 180, 103, .35); display: grid; place-items: center; overflow: hidden; }
+.ed-preview { height: 180px; background: rgba(3, 12, 39, .5); border: 1px dashed rgba(212, 180, 103, .35); display: grid; place-items: center; overflow: hidden; }
 .ed-preview img { width: 100%; height: 100%; object-fit: contain; }
 .upload { cursor: pointer; margin-bottom: 14px; }
 .ed-langs { margin: 4px 0 0; }
@@ -126,9 +126,9 @@ dl.mini dd { margin: 0; }
 /* People */
 .table-wrap { overflow-x: auto; }
 table.people { width: 100%; border-collapse: collapse; font-size: 15px; }
-.people th { text-align: start; font-weight: 500; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--beige-2); padding: 10px 12px; border-bottom: 1px solid rgba(110, 132, 168, .4); }
-.people td { padding: 12px; border-bottom: 1px solid rgba(110, 132, 168, .18); vertical-align: middle; }
-.people select { background: transparent; color: var(--ivory); border: 1px solid rgba(110, 132, 168, .5); padding: 6px 8px; font: 400 14px var(--sans); }
+.people th { text-align: start; font-weight: 500; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--beige-2); padding: 10px 12px; border-bottom: 1px solid rgba(90, 120, 190, .4); }
+.people td { padding: 12px; border-bottom: 1px solid rgba(90, 120, 190, .18); vertical-align: middle; }
+.people select { background: transparent; color: var(--ivory); border: 1px solid rgba(90, 120, 190, .5); padding: 6px 8px; font: 400 14px var(--sans); }
 .people .note { display: inline; margin-inline-start: 6px; }
 
 /* Phones */
@@ -157,16 +157,16 @@ table.people { width: 100%; border-collapse: collapse; font-size: 15px; }
 .jr-pulse { animation: jrPulse 2.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
 @keyframes jrPulse { 50% { opacity: .05; transform: scale(1.4); } }
 .jr-more { display: grid; grid-template-columns: 1.35fr 1fr; gap: 22px; margin-top: 20px; }
-.jr-origin { padding: 24px 26px; border: 1px solid rgba(110, 132, 168, .35); background: #111824; }
+.jr-origin { padding: 24px 26px; border: 1px solid rgba(90, 120, 190, .35); background: #05112f; }
 .jr-origin h3 { font: 400 28px/1.2 var(--serif); margin: 0 0 6px; }
 .jr-origin .muted { margin: 0 0 12px; }
 .tq { color: #4cc3b9; }
 .jr-mini { display: block; width: 100%; height: auto; }
-.pass { position: relative; padding: 22px; background: #f3eee4; color: #111824; border: 1px solid #cfc6b4; }
+.pass { position: relative; padding: 22px; background: #f3eee4; color: #05112f; border: 1px solid #cfc6b4; }
 .pass-in { border: 1px solid #9a7a35; outline: 1px solid #9a7a35; outline-offset: 5px; padding: 22px 20px; text-align: center; }
 .pass-kicker { margin: 0; font-size: 11px; font-weight: 500; letter-spacing: .3em; text-transform: uppercase; color: #6e5f47; }
 .pass-fa { margin: 4px 0 0; font: 400 24px/2 "Noto Nastaliq Urdu", serif; color: #6e5f47; }
-.pass h3 { margin: 2px 0; font: 500 28px var(--serif); color: #111824; }
+.pass h3 { margin: 2px 0; font: 500 28px var(--serif); color: #05112f; }
 .pass-sub { margin: 0 0 16px; font-size: 13px; color: #3f4655; }
 .pass dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 0; text-align: start; font-size: 15px; }
 .pass dt { color: #6e5f47; }

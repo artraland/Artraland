@@ -168,7 +168,7 @@
       // The old map, faint, behind everything.
       el("g", { "class": "sr-old", "aria-hidden": "true" }, svg).innerHTML = OLD_MAP;
       // An old chart: lines of latitude and longitude, and a compass rose.
-      var grid = el("g", { stroke: "#4a5a75", "stroke-width": ".6", "stroke-dasharray": "2 8", opacity: ".55" }, svg);
+      var grid = el("g", { stroke: "#2e4a86", "stroke-width": ".6", "stroke-dasharray": "2 8", opacity: ".55" }, svg);
       [100, 200, 300, 400].forEach(function (y) { el("path", { d: "M0 " + y + " H" + W }, grid); });
       [200, 400, 600, 800, 1000].forEach(function (x) { el("path", { d: "M" + x + " 0 V" + H }, grid); });
       var rose = el("g", { transform: "translate(1110 440)", opacity: ".75" }, svg);
@@ -181,9 +181,9 @@
     // Spurs to the workshop cities, the route, and the gold route drawing itself.
     Object.keys(SPURS).forEach(function (k) {
       var a = BY[k], b = BY[SPURS[k]];
-      el("path", { d: "M" + a.x + " " + a.y + " L" + b.x + " " + b.y, stroke: "#6e84a8", "stroke-width": mini ? 1.5 : 1, "stroke-dasharray": "3 4", fill: "none" }, svg);
+      el("path", { d: "M" + a.x + " " + a.y + " L" + b.x + " " + b.y, stroke: "#5a78b8", "stroke-width": mini ? 1.5 : 1, "stroke-dasharray": "3 4", fill: "none" }, svg);
     });
-    el("path", { d: ROUTE_D, fill: "none", stroke: "#4a5a75", "stroke-width": mini ? 2 : 1 }, svg);
+    el("path", { d: ROUTE_D, fill: "none", stroke: "#2e4a86", "stroke-width": mini ? 2 : 1 }, svg);
     var gold = el("path", { d: ROUTE_D, fill: "none", stroke: "url(#srGold)", "stroke-width": mini ? 3 : 2.4, "stroke-linecap": "round", pathLength: 1, "class": "sr-route" + (opts.animate ? " sr-anim" : "") }, svg);
     if (mini) gold.setAttribute("opacity", ".55");
 
@@ -204,7 +204,7 @@
         el("circle", { cx: c.x, cy: c.y, r: mini ? 26 : 22, fill: "#4cc3b9", opacity: ".2", "class": "sr-pulse" }, g);
         el("circle", { cx: c.x, cy: c.y, r: mini ? 10 : 8, fill: "#4cc3b9", stroke: "#f3eee4", "stroke-width": 1.5 }, g);
       } else {
-        el("circle", { cx: c.x, cy: c.y, r: (c.route ? 5 : 4) * (mini ? 1.6 : 1), fill: has ? "#d4b467" : "#0d1420", stroke: c.route ? "#d4b467" : "#9fb6e0", "stroke-width": 1.5 }, g);
+        el("circle", { cx: c.x, cy: c.y, r: (c.route ? 5 : 4) * (mini ? 1.6 : 1), fill: has ? "#d4b467" : "#030c27", stroke: c.route ? "#d4b467" : "#9fb6e0", "stroke-width": 1.5 }, g);
       }
       if (!mini || on || c.route) {
         var dx = c.label[0], dy = c.label[1];
