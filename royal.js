@@ -163,7 +163,12 @@
            : '<p class="rc-none">' + esc(t("road.none")) + "</p>");
       card.hidden = false;
       if (n) $(".rc-go", card).addEventListener("click", function () { filter(key); });
-      $$("button", chips).forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-city") === key); });
+      $$("button", chips).forEach(function (b) {
+        var on = b.getAttribute("data-city") === key;
+        b.setAttribute("aria-pressed", on);
+        // Slide the line so the chosen city is in view.
+        if (on) chips.scrollTo({ left: b.offsetLeft - chips.clientWidth / 2 + b.offsetWidth / 2, behavior: reduced ? "auto" : "smooth" });
+      });
     }
 
     // The collection, showing only one city's pieces.
@@ -188,6 +193,18 @@
       b.addEventListener("click", function () { pick(c.key); });
       chips.appendChild(b);
     });
+
+    // With a mouse, the line can also be dragged sideways; a drag is not taken as a click on a city.
+    var drag = null, dragged = false;
+    chips.addEventListener("pointerdown", function (e) { if (e.pointerType === "mouse") { drag = { x: e.clientX, left: chips.scrollLeft }; dragged = false; } });
+    addEventListener("pointermove", function (e) {
+      if (!drag) return;
+      var dx = e.clientX - drag.x;
+      if (Math.abs(dx) > 4) { dragged = true; chips.classList.add("dragging"); }
+      if (dragged) chips.scrollLeft = drag.left - dx;
+    });
+    addEventListener("pointerup", function () { drag = null; chips.classList.remove("dragging"); });
+    chips.addEventListener("click", function (e) { if (dragged) { e.stopPropagation(); e.preventDefault(); dragged = false; } }, true);
 
     render();
     // The route draws itself, and the caravan sets off, when the map comes into view.
