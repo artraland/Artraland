@@ -330,28 +330,47 @@
     Array.prototype.forEach.call(root.querySelectorAll("[data-i18n-aria]"), function (n) { n.setAttribute("aria-label", t(n.getAttribute("data-i18n-aria"))); });
   }
 
-  // The language switch: EN · FR · ES · ع · فا. Choosing one reloads the page in that language.
+  // The language switch: a globe with the current language (EN, FR, ES, ع, فا) that opens a short list of the
+  // languages by their own names. On phones the list sits inside the menu instead. Each choice is a link to the
+  // same page with ?lang=, which the page's <head> remembers.
+  var GLOBE = '<svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.3">' +
+    '<circle cx="12" cy="12" r="9.2"/><ellipse cx="12" cy="12" rx="4.1" ry="9.2"/><path d="M2.8 12h18.4M4.6 6.8h14.8M4.6 17.2h14.8"/></svg>';
+  function hrefFor(l) { var u = new URL(location.href); u.searchParams.set("lang", l); return u.pathname + u.search + u.hash; }
+  function links(cls) {
+    return LANGS.map(function (l) {
+      return '<a class="' + cls + (l === lang ? " on" : "") + '" href="' + hrefFor(l) + '" lang="' + l + '"' +
+        (l === lang ? ' aria-current="true"' : "") + ">" + (l === lang ? '<span class="tick" aria-hidden="true">✓</span>' : "") + NAMES[l] + "</a>";
+    }).join("");
+  }
   function buildSwitch() {
     var box = document.getElementById("lang");
     if (!box) return;
-    box.setAttribute("aria-label", t("aria.lang"));
-    LANGS.forEach(function (l) {
-      var b = document.createElement("button");
-      b.type = "button";
-      b.textContent = LABELS[l];
-      b.lang = l;
-      b.title = NAMES[l];
-      b.setAttribute("aria-label", NAMES[l]);
-      if (l === lang) { b.setAttribute("aria-current", "true"); b.className = "on"; }
-      b.addEventListener("click", function () {
-        if (l === lang) return;
-        try { localStorage.setItem("artra-lang", l); } catch (e) {}
-        var u = new URL(location.href);
-        u.searchParams.set("lang", l);
-        location.assign(u.toString());
-      });
-      box.appendChild(b);
+    box.removeAttribute("role");
+    box.innerHTML =
+      '<button type="button" class="lang-btn" aria-haspopup="true" aria-expanded="false" aria-controls="langMenu" aria-label="' + t("aria.lang") + ": " + NAMES[lang] + '">' +
+        GLOBE + '<span class="lang-code" lang="' + lang + '">' + LABELS[lang] + '</span><svg class="chev" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>' +
+      "</button>" +
+      '<div class="lang-menu" id="langMenu" hidden>' + links("lang-item") + "</div>";
+    var btn = box.querySelector(".lang-btn"), menu = box.querySelector(".lang-menu");
+    function set(open) { menu.hidden = !open; btn.setAttribute("aria-expanded", open); if (open) (menu.querySelector(".on") || menu.firstChild).focus(); }
+    btn.addEventListener("click", function () { set(menu.hidden); });
+    document.addEventListener("click", function (e) { if (!menu.hidden && !box.contains(e.target)) set(false); });
+    box.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !menu.hidden) { set(false); btn.focus(); }
+      if ((e.key === "ArrowDown" || e.key === "ArrowUp") && !menu.hidden) {
+        var items = [].slice.call(menu.querySelectorAll("a")), i = items.indexOf(document.activeElement);
+        items[(i + (e.key === "ArrowDown" ? 1 : items.length - 1)) % items.length].focus(); e.preventDefault();
+      }
     });
+    // Phones: the languages as a row at the foot of the menu.
+    var nav = document.getElementById("nav");
+    if (nav && !nav.querySelector(".nav-langs")) {
+      var row = document.createElement("div");
+      row.className = "nav-langs";
+      row.setAttribute("aria-label", t("aria.lang"));
+      row.innerHTML = GLOBE + links("nav-lang");
+      nav.appendChild(row);
+    }
   }
 
   window.ARTRA_I18N = { lang: lang, rtl: rtl, langs: LANGS, t: t, pick: pick, pickEn: pickEn, apply: apply };

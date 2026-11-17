@@ -21,8 +21,8 @@ and gold.
   `og-artra.jpg`, the picture shown when artraland.com is shared.
 
 **Languages.** The site is in English, French, Spanish, Arabic and Persian. A visitor's language comes from the
-`?lang=` address (`en`, `fr`, `es`, `ar`, `fa`), then the choice they last made in the switch at the top of every page
-(EN · FR · ES · ع · فا), then their browser's language, else English. Arabic and Persian read right to left and use
+`?lang=` address (`en`, `fr`, `es`, `ar`, `fa`), then the choice they last made in the globe switch at the top of every page
+(it opens a list of the languages by their own names; on phones the list is at the foot of the menu), then their browser's language, else English. Arabic and Persian read right to left and use
 Noto Naskh Arabic for headings and Vazirmatn for text. All page wording is in `i18n.js`, keyed by name for every
 language; elements carry `data-i18n` (text), `data-i18n-html` (text with markup) or `data-i18n-aria` (labels). In
 `products.js` a text field can be one text for every language or `{ en, fr, es, ar, fa }`; a missing language shows
