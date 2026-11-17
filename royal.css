@@ -371,11 +371,21 @@ html:lang(ar) .nav, html:lang(fa) .nav { font-size: 15px; }
 .rc-none { margin: 0; font-size: 14px; color: var(--beige-2); }
 .road .link-btn, .road-filter .link-btn { background: none; border: 0; padding: 0; cursor: pointer; color: var(--gold-2); font: 400 14px var(--sans); }
 .road .link-btn:hover, .road-filter .link-btn:hover { color: var(--ivory); }
-.road-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
-.chip { min-height: 40px; padding: 0 16px; background: none; border: 1px solid rgba(212, 180, 103, .35); color: var(--beige-3); cursor: pointer; font: 400 14px var(--sans); }
-.chip.has { color: var(--ivory); border-color: rgba(212, 180, 103, .6); }
+/* The cities under the map, in the style of the crafts band: italic serif names between gold stars */
+/* Every name after the first starts with its star; the strip is shifted back by one star and clipped there, so the
+   star that would open a new line is hidden and each line starts with a name. */
+.road-chips { --star: 57px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 0; margin-top: 30px;
+  margin-inline-start: calc(-1 * var(--star)); clip-path: inset(0 0 0 var(--star)); }
+[dir="rtl"] .road-chips { clip-path: inset(0 var(--star) 0 0); }
+.chip { display: inline-flex; align-items: center; min-height: 44px; padding: 0; background: none; border: 0; cursor: pointer;
+  font: italic 400 26px var(--serif); color: var(--beige-2); transition: color .3s; }
+.chip::before { content: "✦"; display: inline-block; width: 13px; text-align: center; font: normal 13px var(--sans); color: var(--gold); margin: 0 22px; }
+.chip.has { color: var(--beige-3); }
+.chip-n { font: normal 500 12px var(--sans); color: var(--gold); margin-inline-start: 6px; align-self: flex-start; margin-top: 10px; }
 .chip:hover { color: var(--gold-2); }
-.chip[aria-pressed="true"] { color: #4cc3b9; border-color: #4cc3b9; background: rgba(76, 195, 185, .1); }
+.chip[aria-pressed="true"] { color: #4cc3b9; }
+.chip[aria-pressed="true"] .chip-n { color: #4cc3b9; }
+@media (max-width: 720px) { .road-chips { --star: 37px; } .chip { font-size: 21px; min-height: 40px; } .chip::before { margin: 0 12px; } }
 .road-filter { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin: -30px 0 28px; padding: 12px 18px; border: 1px solid rgba(76, 195, 185, .5); color: var(--beige-3); }
 html:lang(ar) .road-card, html:lang(fa) .road-card { text-align: right; }
 @media (max-width: 720px) {

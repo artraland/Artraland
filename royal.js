@@ -183,7 +183,8 @@
       b.className = "chip" + (counts[c.key] ? " has" : "");
       b.setAttribute("data-city", c.key);
       b.setAttribute("aria-pressed", "false");
-      b.textContent = R.name(c.key) + (counts[c.key] ? " · " + counts[c.key].toLocaleString(T.lang) : "");
+      b.innerHTML = esc(R.name(c.key)) + (counts[c.key] ? '<span class="chip-n">' + esc(counts[c.key].toLocaleString(T.lang)) + "</span>" : "");
+      if (counts[c.key]) b.setAttribute("aria-label", R.name(c.key) + ", " + t(counts[c.key] === 1 ? "road.pieces_one" : "road.pieces", { n: counts[c.key].toLocaleString(T.lang) }));
       b.addEventListener("click", function () { pick(c.key); });
       chips.appendChild(b);
     });
