@@ -54,10 +54,10 @@ main, .foot, .top { position: relative; z-index: 1; }
 .top.scrolled { background: rgba(13, 20, 32, .82); backdrop-filter: blur(10px); border-color: rgba(212, 180, 103, .18); }
 .top-in { display: flex; align-items: center; height: 76px; gap: 24px; }
 .mark { display: flex; align-items: center; gap: 12px; font: 600 24px var(--serif); letter-spacing: .28em; }
-.mark img { height: 40px; width: auto; display: block; }
+.mark img { height: 28px; width: auto; display: block; }
 .mark em { color: var(--gold); font-style: normal; }
 .mark-sm { font-size: 19px; }
-.mark-sm img { height: 30px; }
+.mark-sm img { height: 22px; }
 .nav { margin-inline-start: auto; display: flex; gap: 32px; align-items: center; font-size: 14px; letter-spacing: .14em; text-transform: uppercase; }
 .nav a { position: relative; color: var(--beige-3); transition: color .3s; }
 .nav a:hover { color: var(--gold-2); }
@@ -263,8 +263,8 @@ main, .foot, .top { position: relative; z-index: 1; }
   .stats { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 720px) {
-  .mark img { height: 28px; }
-  .mark-sm img { height: 24px; }
+  .mark img { height: 22px; }
+  .mark-sm img { height: 18px; }
   .burger { display: block; }
   .nav { position: fixed; inset: 76px 0 auto; flex-direction: column; gap: 0; background: rgba(13, 20, 32, .97); border-bottom: 1px solid rgba(212, 180, 103,.25);
     max-height: 0; overflow: hidden; transition: max-height .5s var(--ease); }
