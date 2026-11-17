@@ -404,3 +404,34 @@ html:lang(ar) .road-card, html:lang(fa) .road-card { text-align: right; }
 /* The old map behind the road: faint, so the route and cities stay in front. */
 .sr-old { opacity: .32; }
 .road-map { background: radial-gradient(ellipse at 50% 50%, rgba(201, 165, 106, .07), rgba(13, 20, 32, .6) 75%); }
+
+/* ---- Hero: the gold paisley silk ---- */
+/* The silk fills the hero; its plain blue side sits behind the headline. The left and the foot are blended into
+   the site's ink so the photo's brighter blue flows into the page. */
+.hero { background: var(--black); overflow: hidden; isolation: isolate; }
+.hero::before { content: ""; position: absolute; inset: 0; z-index: -2;
+  background: url("/photos/hero-silk.webp") right center / cover no-repeat; }
+.hero::after { content: ""; position: absolute; inset: 0; z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(13, 20, 32, .92) 0%, rgba(13, 20, 32, .72) 30%, rgba(13, 20, 32, .25) 55%, rgba(13, 20, 32, 0) 72%),
+    linear-gradient(180deg, rgba(13, 20, 32, .55) 0%, rgba(13, 20, 32, 0) 22%, rgba(13, 20, 32, 0) 70%, var(--black) 100%); }
+.hero-in { grid-template-columns: minmax(0, 620px); }
+[dir="rtl"] .hero::before { transform: scaleX(-1); }
+[dir="rtl"] .hero::after { background:
+    linear-gradient(270deg, rgba(13, 20, 32, .92) 0%, rgba(13, 20, 32, .72) 30%, rgba(13, 20, 32, .25) 55%, rgba(13, 20, 32, 0) 72%),
+    linear-gradient(180deg, rgba(13, 20, 32, .55) 0%, rgba(13, 20, 32, 0) 22%, rgba(13, 20, 32, 0) 70%, var(--black) 100%); }
+@media (max-width: 1200px) and (min-width: 721px) { .hero::before { background-image: url("/photos/hero-silk-1200.webp"); } }
+@media (max-width: 720px) {
+  /* Phones: the headline at the top, the paisley drapery below it. */
+  .hero { align-items: start; }
+  .hero::before { background: url("/photos/hero-silk-phone.webp") right bottom / cover no-repeat; }
+  .hero::after, [dir="rtl"] .hero::after { background: linear-gradient(180deg, rgba(13, 20, 32, .94) 0%, rgba(13, 20, 32, .8) 38%, rgba(13, 20, 32, .15) 62%, rgba(13, 20, 32, 0) 80%, var(--black) 100%); }
+}
+
+/* Phones: keep the buttons on dark silk; tablets: keep the menu on one line. */
+@media (max-width: 720px) {
+  .hero::after, [dir="rtl"] .hero::after { background: linear-gradient(180deg, rgba(13, 20, 32, .94) 0%, rgba(13, 20, 32, .85) 45%, rgba(13, 20, 32, .55) 62%, rgba(13, 20, 32, .1) 80%, var(--black) 100%); }
+  .hero .btn-ghost { background: rgba(13, 20, 32, .6); }
+}
+.nav a { white-space: nowrap; }
+@media (max-width: 1240px) and (min-width: 721px) { .nav { gap: 20px; font-size: 12.5px; letter-spacing: .12em; } .top-in { gap: 18px; } .lang { margin-inline-start: 14px; } }
