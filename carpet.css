@@ -1,0 +1,66 @@
+/* ARTRA — /carpet: the making of a carpet, told as you scroll. The story is one tall section with a stage that stays
+   in view (position: sticky); carpet.js draws the scenes on the canvas and fades the chapters in and out. */
+.cp-page { background: var(--black); }
+.cp-story { position: relative; height: 900vh; }
+.cp-stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden;
+  background: radial-gradient(ellipse 70% 80% at 68% 52%, #0a2150 0%, var(--black) 70%); }
+[dir="rtl"] .cp-stage { background: radial-gradient(ellipse 70% 80% at 32% 52%, #0a2150 0%, var(--black) 70%); }
+#cpCanvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* The chapters: one at a time, on the side away from the carpet */
+.cp-copy { position: absolute; inset: 0; pointer-events: none; }
+.cp-ch { position: absolute; top: 50%; inset-inline-start: max(32px, calc((100vw - 1180px) / 2)); width: min(470px, 40vw);
+  transform: translateY(-50%); opacity: 0; will-change: opacity, transform; }
+.cp-ch.live { pointer-events: auto; }
+.cp-ch h1, .cp-ch h2 { font-size: clamp(46px, 6vw, 88px); line-height: .98; margin: 0 0 22px; }
+html:lang(ar) .cp-ch h1, html:lang(fa) .cp-ch h1, html:lang(ar) .cp-ch h2, html:lang(fa) .cp-ch h2 { line-height: 1.3; }
+.cp-p { margin: 0; font-size: 18px; color: var(--beige-3); max-width: 430px; }
+.cp-hint { margin: 26px 0 0; font-size: 12px; letter-spacing: .24em; text-transform: uppercase; color: var(--gold); }
+.cp-hint::after { content: " ↓"; }
+.cp-count { margin: 22px 0 0; font: 500 26px var(--serif); color: var(--gold-2); min-height: 1.2em; font-variant-numeric: tabular-nums; }
+.cp-specs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 22px; margin: 26px 0 0; }
+.cp-specs div { padding: 12px 0; border-top: 1px solid rgba(212, 180, 103, .3); }
+.cp-specs dt { font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: var(--gold); }
+html:lang(ar) .cp-specs dt, html:lang(fa) .cp-specs dt { font-size: 13px; }
+.cp-specs dd { margin: 4px 0 0; font-size: 15px; color: var(--ivory); }
+.cp-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+
+/* The progress dots */
+.cp-dots { position: absolute; inset-inline-end: 26px; top: 50%; transform: translateY(-50%); list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.cp-dots li { width: 7px; height: 7px; border-radius: 50%; border: 1px solid rgba(212, 180, 103, .6); transition: background .3s, transform .3s; }
+.cp-dots li.on { background: var(--gold); transform: scale(1.3); }
+
+/* The carpet picker, always at hand */
+.cp-pick { position: absolute; bottom: 22px; inset-inline-start: max(32px, calc((100vw - 1180px) / 2)); display: grid; gap: 10px; transition: opacity .4s; }
+.cp-pick > p { margin: 0; font-size: 11px; letter-spacing: .26em; text-transform: uppercase; color: var(--gold); }
+html:lang(ar) .cp-pick > p, html:lang(fa) .cp-pick > p { font-size: 13px; }
+.cp-pick-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.cp-pick button { display: flex; align-items: center; gap: 10px; min-height: 56px; padding: 6px 14px 6px 6px; background: rgba(5, 17, 47, .8);
+  border: 1px solid rgba(212, 180, 103, .3); color: var(--beige-3); cursor: pointer; font: 400 14px var(--sans); text-align: start; backdrop-filter: blur(6px); transition: border-color .3s, color .3s; }
+[dir="rtl"] .cp-pick button { padding: 6px 6px 6px 14px; }
+.cp-pick button:hover { border-color: var(--gold); }
+.cp-pick button[aria-pressed="true"] { border-color: var(--gold); color: var(--ivory); background: rgba(8, 26, 66, .92); }
+.cp-pick img { width: 30px; height: 44px; image-rendering: pixelated; box-shadow: 0 4px 10px rgba(0, 0, 0, .5); }
+.cp-pick small { display: block; font-size: 11px; color: var(--beige-2); }
+
+@media (max-width: 900px) {
+  /* Phones and narrow tablets: the words above, the carpet below. */
+  .cp-ch { top: 92px; transform: none; width: auto; inset-inline: 22px; }
+  .cp-ch h1, .cp-ch h2 { font-size: clamp(34px, 9vw, 52px); margin-bottom: 12px; }
+  .cp-p { font-size: 15px; }
+  .cp-hint { margin-top: 14px; }
+  .cp-count { font-size: 21px; margin-top: 10px; }
+  .cp-specs { margin-top: 14px; }
+  .cp-specs div { padding: 6px 0; }
+  .cp-ch[data-ch="6"] .cp-p { display: none; }
+  .cp-specs dd { font-size: 13.5px; }
+  .cp-cta { margin-top: 14px; }
+  .cp-cta .btn { min-height: 44px; padding: 0 18px; }
+  .cp-dots { inset-inline-end: 10px; }
+  .cp-pick { inset-inline: 14px; bottom: 14px; }
+  .cp-pick-row { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .cp-pick-row::-webkit-scrollbar { display: none; }
+  .cp-pick button { flex: none; min-height: 48px; font-size: 13px; }
+  .cp-pick small { display: none; }
+  .cp-pick img { width: 24px; height: 36px; }
+}

@@ -77,6 +77,13 @@ admin); `BLOB_STORE_ID` (or, for older stores, `BLOB_READ_WRITE_TOKEN`) — adde
 it, providers paste a photo link). The commission form and the enquiry form on piece pages now send straight to the
 Enquiries desk; if that fails, they fall back to the visitor's email app.
 
+**The making of a carpet.** `carpet.html` (/carpet) tells the Throne Rug's story as the visitor scrolls (`carpet.js`,
+`carpet.css`, wording in `i18n-carpet.js`), in seven chapters: choose, spin, dye, chart, knot, shear and wash, and
+laid down. The visitor picks one of three carpets: the Throne Rug, or the Garden of Isfahan or the Herati of Tabriz
+(both to commission). Each carpet is a grid of knots drawn by a small pattern function, so the dyes, the chart and
+the knotting all follow the chosen carpet. The Throne Rug's card in the collection opens this page; its button
+leads on to the rug's own page and enquiry form.
+
 **The Silk Road.** `silkroad.js` holds the caravan cities from Venice to Xi'an (names and regions in five languages,
 the crafts each is known for, and their place on a simple chart, spread evenly west to east, not to scale). The home
 page's *The Road* section draws the route with a travelling caravan over a faint antique-style chart (seas,

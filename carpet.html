@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The making of a carpet — ARTRA</title>
+  <meta name="description" content="Choose a carpet and scroll: from spun thread and plant dyes to the chart, the knots and the finished carpet.">
+  <meta name="theme-color" content="#05112f">
+  <link rel="icon" type="image/png" href="/brand/favicon.png">
+  <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png">
+  <meta property="og:image" content="https://artraland.com/brand/og-artra.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&family=Vazirmatn:wght@300;400;500;600&family=Noto+Naskh+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/royal.css?v=31">
+  <link rel="stylesheet" href="/carpet.css?v=1">
+  <script>
+    // Picks the language before the page paints: the ?lang= address, then the visitor's last choice,
+    // then their browser's language, else English. Arabic and Persian read right to left.
+    (function () {
+      var L = ["en", "fr", "es", "ar", "fa"], l = null, d = document.documentElement;
+      try {
+        var q = new URLSearchParams(location.search).get("lang");
+        if (L.indexOf(q) > -1) { l = q; localStorage.setItem("artra-lang", q); }
+        else { var s = localStorage.getItem("artra-lang"); if (L.indexOf(s) > -1) l = s; }
+      } catch (e) {}
+      if (!l) {
+        var p = navigator.languages || [navigator.language || "en"];
+        for (var i = 0; i < p.length && !l; i++) { var c = String(p[i]).slice(0, 2).toLowerCase(); if (L.indexOf(c) > -1) l = c; }
+      }
+      l = l || "en";
+      d.lang = l;
+      d.dir = l === "ar" || l === "fa" ? "rtl" : "ltr";
+      d.className += " js";
+    })();
+  </script>
+</head>
+<body class="cp-page">
+
+<header class="top scrolled" id="top">
+  <div class="wrap top-in">
+    <a href="/" class="mark" data-i18n-aria="aria.home" aria-label="ARTRA home"><img src="/brand/logo.webp" alt="ARTRA" width="720" height="158"></a>
+    <nav class="nav" id="nav">
+      <a href="/#collection" data-i18n="nav.collection">Collection</a>
+      <a href="/#showcase" data-i18n="nav.showcase">Showcase</a>
+      <a href="/#road" data-i18n="nav.road">The Road</a>
+      <a href="/#craft" data-i18n="nav.craft">The craft</a>
+      <a href="/expertise" data-i18n="nav.expertise">Expertise</a>
+      <a href="/account" class="nav-account" data-i18n="nav.account">Account</a>
+      <a href="/#commission" class="nav-cta" data-i18n="nav.commission">Commission</a>
+    </nav>
+    <div class="lang" id="lang" role="group"></div>
+    <button class="burger" id="burger" data-i18n-aria="aria.menu" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="cp-story" id="story">
+    <div class="cp-stage">
+      <canvas id="cpCanvas" role="img" data-i18n-aria="cp.aria" aria-label="The making of the carpet, drawn as you scroll"></canvas>
+      <div class="cp-copy">
+      <div class="cp-ch" data-ch="0"><p class="eyebrow" data-i18n="cp.k0"></p><h1 data-i18n="cp.h0"></h1><p class="cp-p" data-i18n="cp.p0"></p><p class="cp-hint" data-i18n="cp.scroll">Scroll to watch it being made</p></div>
+      <div class="cp-ch" data-ch="1"><p class="eyebrow" data-i18n="cp.k1"></p><h2 data-i18n="cp.h1"></h2><p class="cp-p" data-i18n="cp.p1"></p></div>
+      <div class="cp-ch" data-ch="2"><p class="eyebrow" data-i18n="cp.k2"></p><h2 data-i18n="cp.h2"></h2><p class="cp-p" data-i18n="cp.p2"></p></div>
+      <div class="cp-ch" data-ch="3"><p class="eyebrow" data-i18n="cp.k3"></p><h2 data-i18n="cp.h3"></h2><p class="cp-p" data-i18n="cp.p3"></p></div>
+      <div class="cp-ch" data-ch="4"><p class="eyebrow" data-i18n="cp.k4"></p><h2 data-i18n="cp.h4"></h2><p class="cp-p" data-i18n="cp.p4"></p><p class="cp-count" id="cpCount" aria-live="off"></p></div>
+      <div class="cp-ch" data-ch="5"><p class="eyebrow" data-i18n="cp.k5"></p><h2 data-i18n="cp.h5"></h2><p class="cp-p" data-i18n="cp.p5"></p></div>
+      <div class="cp-ch" data-ch="6"><p class="eyebrow" data-i18n="cp.k6"></p><h2 data-i18n="cp.h6"></h2><p class="cp-p" data-i18n="cp.p6"></p><dl class="cp-specs" id="cpSpecs"></dl><div class="cp-cta" id="cpCta"></div></div>
+      </div>
+      <ol class="cp-dots" aria-hidden="true"><li></li><li></li><li></li><li></li><li></li><li></li><li></li></ol>
+      <div class="cp-pick" role="group" aria-labelledby="cpPickL">
+        <p id="cpPickL" data-i18n="cp.choose">Choose your carpet</p>
+        <div class="cp-pick-row" id="cpPick"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <span class="mark mark-sm"><img src="/brand/logo.webp" alt="ARTRA" width="720" height="158"></span>
+    <span class="muted">© <span id="year">2026</span> · <span data-i18n="foot.tag">Royal handicrafts, made by hand.</span></span>
+    <a href="/#collection" class="muted" data-i18n="foot.collection">The collection →</a>
+  </div>
+</footer>
+
+<script src="/i18n-account.js?v=3"></script>
+<script src="/i18n-carpet.js?v=1"></script>
+<script src="/i18n.js?v=6"></script>
+<script src="/products.js?v=6"></script>
+<script src="/silkroad.js?v=6"></script>
+<script src="/carpet.js?v=1"></script>
+</body>
+</html>

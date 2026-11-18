@@ -1,0 +1,103 @@
+// ARTRA — the wording of /carpet (the making of a carpet, told as you scroll), in five languages.
+// Loaded before i18n.js, which merges it in.
+(function () {
+  var X = {
+    en: {
+      "cp.meta_title": "The making of a carpet — ARTRA", "cp.meta_desc": "Choose a carpet and scroll: from spun thread and plant dyes to the chart, the knots and the finished carpet.",
+      "cp.choose": "Choose your carpet", "cp.scroll": "Scroll to watch it being made",
+      "cp.d1": "The Throne Rug", "cp.d1_s": "Kashan · silk on silk · central medallion",
+      "cp.d2": "The Garden of Isfahan", "cp.d2_s": "Isfahan · wool and silk · garden panels · to commission",
+      "cp.d3": "The Herati of Tabriz", "cp.d3_s": "Tabriz · wool · herati lattice · to commission",
+      "cp.k0": "Kashan · Isfahan · Tabriz", "cp.h0": "Every thread has a road.", "cp.p0": "Choose a carpet below, then scroll: follow it from a single thread to the floor of a house.",
+      "cp.k1": "I · The thread", "cp.h1": "Spin the thread.", "cp.p1": "Wool from highland flocks, or silk unwound from the cocoon, is spun by hand into a thread strong enough for a century of footsteps.",
+      "cp.k2": "II · The colour", "cp.h2": "Steep the colour.", "cp.p2": "Each skein is steeped in plant dyes, again and again, until the colour holds. No two baths are ever quite the same.",
+      "cp.k3": "III · The map", "cp.h3": "Draw the map.", "cp.p3": "The master draws the design on graph paper, the naqsheh, square by square. Every square is one knot.",
+      "cp.k4": "IV · The knots", "cp.h4": "Knot by knot.", "cp.p4": "Row after row, the weaver ties each knot around two warp threads, cuts it, and beats it down with a heavy comb.",
+      "cp.k5": "V · The finish", "cp.h5": "Shear and wash.", "cp.p5": "The pile is sheared level, the carpet washed in running water and dried in the sun, until the colours settle and the surface shines.",
+      "cp.k6": "VI · The house", "cp.h6": "Yours to keep.", "cp.p6": "Made by hand, from the first thread to the last knot.",
+      "cp.knots": "{n} knots tied", "cp.enquire": "Enquire about this carpet", "cp.commission": "Commission this carpet", "cp.see": "See the piece",
+      "dye.madder": "Madder root", "dye.indigo": "Indigo", "dye.pomegranate": "Pomegranate rind", "dye.weld": "Weld", "dye.walnut": "Walnut husk", "dye.ivory": "Undyed", "dye.larkspur": "Larkspur", "dye.vine": "Vine leaves",
+      "sp.city": "City", "sp.fibre": "Fibre", "sp.knots": "Knots", "sp.dyes": "Dyes", "sp.silk": "Silk on silk", "sp.woolsilk": "Wool and silk", "sp.wool": "Wool",
+      "sp.knots1": "1.2 million, by hand", "sp.knots_o": "Set when you commission it", "sp.natural": "Plant dyes",
+      "cp.aria": "The making of the carpet, drawn as you scroll"
+    },
+    fr: {
+      "cp.meta_title": "La fabrication d'un tapis — ARTRA", "cp.meta_desc": "Choisissez un tapis et faites défiler : du fil filé et des teintures végétales au carton, aux nœuds et au tapis achevé.",
+      "cp.choose": "Choisissez votre tapis", "cp.scroll": "Faites défiler pour le voir naître",
+      "cp.d1": "Le Tapis du Trône", "cp.d1_s": "Kachan · soie sur soie · médaillon central",
+      "cp.d2": "Le Jardin d'Ispahan", "cp.d2_s": "Ispahan · laine et soie · panneaux de jardin · sur commande",
+      "cp.d3": "Le Hérati de Tabriz", "cp.d3_s": "Tabriz · laine · treillis hérati · sur commande",
+      "cp.k0": "Kachan · Ispahan · Tabriz", "cp.h0": "Chaque fil a sa route.", "cp.p0": "Choisissez un tapis ci-dessous, puis faites défiler : suivez-le d'un simple fil jusqu'au sol d'une maison.",
+      "cp.k1": "I · Le fil", "cp.h1": "Filer le fil.", "cp.p1": "La laine des troupeaux d'altitude, ou la soie dévidée du cocon, est filée à la main en un fil assez solide pour un siècle de pas.",
+      "cp.k2": "II · La couleur", "cp.h2": "Infuser la couleur.", "cp.p2": "Chaque écheveau est plongé dans des teintures végétales, encore et encore, jusqu'à ce que la couleur tienne. Aucun bain n'est tout à fait le même.",
+      "cp.k3": "III · Le carton", "cp.h3": "Dessiner la carte.", "cp.p3": "Le maître dessine le motif sur papier quadrillé, le naqsheh, case par case. Chaque case est un nœud.",
+      "cp.k4": "IV · Les nœuds", "cp.h4": "Nœud après nœud.", "cp.p4": "Rang après rang, le tisserand noue chaque nœud autour de deux fils de chaîne, le coupe, et le tasse au peigne lourd.",
+      "cp.k5": "V · La finition", "cp.h5": "Tondre et laver.", "cp.p5": "Le velours est tondu à niveau, le tapis lavé à l'eau courante et séché au soleil, jusqu'à ce que les couleurs se posent et que la surface brille.",
+      "cp.k6": "VI · La maison", "cp.h6": "À vous de le garder.", "cp.p6": "Fait main, du premier fil au dernier nœud.",
+      "cp.knots": "{n} nœuds noués", "cp.enquire": "Se renseigner sur ce tapis", "cp.commission": "Commander ce tapis", "cp.see": "Voir la pièce",
+      "dye.madder": "Racine de garance", "dye.indigo": "Indigo", "dye.pomegranate": "Écorce de grenade", "dye.weld": "Gaude", "dye.walnut": "Brou de noix", "dye.ivory": "Non teint", "dye.larkspur": "Pied-d'alouette", "dye.vine": "Feuilles de vigne",
+      "sp.city": "Ville", "sp.fibre": "Fibre", "sp.knots": "Nœuds", "sp.dyes": "Teintures", "sp.silk": "Soie sur soie", "sp.woolsilk": "Laine et soie", "sp.wool": "Laine",
+      "sp.knots1": "1,2 million, à la main", "sp.knots_o": "Fixés à la commande", "sp.natural": "Teintures végétales",
+      "cp.aria": "La fabrication du tapis, dessinée au fil du défilement"
+    },
+    es: {
+      "cp.meta_title": "Cómo nace una alfombra — ARTRA", "cp.meta_desc": "Elija una alfombra y desplácese: del hilo hilado y los tintes vegetales al cartón, los nudos y la alfombra terminada.",
+      "cp.choose": "Elija su alfombra", "cp.scroll": "Desplácese para verla nacer",
+      "cp.d1": "La Alfombra del Trono", "cp.d1_s": "Kashán · seda sobre seda · medallón central",
+      "cp.d2": "El Jardín de Isfahán", "cp.d2_s": "Isfahán · lana y seda · paneles de jardín · por encargo",
+      "cp.d3": "El Herati de Tabriz", "cp.d3_s": "Tabriz · lana · celosía herati · por encargo",
+      "cp.k0": "Kashán · Isfahán · Tabriz", "cp.h0": "Cada hilo tiene su ruta.", "cp.p0": "Elija una alfombra abajo y desplácese: sígala desde un solo hilo hasta el suelo de una casa.",
+      "cp.k1": "I · El hilo", "cp.h1": "Hilar el hilo.", "cp.p1": "La lana de los rebaños de montaña, o la seda devanada del capullo, se hila a mano en un hilo capaz de resistir un siglo de pasos.",
+      "cp.k2": "II · El color", "cp.h2": "Infundir el color.", "cp.p2": "Cada madeja se sumerge en tintes vegetales, una y otra vez, hasta que el color se fija. Ningún baño es exactamente igual.",
+      "cp.k3": "III · El cartón", "cp.h3": "Dibujar el mapa.", "cp.p3": "El maestro dibuja el diseño en papel cuadriculado, el naqsheh, cuadro a cuadro. Cada cuadro es un nudo.",
+      "cp.k4": "IV · Los nudos", "cp.h4": "Nudo a nudo.", "cp.p4": "Hilera tras hilera, la tejedora anuda cada nudo en dos hilos de urdimbre, lo corta y lo asienta con un peine pesado.",
+      "cp.k5": "V · El acabado", "cp.h5": "Esquilar y lavar.", "cp.p5": "El pelo se esquila a ras, la alfombra se lava en agua corriente y se seca al sol, hasta que los colores reposan y la superficie brilla.",
+      "cp.k6": "VI · La casa", "cp.h6": "Para quedársela.", "cp.p6": "Hecha a mano, del primer hilo al último nudo.",
+      "cp.knots": "{n} nudos anudados", "cp.enquire": "Preguntar por esta alfombra", "cp.commission": "Encargar esta alfombra", "cp.see": "Ver la pieza",
+      "dye.madder": "Raíz de rubia", "dye.indigo": "Índigo", "dye.pomegranate": "Cáscara de granada", "dye.weld": "Gualda", "dye.walnut": "Cáscara de nuez", "dye.ivory": "Sin teñir", "dye.larkspur": "Espuela de caballero", "dye.vine": "Hojas de vid",
+      "sp.city": "Ciudad", "sp.fibre": "Fibra", "sp.knots": "Nudos", "sp.dyes": "Tintes", "sp.silk": "Seda sobre seda", "sp.woolsilk": "Lana y seda", "sp.wool": "Lana",
+      "sp.knots1": "1,2 millones, a mano", "sp.knots_o": "Se fijan al encargarla", "sp.natural": "Tintes vegetales",
+      "cp.aria": "Cómo nace la alfombra, dibujado al desplazarse"
+    },
+    ar: {
+      "cp.meta_title": "صناعة سجادة — آرترا", "cp.meta_desc": "اختر سجادة ومرّر الصفحة: من الخيط المغزول والأصباغ النباتية إلى المخطط والعُقد والسجادة المكتملة.",
+      "cp.choose": "اختر سجادتك", "cp.scroll": "مرّر لتراها تُصنع",
+      "cp.d1": "سجادة العرش", "cp.d1_s": "كاشان · حرير على حرير · ميدالية في الوسط",
+      "cp.d2": "حديقة أصفهان", "cp.d2_s": "أصفهان · صوف وحرير · ألواح الحديقة · حسب الطلب",
+      "cp.d3": "هراتي تبريز", "cp.d3_s": "تبريز · صوف · شبكة هراتي · حسب الطلب",
+      "cp.k0": "كاشان · أصفهان · تبريز", "cp.h0": "لكل خيطٍ طريقه.", "cp.p0": "اختر سجادة في الأسفل ثم مرّر الصفحة: تابعها من خيطٍ واحد إلى أرض بيت.",
+      "cp.k1": "١ · الخيط", "cp.h1": "اغزل الخيط.", "cp.p1": "يُغزل صوف قطعان المرتفعات، أو الحرير المحلول من شرنقته، يدويًا خيطًا يصمد لقرنٍ من الخطى.",
+      "cp.k2": "٢ · اللون", "cp.h2": "انقع اللون.", "cp.p2": "تُغمس كل شلّة في الأصباغ النباتية مرةً بعد مرة حتى يثبت اللون. ولا يتشابه حوضان أبدًا.",
+      "cp.k3": "٣ · المخطط", "cp.h3": "ارسم الخريطة.", "cp.p3": "يرسم المعلّم التصميم على ورق المربعات، «النقشة»، مربعًا مربعًا. كل مربع عقدة واحدة.",
+      "cp.k4": "٤ · العُقد", "cp.h4": "عقدةً عقدة.", "cp.p4": "صفًّا بعد صف، تعقد النسّاجة كل عقدة حول خيطَي سداة، وتقصّها، وتدكّها بمشطٍ ثقيل.",
+      "cp.k5": "٥ · التشطيب", "cp.h5": "اقصّ واغسل.", "cp.p5": "يُقصّ الوبر مستويًا، وتُغسل السجادة في الماء الجاري وتجفّ في الشمس، حتى تستقرّ الألوان ويلمع السطح.",
+      "cp.k6": "٦ · البيت", "cp.h6": "لك لتحتفظ بها.", "cp.p6": "مصنوعة باليد، من الخيط الأول إلى العقدة الأخيرة.",
+      "cp.knots": "{n} عقدة معقودة", "cp.enquire": "استفسر عن هذه السجادة", "cp.commission": "اطلب هذه السجادة", "cp.see": "شاهد القطعة",
+      "dye.madder": "جذر الفوّة", "dye.indigo": "النيلة", "dye.pomegranate": "قشر الرمان", "dye.weld": "البليحاء", "dye.walnut": "قشر الجوز", "dye.ivory": "دون صبغ", "dye.larkspur": "العايق", "dye.vine": "ورق العنب",
+      "sp.city": "المدينة", "sp.fibre": "الخيط", "sp.knots": "العُقد", "sp.dyes": "الأصباغ", "sp.silk": "حرير على حرير", "sp.woolsilk": "صوف وحرير", "sp.wool": "صوف",
+      "sp.knots1": "1.2 مليون، يدويًا", "sp.knots_o": "تُحدَّد عند الطلب", "sp.natural": "أصباغ نباتية",
+      "cp.aria": "صناعة السجادة، مرسومة مع التمرير"
+    },
+    fa: {
+      "cp.meta_title": "ساخت یک فرش — آرترا", "cp.meta_desc": "فرشی برگزینید و صفحه را پایین ببرید: از نخ ریسیده و رنگ‌های گیاهی تا نقشه، گره‌ها و فرش پایان‌یافته.",
+      "cp.choose": "فرش خود را برگزینید", "cp.scroll": "پایین بروید تا ساخته شدنش را ببینید",
+      "cp.d1": "قالیچهٔ تخت", "cp.d1_s": "کاشان · ابریشم بر ابریشم · ترنج میانی",
+      "cp.d2": "باغ اصفهان", "cp.d2_s": "اصفهان · پشم و ابریشم · خشتی باغی · سفارشی",
+      "cp.d3": "هراتی تبریز", "cp.d3_s": "تبریز · پشم · نقش هراتی · سفارشی",
+      "cp.k0": "کاشان · اصفهان · تبریز", "cp.h0": "هر نخی راهی دارد.", "cp.p0": "فرشی را در پایین برگزینید و صفحه را پایین ببرید: آن را از یک رشته نخ تا کف یک خانه دنبال کنید.",
+      "cp.k1": "۱ · نخ", "cp.h1": "نخ را بریس.", "cp.p1": "پشم گله‌های کوهستان، یا ابریشمی که از پیله باز می‌شود، با دست به نخی ریسیده می‌شود که یک سده گام را تاب بیاورد.",
+      "cp.k2": "۲ · رنگ", "cp.h2": "رنگ را بخوابان.", "cp.p2": "هر کلاف بارها در رنگ‌های گیاهی خوابانده می‌شود تا رنگ بنشیند. هیچ دو خُمی یکسان نیست.",
+      "cp.k3": "۳ · نقشه", "cp.h3": "نقشه را بکش.", "cp.p3": "استاد طرح را خانه به خانه بر کاغذ شطرنجی، نقشه، می‌کشد. هر خانه یک گره است.",
+      "cp.k4": "۴ · گره‌ها", "cp.h4": "گره به گره.", "cp.p4": "رج به رج، بافنده هر گره را دور دو تار می‌زند، می‌بُرد و با دفتین سنگین می‌کوبد.",
+      "cp.k5": "۵ · پرداخت", "cp.h5": "پرداخت و شست‌وشو.", "cp.p5": "پرز یکدست قیچی می‌شود، فرش در آب روان شسته و زیر آفتاب خشک می‌شود تا رنگ‌ها بنشینند و رویه بدرخشد.",
+      "cp.k6": "۶ · خانه", "cp.h6": "از آنِ شما.", "cp.p6": "دست‌بافت، از نخستین رشته تا واپسین گره.",
+      "cp.knots": "{n} گره زده شد", "cp.enquire": "پرسش دربارهٔ این فرش", "cp.commission": "سفارش این فرش", "cp.see": "دیدن اثر",
+      "dye.madder": "روناس", "dye.indigo": "نیل", "dye.pomegranate": "پوست انار", "dye.weld": "اسپرک", "dye.walnut": "پوست گردو", "dye.ivory": "رنگ‌نشده", "dye.larkspur": "زلیر", "dye.vine": "برگ مو",
+      "sp.city": "شهر", "sp.fibre": "الیاف", "sp.knots": "گره", "sp.dyes": "رنگ‌ها", "sp.silk": "ابریشم بر ابریشم", "sp.woolsilk": "پشم و ابریشم", "sp.wool": "پشم",
+      "sp.knots1": "۱٫۲ میلیون، دست‌باف", "sp.knots_o": "هنگام سفارش تعیین می‌شود", "sp.natural": "رنگ‌های گیاهی",
+      "cp.aria": "ساخت فرش، همراه با پایین رفتن صفحه کشیده می‌شود"
+    }
+  };
+  var E = window.ARTRA_I18N_EXTRA = window.ARTRA_I18N_EXTRA || {};
+  Object.keys(X).forEach(function (l) { E[l] = E[l] || {}; for (var k in X[l]) E[l][k] = X[l][k]; });
+})();

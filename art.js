@@ -84,7 +84,8 @@
       // drive.google.com/file/d/<id>/view or ...open?id=<id>; the file must be shared as "Anyone with the link".
       var drive = String(p.photo || "").match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=\w+&)?id=)([\w-]+)/);
       if (drive) p.photo = "https://lh3.googleusercontent.com/d/" + drive[1];
-      p.url = "/piece?p=" + encodeURIComponent(p.slug);
+      // The Throne Rug opens on the story of its making (/carpet), which leads on to its full details.
+      p.url = p.slug === "carpet" ? "/carpet" : "/piece?p=" + encodeURIComponent(p.slug);
       return p;
     });
   }
