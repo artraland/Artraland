@@ -15,7 +15,7 @@
   <link rel="preload" as="image" href="/photos/hero-silk.webp" media="(min-width: 721px)">
   <link rel="preload" as="image" href="/photos/hero-silk-phone.webp" media="(max-width: 720px)">
   <link rel="stylesheet" href="/royal.css?v=31">
-  <link rel="stylesheet" href="/expertise.css?v=4">
+  <link rel="stylesheet" href="/expertise.css?v=5">
   <script>
     // Picks the language before the page paints: the ?lang= address, then the visitor's last choice,
     // then their browser's language, else English. Arabic and Persian read right to left.
@@ -68,18 +68,28 @@
         <a class="btn btn-ghost" href="#how" data-i18n="ex.how_btn">How it works</a>
       </div>
     </div>
-      <figure class="cert cert-sample" aria-label="Sample Certificate of Expertise">
-        <div class="cert-in">
-          <p class="cert-kicker" data-i18n="ex.cert_kicker">Certificate of Expertise</p>
-          <p class="cert-fa" lang="fa" dir="rtl">گواهی کارشناسی</p>
-          <p class="cert-title" data-i18n="ex.cert_sample_title">Engraved Lidded Vase</p>
-          <p class="cert-place" data-i18n="ex.cert_sample_place">Isfahan, Persia</p>
-          <dl>
-            <dt data-i18n="ex.cert_registry">Registry</dt><dd dir="ltr">ARX-2026-0001</dd>
-            <dt data-i18n="ex.cert_basis">Basis</dt><dd data-i18n="ex.cert_sample_basis">Insurance replacement</dd>
-            <dt data-i18n="ex.cert_signed">Signed</dt><dd data-i18n="ex.cert_sample_signed">The expert · the second expert</dd>
+      <figure class="cert2 cert2-front cert2-hero" aria-label="Sample Certificate of Expert Appraisal, front">
+        <div class="c2-in">
+          <img class="c2-logo" src="/brand/logo.webp" alt="ARTRA" width="720" height="158">
+          <p class="c2-sub" data-i18n="ex.eyebrow">Appraisal &amp; expertise</p>
+          <p class="c2-title" data-i18n="cs.title">Certificate of Expert Appraisal</p>
+          <p class="c2-intro" data-i18n="cs.intro"></p>
+          <p class="c2-piece" data-i18n="ex.cert_sample_title">Engraved Lidded Vase</p>
+          <p class="c2-place" data-i18n="ex.cert_sample_place">Isfahan, Persia</p>
+          <dl class="c2-rows">
+            <dt data-i18n="cs.registry">Registry</dt><dd dir="ltr">ARX-2026-0001</dd>
+            <dt data-i18n="cs.basis">Basis</dt><dd data-i18n="cs.basis_v"></dd>
+            <dt data-i18n="cs.value">Appraised value</dt><dd><b dir="ltr">USD 14,500</b><small data-i18n="cs.value_words"></small></dd>
+            <dt data-i18n="cs.date">Date of appraisal</dt><dd data-i18n="cs.date_v"></dd>
           </dl>
-          <svg class="seal" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54" fill="#8c2f28"/><circle cx="60" cy="60" r="46" fill="none" stroke="#e8cf8a" stroke-width="1.2" stroke-dasharray="3 3"/><path d="M60 22 L68 50 L96 60 L68 70 L60 98 L52 70 L24 60 L52 50 Z" fill="none" stroke="#e8cf8a" stroke-width="1.6"/><text x="60" y="66" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="16" fill="#f3eee4" letter-spacing="2">ARTRA</text></svg>
+          <div class="c2-foot">
+            <svg class="c2-seal" viewBox="0 0 120 120" aria-hidden="true"><defs><path id="sealArc1" d="M60 60 m-40 0 a40 40 0 1 1 80 0 a40 40 0 1 1 -80 0"/></defs><circle cx="60" cy="60" r="56" fill="#ece5d6"/><circle cx="60" cy="60" r="52" fill="none" stroke="#c9bb9c" stroke-width="1.4"/><circle cx="60" cy="60" r="30" fill="none" stroke="#c9bb9c" stroke-width="1"/><text font-family="Jost, sans-serif" font-size="9" letter-spacing="3.2" fill="#b3a27e"><textPath href="#sealArc1">APPRAISAL · EXPERTISE · ARTRA ·</textPath></text><text x="60" y="65" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="15" fill="#a8946a" letter-spacing="2">ARTRA</text></svg>
+            <div class="c2-signs">
+              <div class="c2-sign"><svg class="c2-sig" viewBox="0 0 160 40" aria-hidden="true"><path d="M4 30 C 18 6, 26 34, 38 18 S 58 4, 62 22 C 66 36, 80 10, 92 20 S 112 32, 122 14 C 128 6, 138 30, 156 12" fill="none" stroke="#1c2235" stroke-width="1.4" stroke-linecap="round"/></svg><span data-i18n="cs.expert">The expert</span></div>
+              <div class="c2-sign"><svg class="c2-sig" viewBox="0 0 160 40" aria-hidden="true"><path d="M6 24 C 20 30, 24 8, 40 16 C 52 22, 50 34, 66 26 S 86 6, 98 18 C 108 28, 120 30, 132 18 S 150 12, 156 20" fill="none" stroke="#1c2235" stroke-width="1.3" stroke-linecap="round"/></svg><span data-i18n="cs.expert2">The second expert</span></div>
+            </div>
+          </div>
+          <p class="c2-over"><span aria-hidden="true">↻</span> <span data-i18n="cs.overleaf"></span></p>
           <span class="cert-sample-tag" data-i18n="ex.sample">Sample</span>
         </div>
       </figure>
@@ -129,6 +139,61 @@
       <li class="reveal"><span class="st-n">v</span><b data-i18n="ex.s5.t"></b><span data-i18n="ex.s5.d"></span></li>
       <li class="reveal"><span class="st-n">vi</span><b data-i18n="ex.s6.t"></b><span data-i18n="ex.s6.d"></span></li>
     </ol>
+  </div>
+</section>
+
+<section class="section ex-cert" id="certificate">
+  <div class="wrap">
+    <div class="section-head reveal"><p class="eyebrow" data-i18n="cs.eyebrow"></p><h2 data-i18n="cs.h2"></h2><p class="muted" data-i18n="cs.lede"></p></div>
+    <div class="cert2-pair">
+      <div class="reveal"><p class="cert2-label" data-i18n="cs.front">Front</p>
+      <figure class="cert2 cert2-front" aria-label="Sample Certificate of Expert Appraisal, front">
+        <div class="c2-in">
+          <img class="c2-logo" src="/brand/logo.webp" alt="ARTRA" width="720" height="158">
+          <p class="c2-sub" data-i18n="ex.eyebrow">Appraisal &amp; expertise</p>
+          <p class="c2-title" data-i18n="cs.title">Certificate of Expert Appraisal</p>
+          <p class="c2-intro" data-i18n="cs.intro"></p>
+          <p class="c2-piece" data-i18n="ex.cert_sample_title">Engraved Lidded Vase</p>
+          <p class="c2-place" data-i18n="ex.cert_sample_place">Isfahan, Persia</p>
+          <dl class="c2-rows">
+            <dt data-i18n="cs.registry">Registry</dt><dd dir="ltr">ARX-2026-0001</dd>
+            <dt data-i18n="cs.basis">Basis</dt><dd data-i18n="cs.basis_v"></dd>
+            <dt data-i18n="cs.value">Appraised value</dt><dd><b dir="ltr">USD 14,500</b><small data-i18n="cs.value_words"></small></dd>
+            <dt data-i18n="cs.date">Date of appraisal</dt><dd data-i18n="cs.date_v"></dd>
+          </dl>
+          <div class="c2-foot">
+            <svg class="c2-seal" viewBox="0 0 120 120" aria-hidden="true"><defs><path id="sealArc2" d="M60 60 m-40 0 a40 40 0 1 1 80 0 a40 40 0 1 1 -80 0"/></defs><circle cx="60" cy="60" r="56" fill="#ece5d6"/><circle cx="60" cy="60" r="52" fill="none" stroke="#c9bb9c" stroke-width="1.4"/><circle cx="60" cy="60" r="30" fill="none" stroke="#c9bb9c" stroke-width="1"/><text font-family="Jost, sans-serif" font-size="9" letter-spacing="3.2" fill="#b3a27e"><textPath href="#sealArc2">APPRAISAL · EXPERTISE · ARTRA ·</textPath></text><text x="60" y="65" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="15" fill="#a8946a" letter-spacing="2">ARTRA</text></svg>
+            <div class="c2-signs">
+              <div class="c2-sign"><svg class="c2-sig" viewBox="0 0 160 40" aria-hidden="true"><path d="M4 30 C 18 6, 26 34, 38 18 S 58 4, 62 22 C 66 36, 80 10, 92 20 S 112 32, 122 14 C 128 6, 138 30, 156 12" fill="none" stroke="#1c2235" stroke-width="1.4" stroke-linecap="round"/></svg><span data-i18n="cs.expert">The expert</span></div>
+              <div class="c2-sign"><svg class="c2-sig" viewBox="0 0 160 40" aria-hidden="true"><path d="M6 24 C 20 30, 24 8, 40 16 C 52 22, 50 34, 66 26 S 86 6, 98 18 C 108 28, 120 30, 132 18 S 150 12, 156 20" fill="none" stroke="#1c2235" stroke-width="1.3" stroke-linecap="round"/></svg><span data-i18n="cs.expert2">The second expert</span></div>
+            </div>
+          </div>
+          <p class="c2-over"><span aria-hidden="true">↻</span> <span data-i18n="cs.overleaf"></span></p>
+          <span class="cert-sample-tag" data-i18n="ex.sample">Sample</span>
+        </div>
+      </figure>
+      </div>
+      <div class="reveal"><p class="cert2-label" data-i18n="cs.back">Back</p>
+      <figure class="cert2 cert2-back" aria-label="Sample archival record, back">
+        <div class="c2-in">
+          <p class="c2-title c2-title-sm" data-i18n="cs.back_title">Archival record: provenance &amp; conservation</p>
+          <h4 data-i18n="cs.prov">Provenance</h4>
+          <ol class="c2-list"><li data-i18n="cs.p1"></li><li data-i18n="cs.p2"></li><li data-i18n="cs.p3"></li></ol>
+          <h4 data-i18n="cs.exh">Exhibition history</h4>
+          <p class="c2-text" data-i18n="cs.exh_v"></p>
+          <h4 data-i18n="cs.cond">Condition report</h4>
+          <dl class="c2-rows c2-rows-sm">
+            <dt data-i18n="cs.overall"></dt><dd data-i18n="cs.overall_v"></dd>
+            <dt data-i18n="cs.rest"></dt><dd data-i18n="cs.rest_v"></dd>
+            <dt data-i18n="cs.mat"></dt><dd data-i18n="cs.mat_v"></dd>
+          </dl>
+          <table class="c2-table"><thead><tr><th data-i18n="cs.t_date">Date</th><th data-i18n="cs.t_action">Action</th><th data-i18n="cs.t_by">Verified by</th></tr></thead><tbody><tr><td dir="ltr">18/11/2026</td><td data-i18n="cs.a1"></td><td data-i18n="cs.expert"></td></tr><tr><td dir="ltr">18/11/2026</td><td data-i18n="cs.a2"></td><td data-i18n="cs.expert2"></td></tr><tr><td dir="ltr">18/11/2026</td><td data-i18n="cs.a3"></td><td data-i18n="cs.expert"></td></tr></tbody></table>
+          <p class="c2-back-foot"><span data-i18n="cs.back_foot"></span> <span dir="ltr">Ref. ARX-2026-0001 · artraland.com/verify</span></p>
+          <span class="cert-sample-tag" data-i18n="ex.sample">Sample</span>
+        </div>
+      </figure>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -211,7 +276,7 @@
 </footer>
 
 <script src="/i18n-account.js?v=3"></script>
-<script src="/i18n-expertise.js?v=3"></script>
+<script src="/i18n-expertise.js?v=4"></script>
 <script src="/i18n.js?v=6"></script>
 <script src="/silkroad.js?v=6"></script>
 <script src="/expertise.js?v=1"></script>
