@@ -73,7 +73,7 @@ header (a guard against cross-site requests); every endpoint checks the role on 
 
 Settings in Vercel (project → Settings → Environment Variables): `DATABASE_URL` (added by the Neon connection);
 `ADMIN_EMAILS` — comma-separated addresses that become Admin when they sign up or sign in (the way to get the first
-admin); `BLOB_READ_WRITE_TOKEN` — added by connecting a Blob store (Storage → Blob), needed for photo uploads (without
+admin); `BLOB_STORE_ID` (or, for older stores, `BLOB_READ_WRITE_TOKEN`) — added by connecting a public Blob store (Storage → Create Storage → Blob; connected: `artraland-photos`), needed for photo uploads (without
 it, providers paste a photo link). The commission form and the enquiry form on piece pages now send straight to the
 Enquiries desk; if that fails, they fall back to the visitor's email app.
 

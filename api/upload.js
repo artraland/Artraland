@@ -1,6 +1,7 @@
 // /api/upload — a product provider uploads a photo of a piece (JPEG, PNG or WebP, up to 4 MB).
 // /api/upload?for=appraisal — anyone signed in uploads a photo (or a PDF document) for an appraisal request.
-// The file is stored in Vercel Blob (BLOB_READ_WRITE_TOKEN) under a random name, and its address is returned.
+// The file is stored in Vercel Blob under a random name, and its address is returned. A store connected in Vercel
+// sets BLOB_STORE_ID (the library then signs in with the deployment's own OIDC token); older ones set BLOB_READ_WRITE_TOKEN.
 import { put } from "@vercel/blob";
 import { randomUUID } from "node:crypto";
 import { endpoint, query, fail } from "./_lib/http.js";
@@ -14,7 +15,7 @@ export default endpoint({
   async POST(req) {
     const forAppraisal = query(req).get("for") === "appraisal";
     await requireUser(req, forAppraisal ? null : ["provider", "admin"]);
-    if (!process.env.BLOB_READ_WRITE_TOKEN) fail(503, "uploads_off");
+    if (!process.env.BLOB_STORE_ID && !process.env.BLOB_READ_WRITE_TOKEN) fail(503, "uploads_off");
     const type = String(req.headers["content-type"] || "").split(";")[0].trim();
     const ext = (forAppraisal ? DOCS : TYPES)[type];
     if (!ext) fail(415, "bad_type");
