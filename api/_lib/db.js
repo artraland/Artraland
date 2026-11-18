@@ -97,6 +97,47 @@ const SCHEMA = [
      updated_at timestamptz NOT NULL DEFAULT now())`],
   ["CREATE INDEX IF NOT EXISTS products_provider ON products(provider_id)"],
   ["CREATE INDEX IF NOT EXISTS products_status ON products(status)"],
+  // The Expert role (appraisals) joined later: widen the list of roles on databases made before it.
+  ["ALTER TABLE users DROP CONSTRAINT IF EXISTS users_role_check"],
+  ["ALTER TABLE users ADD CONSTRAINT users_role_check CHECK (role IN ('client', 'provider', 'sales', 'expert', 'admin'))"],
+  // Appraisal requests. The piece's details and the expert's findings are kept as JSON (their fields are checked
+  // in api/appraisals.js); the stage, the people and the certificate number are columns, for the desk's lists.
+  [`CREATE TABLE IF NOT EXISTS appraisals (
+     id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+     client_id uuid NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+     service text NOT NULL CHECK (service IN ('opinion', 'appraisal', 'authentication')),
+     purpose text NOT NULL DEFAULT '',
+     viewing text NOT NULL DEFAULT 'ship' CHECK (viewing IN ('ship', 'visit')),
+     piece jsonb NOT NULL DEFAULT '{}'::jsonb,
+     photos jsonb NOT NULL DEFAULT '[]'::jsonb,
+     status text NOT NULL DEFAULT 'submitted' CHECK (status IN ('submitted', 'info_needed', 'quoted', 'accepted', 'received',
+       'examination', 'peer_review', 'ready', 'issued', 'returned', 'declined', 'withdrawn', 'closed')),
+     expert_id uuid REFERENCES users(id) ON DELETE SET NULL,
+     reviewer_id uuid REFERENCES users(id) ON DELETE SET NULL,
+     fee numeric(12, 2),
+     currency text NOT NULL DEFAULT 'EUR',
+     basis text NOT NULL DEFAULT '',
+     findings jsonb NOT NULL DEFAULT '{}'::jsonb,
+     certificate_no text UNIQUE,
+     issued_at timestamptz,
+     carrier text NOT NULL DEFAULT '',
+     tracking_number text NOT NULL DEFAULT '',
+     tracking_url text NOT NULL DEFAULT '',
+     lang text NOT NULL DEFAULT 'en',
+     created_at timestamptz NOT NULL DEFAULT now(),
+     updated_at timestamptz NOT NULL DEFAULT now())`],
+  ["CREATE INDEX IF NOT EXISTS appraisals_client ON appraisals(client_id)"],
+  ["CREATE INDEX IF NOT EXISTS appraisals_status ON appraisals(status)"],
+  // Every step, message and internal note on an appraisal. Internal notes are never shown to the client.
+  [`CREATE TABLE IF NOT EXISTS appraisal_events (
+     id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+     appraisal_id bigint NOT NULL REFERENCES appraisals(id) ON DELETE CASCADE,
+     kind text NOT NULL CHECK (kind IN ('status', 'message', 'note')),
+     status text NOT NULL DEFAULT '',
+     body text NOT NULL DEFAULT '',
+     created_by uuid REFERENCES users(id) ON DELETE SET NULL,
+     created_at timestamptz NOT NULL DEFAULT now())`],
+  ["CREATE INDEX IF NOT EXISTS appraisal_events_a ON appraisal_events(appraisal_id)"],
 ];
 
 let ready = null;

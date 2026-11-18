@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ARTRA — Appraisal &amp; expertise</title>
+  <meta name="description" content="ARTRA appraises and authenticates handcrafted pieces made along the Silk Road, with a signed and verifiable Certificate of Expertise.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#05112f">
+  <link rel="icon" type="image/png" href="/brand/favicon.png">
+  <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png">
+  <meta property="og:image" content="https://artraland.com/brand/og-artra.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&family=Vazirmatn:wght@300;400;500;600&family=Noto+Naskh+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="/photos/hero-silk.webp" media="(min-width: 721px)">
+  <link rel="preload" as="image" href="/photos/hero-silk-phone.webp" media="(max-width: 720px)">
+  <link rel="stylesheet" href="/royal.css?v=30">
+  <link rel="stylesheet" href="/expertise.css?v=2">
+  <script>
+    // Picks the language before the page paints: the ?lang= address, then the visitor's last choice,
+    // then their browser's language, else English. Arabic and Persian read right to left.
+    (function () {
+      var L = ["en", "fr", "es", "ar", "fa"], l = null, d = document.documentElement;
+      try {
+        var q = new URLSearchParams(location.search).get("lang");
+        if (L.indexOf(q) > -1) { l = q; localStorage.setItem("artra-lang", q); }
+        else { var s = localStorage.getItem("artra-lang"); if (L.indexOf(s) > -1) l = s; }
+      } catch (e) {}
+      if (!l) {
+        var p = navigator.languages || [navigator.language || "en"];
+        for (var i = 0; i < p.length && !l; i++) { var c = String(p[i]).slice(0, 2).toLowerCase(); if (L.indexOf(c) > -1) l = c; }
+      }
+      l = l || "en";
+      d.lang = l;
+      d.dir = l === "ar" || l === "fa" ? "rtl" : "ltr";
+      d.className += " js";
+    })();
+  </script>
+</head>
+<body class="ex-page rq-page" data-title="meta.title_rq" data-desc="meta.desc_ex">
+
+<header class="top" id="top">
+  <div class="wrap top-in">
+    <a href="/" class="mark" data-i18n-aria="aria.home" aria-label="ARTRA home"><img src="/brand/logo.webp" alt="ARTRA" width="720" height="158"></a>
+    <nav class="nav" id="nav">
+      <a href="/#collection" data-i18n="nav.collection">Collection</a>
+      <a href="/#showcase" data-i18n="nav.showcase">Showcase</a>
+      <a href="/#road" data-i18n="nav.road">The Road</a>
+      <a href="/#craft" data-i18n="nav.craft">The craft</a>
+      <a href="/expertise" class="on" aria-current="page" data-i18n="nav.expertise">Expertise</a>
+      <a href="/account" class="nav-account" data-i18n="nav.account">Account</a>
+      <a href="/#commission" class="nav-cta" data-i18n="nav.commission">Commission</a>
+    </nav>
+    <div class="lang" id="lang" role="group"></div>
+    <button class="burger" id="burger" data-i18n-aria="aria.menu" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="main">
+<section class="ex-hero ex-hero-sm silk">
+  <div class="wrap">
+    <p class="eyebrow" data-i18n="rq.eyebrow">Request an appraisal</p>
+    <h1 data-i18n="rq.title">Tell us about your piece.</h1>
+    <p class="lede" data-i18n="rq.lede"></p>
+  </div>
+</section>
+<section class="section rq">
+  <div class="wrap">
+    <ol class="rq-parts" aria-hidden="true">
+      <li data-part="1"><span>1</span><b data-i18n="rq.p1"></b></li>
+      <li data-part="2"><span>2</span><b data-i18n="rq.p2"></b></li>
+      <li data-part="3"><span>3</span><b data-i18n="rq.p3"></b></li>
+      <li data-part="4"><span>4</span><b data-i18n="rq.p4"></b></li>
+      <li data-part="5"><span>5</span><b data-i18n="rq.p5"></b></li>
+    </ol>
+    <div id="rqApp" aria-live="polite"><p class="muted" data-i18n="a.loading">Loading…</p></div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <span class="mark mark-sm"><img src="/brand/logo.webp" alt="ARTRA" width="720" height="158"></span>
+    <span class="muted">© <span id="year">2026</span> · <span data-i18n="foot.tag">Royal handicrafts, made by hand.</span></span>
+    <a href="/expertise#verify" class="muted" data-i18n="ex.verify_title">Check a certificate</a>
+  </div>
+</footer>
+
+<script src="/i18n-account.js?v=3"></script>
+<script src="/i18n-expertise.js?v=2"></script>
+<script src="/i18n.js?v=6"></script>
+<script src="/silkroad.js?v=6"></script>
+<script src="/expertise.js?v=1"></script>
+</body>
+</html>

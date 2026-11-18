@@ -38,10 +38,34 @@ the English, so a form response can go in as English first and gain translations
   sends it back for review.
 - Sales: also the *Enquiries desk* (every enquiry and commission request: status, assignee, internal notes, reply by
   email) and the *Orders desk* (record a sale against a client's account, then update its status, carrier and tracking).
+- Expert: the *Expertise desk*, showing only the appraisals assigned to them, plus the client tabs.
 - Admin: everything above, plus *Review pieces* and *People*.
 
+Everyone also has *My appraisals* (below), and Sales and Admin have the *Expertise desk*.
+
+**Appraisal and expertise.** `expertise.html` (/expertise) presents the three services: an *opinion* from
+photographs (an opinion letter), a *full appraisal* (report and Certificate of Expertise with a value), and
+*authentication* (certificate without a value). It also has the certificate check. `request-appraisal.html` is
+the request form; it needs a signed-in account. `verify.html` (/verify?no=ARX-…) is the public check that a
+certificate's QR or link opens; it shows the piece, the service and the date, never the owner or the value.
+A request moves through these stages (`api/appraisals.js`):
+submitted → (info_needed ↔ submitted) → quoted → accepted → received → examination → peer_review → ready → issued → returned.
+- Screening (asking the client a question, or declining with a reason): Sales and Admin.
+- The quote (expert, second expert, fee, basis of value): Admin.
+- Accepting the quote: the client.
+- Recording the piece's arrival and its return: Sales.
+- The examination and findings: the assigned expert.
+- Agreeing or sending back: the second expert, who can never be the examining expert.
+- Signing: Admin, which issues the certificate number.
+
+An opinion skips receiving and returning the piece. The client never sees internal notes or the second expert's
+review, and sees the findings and value only once the certificate is issued. Pages and stages are in five
+languages (`i18n-expertise.js`). Photos for requests use the same Blob store as provider uploads. Without
+it, the form says that the team will ask for photographs. Payment and emails are not automated yet: after a
+quote is accepted, Sales send the payment details.
+
 The account server is in `api/` (Vercel Functions, Node): `auth` (sign up, sign in, sign out), `profile`, `favorites`,
-`enquiries`, `orders`, `products`, `users`, `upload` and `catalog` (approved pieces, added to the pages after
+`enquiries`, `orders`, `products`, `users`, `upload`, `appraisals`, `verify` and `catalog` (approved pieces, added to the pages after
 `products.js`). Data lives in Neon Postgres (`DATABASE_URL`, connected in Vercel → Storage); the tables are created
 on first use (`api/_lib/db.js`). Passwords are stored as scrypt hashes; sign-in sets an HttpOnly, Secure cookie whose
 token is stored only as a hash; five wrong passwords lock an account for 15 minutes; every change needs the `X-Artra`

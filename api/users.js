@@ -1,15 +1,20 @@
 // /api/users — people and roles.
 // GET (admin): everyone, ?q= to search by name or email. GET ?staff=1 (sales, admin): the sales team and admins,
-// for assigning enquiries. PATCH { id, role } (admin): change someone's role.
+// for assigning enquiries. GET ?experts=1 (sales, admin): experts and admins, for assigning appraisals. PATCH { id, role } (admin): change someone's role.
 import { q, one } from "./_lib/db.js";
 import { endpoint, body, query, str, oneOf, uuid, fail } from "./_lib/http.js";
 import { requireUser } from "./_lib/auth.js";
 
-const ROLES = ["client", "provider", "sales", "admin"];
+const ROLES = ["client", "provider", "sales", "expert", "admin"];
 
 export default endpoint({
   async GET(req) {
     const qs = query(req);
+    if (qs.get("experts")) {
+      // The people an appraisal can be assigned to.
+      await requireUser(req, ["sales", "admin"]);
+      return { users: await q("SELECT id, name, email, role FROM users WHERE role IN ('expert', 'admin') ORDER BY name") };
+    }
     if (qs.get("staff")) {
       await requireUser(req, ["sales", "admin"]);
       return { users: await q("SELECT id, name, email, role FROM users WHERE role IN ('sales', 'admin') ORDER BY name") };

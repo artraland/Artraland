@@ -1,5 +1,5 @@
 // Accounts: passwords (scrypt hashes), sessions (a random token in an HttpOnly cookie; only its hash is stored),
-// and role checks. Roles: client (everyone on sign-up), provider, sales, admin. Only an admin changes roles.
+// and role checks. Roles: client (everyone on sign-up), provider, sales, expert (appraisals), admin. Only an admin changes roles.
 // The addresses in the ADMIN_EMAILS setting (comma-separated) become admins when they sign up or sign in.
 import { scrypt as scryptCb, randomBytes, timingSafeEqual, createHash } from "node:crypto";
 import { promisify } from "node:util";

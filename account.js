@@ -1,8 +1,10 @@
 // ARTRA — the account page (/account): sign in or create an account, then a profile with tabs for each role.
 //   Client (everyone):  Profile · Saved pieces · My orders (with tracking) · My enquiries
 //   Product provider:   + My pieces (add, edit, send for review)
-//   Sales:              + Enquiries desk · Orders desk (record sales, update tracking)
+//   Sales:              + Enquiries desk · Orders desk (record sales, update tracking) · Expertise desk
+//   Expert:             Expertise desk (the appraisals assigned to them) + the client tabs
 //   Admin:              + Review pieces · People (roles) — and everything above
+//   Everyone also has My appraisals: their appraisal requests, stage by stage (appraisal code below).
 // Every request is checked on the server (api/); this page only shows what the server allows.
 (function () {
   "use strict";
@@ -105,10 +107,11 @@
   // Signed in: the profile with its tabs
   // =====================================================================================================
   var TABS = {
-    client: ["orders", "favorites", "enquiries", "profile"],
-    provider: ["products", "orders", "favorites", "enquiries", "profile"],
-    sales: ["desk_enquiries", "desk_orders", "orders", "favorites", "enquiries", "profile"],
-    admin: ["review", "desk_enquiries", "desk_orders", "products", "people", "orders", "favorites", "enquiries", "profile"]
+    client: ["orders", "appraisals", "favorites", "enquiries", "profile"],
+    provider: ["products", "orders", "appraisals", "favorites", "enquiries", "profile"],
+    sales: ["desk_enquiries", "desk_orders", "desk_appraisals", "orders", "appraisals", "favorites", "enquiries", "profile"],
+    expert: ["desk_appraisals", "appraisals", "orders", "favorites", "enquiries", "profile"],
+    admin: ["review", "desk_enquiries", "desk_orders", "desk_appraisals", "products", "people", "orders", "appraisals", "favorites", "enquiries", "profile"]
   };
   var RENDER = {};
 
@@ -576,11 +579,346 @@
     });
   };
 
+  // =====================================================================================================
+  // Appraisals: a client's own requests (My appraisals) and the Expertise desk (sales, experts, admin).
+  // The server decides who may do what (api/appraisals.js); these screens only offer what fits the stage.
+  // =====================================================================================================
+  var OPEN_ST = ["submitted", "info_needed", "quoted", "accepted", "received", "examination", "peer_review", "ready"];
+  function apPill(a, asClient) {
+    // A client follows "with the expert" as one stage: the second expert's review is not shown to them.
+    var s = asClient && (a.status === "peer_review" || a.status === "ready") ? "examination" : a.status;
+    var cls = { info_needed: "new", quoted: "new", declined: "rejected", issued: "approved", returned: "delivered", withdrawn: "closed" }[s] || "in_progress";
+    return '<span class="pill pill-' + cls + '">' + esc(t("as." + s)) + "</span>";
+  }
+  function apDate(a, status) { var e = (a.events || []).filter(function (e) { return e.kind === "status" && e.status === status; })[0]; return e ? date(e.created_at) : ""; }
+  function apLast(a, status) { var l = (a.events || []).filter(function (e) { return e.kind === "status" && e.status === status; }); return l.length ? l[l.length - 1] : null; }
+  function apPhotos(a) { return (a.photos || []).filter(function (p) { return p.kind !== "document"; }); }
+  function apThumb(a) {
+    var p = apPhotos(a)[0];
+    return '<div class="thumb ap-thumb">' + (p ? '<img src="' + attr(p.url) + '" alt="" loading="lazy">' : "") + "</div>";
+  }
+  function apMeta(a) {
+    return [t("svc." + a.service), a.purpose ? t("purpose." + a.purpose) : "", a.expert_name ? t("ap.expert") + ": " + a.expert_name : ""].filter(Boolean).join(" · ");
+  }
+
+  // The stops a client sees. An opinion (from photographs) has no piece to receive or return.
+  function apStops(a) {
+    var op = a.service === "opinion";
+    var keys = op ? ["submitted", "reviewed", "accepted", "expert", "issued_op"] : ["submitted", "reviewed", "accepted", "received", "expert", "issued", "returned"];
+    var exp = op ? 3 : 4;
+    var at = { submitted: 0, info_needed: 0, quoted: 1, accepted: 2, received: 3, examination: exp, peer_review: exp, ready: exp, issued: exp + 1, returned: 6 }[a.status];
+    var when = { submitted: apDate(a, "submitted"), reviewed: apDate(a, "quoted"), accepted: apDate(a, "accepted"), received: apDate(a, "received"),
+      expert: apDate(a, "examination"), issued: apDate(a, "issued"), issued_op: apDate(a, "issued"), returned: apDate(a, "returned") };
+    return '<ol class="ap-stops" style="--n:' + keys.length + '">' + keys.map(function (k, i) {
+      var cls = i < at ? "done" : i === at ? (i === keys.length - 1 ? "done" : "now") : "";
+      return '<li class="' + cls + '"><span class="dot" aria-hidden="true">' + (cls === "done" ? "✓" : "") + "</span><b>" + esc(t("stop." + k)) + "</b><small>" + esc(i <= at ? when[k] : "") + "</small></li>";
+    }).join("") + "</ol>";
+  }
+  function apJourney(a) {
+    var list = (a.events || []).filter(function (e) { return e.kind === "status"; });
+    // After a question, the client's answer brings the request back to "submitted": call it what it is.
+    list = list.map(function (e, i) { return { e: e, label: e.status === "submitted" && i > 0 ? "evs.answer" : "evs." + e.status }; }).reverse();
+    return '<ul class="ap-events">' + list.map(function (x) {
+      var e = x.e;
+      return "<li><b>" + esc(t(x.label)) + "</b><time>" + esc(dateTime(e.created_at)) + "</time>" + (e.body ? '<p class="msg">' + esc(e.body) + "</p>" : "") + "</li>";
+    }).join("") + "</ul>";
+  }
+  function apMessages(a) {
+    var list = (a.events || []).filter(function (e) { return e.kind === "message" && e.body; });
+    return '<div class="ap-msgs">' + list.map(function (e) {
+      return '<div class="ap-msg' + (e.by_client ? " mine" : "") + '"><p class="msg">' + esc(e.body) + "</p><small>" + esc(e.by_client ? t("ap.you") : e.by) + " · " + esc(dateTime(e.created_at)) + "</small></div>";
+    }).join("") + "</div>";
+  }
+  function apGallery(a) {
+    var list = a.photos || [];
+    if (!list.length) return '<p class="muted small">' + esc(t("ap.no_photos")) + "</p>";
+    return '<div class="ap-photos">' + list.map(function (p) {
+      var isDoc = p.kind === "document" || /\.pdf$/i.test(p.url);
+      return '<a href="' + attr(p.url) + '" target="_blank" rel="noopener" title="' + attr(t("shot." + p.kind)) + '">' + (isDoc ? '<span class="doc">PDF</span>' : '<img src="' + attr(p.url) + '" alt="' + attr(t("shot." + p.kind)) + '" loading="lazy">') + "</a>";
+    }).join("") + "</div>";
+  }
+  function apFindings(a) {
+    var f = a.findings || {}, rows = [["ap.attribution", f.attribution], ["ap.origin", f.origin && window.ARTRA_ROAD && ARTRA_ROAD.city(f.origin) ? ARTRA_ROAD.name(f.origin) + ", " + ARTRA_ROAD.region(f.origin) : ""],
+      ["ap.period", f.period], ["ap.materials", f.materials], ["ap.technique", f.technique], ["ap.marks", f.marks], ["ap.condition", f.condition],
+      ["ap.value", f.value != null && a.service === "appraisal" ? money(f.value, f.value_currency) + (a.basis ? " · " + t("basis." + a.basis) : "") : ""], ["ap.summary", f.summary]];
+    return "<dl>" + rows.filter(function (r) { return r[1]; }).map(function (r) { return "<dt>" + esc(t(r[0])) + "</dt><dd>" + esc(r[1]) + "</dd>"; }).join("") + "</dl>";
+  }
+  // The certificate (or, for an opinion, the opinion letter), on ivory like the Caravan Pass.
+  function apCertificate(a) {
+    var op = a.service === "opinion";
+    return '<figure class="cert ap-cert"><div class="cert-in">' +
+      '<p class="cert-kicker">' + esc(t(op ? "ap.opinion_kicker" : "ex.cert_kicker")) + "</p>" +
+      (op || T.lang === "fa" ? "" : '<p class="cert-fa" lang="fa" dir="rtl">گواهی کارشناسی</p>') +
+      '<p class="cert-title">' + esc(a.piece.title) + "</p>" +
+      '<p class="cert-place">' + esc(t("svc." + a.service)) + "</p>" +
+      apFindings(a) +
+      "<dl>" + (a.certificate_no ? "<dt>" + esc(t("ap.registry")) + '</dt><dd dir="ltr">' + esc(a.certificate_no) + "</dd>" : "") +
+        "<dt>" + esc(t("ap.issued")) + "</dt><dd>" + esc(date(a.issued_at)) + "</dd>" +
+        (a.expert_name ? "<dt>" + esc(t("ex.cert_signed")) + "</dt><dd>" + esc(a.expert_name) + "</dd>" : "") + "</dl>" +
+      '<svg class="seal" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54" fill="#8c2f28"/><circle cx="60" cy="60" r="46" fill="none" stroke="#e8cf8a" stroke-width="1.2" stroke-dasharray="3 3"/><path d="M60 22 L68 50 L96 60 L68 70 L60 98 L52 70 L24 60 L52 50 Z" fill="none" stroke="#e8cf8a" stroke-width="1.6"/><text x="60" y="66" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="16" fill="#f3eee4" letter-spacing="2">ARTRA</text></svg>' +
+      (a.certificate_no ? '<p class="cert-verify" dir="ltr">artraland.com/verify?no=' + esc(a.certificate_no) + "</p>" : "") +
+      "</div></figure>";
+  }
+  function printCard(el) {
+    document.body.classList.add("printing"); el.classList.add("print-me");
+    var done = function () { document.body.classList.remove("printing"); el.classList.remove("print-me"); removeEventListener("afterprint", done); };
+    addEventListener("afterprint", done);
+    print();
+    setTimeout(done, 1000);
+  }
+  // Upload a few photographs for an appraisal; resolves with [{ kind, url }].
+  function apUpload(files) {
+    var list = Array.prototype.slice.call(files || []).slice(0, 8);
+    return Promise.all(list.map(function (f) {
+      if (f.size > 4 * 1024 * 1024) return Promise.reject({ code: "too_large" });
+      return api("POST", "/api/upload?for=appraisal", f).then(function (j) { return { kind: /pdf/.test(f.type) ? "document" : "other", url: j.url }; });
+    }));
+  }
+  function act(a, action, extra) { var b = { id: a.id, action: action }; for (var k in extra || {}) b[k] = extra[k]; return api("PATCH", "/api/appraisals", b); }
+
+  // ---- My appraisals ----
+  RENDER.appraisals = function (panel) {
+    return api("GET", "/api/appraisals").then(function (j) {
+      var mine = j.appraisals.filter(function (a) { return a.client_id === user.id; });
+      var head = '<div class="bar"><h2>' + esc(t("tab.appraisals")) + '</h2><a class="btn btn-ghost" href="/request-appraisal">' + esc(t("ap.new")) + "</a></div>";
+      if (!mine.length) { panel.innerHTML = head + '<p class="empty">' + esc(t("ap.empty")) + "</p>"; return; }
+      panel.innerHTML = head + '<div class="aps"></div>';
+      var box = $(".aps", panel);
+      // Requests that need the client come first.
+      mine.sort(function (x, y) { var w = function (a) { return a.status === "info_needed" || a.status === "quoted" ? 0 : OPEN_ST.indexOf(a.status) > -1 ? 1 : 2; }; return w(x) - w(y); });
+      mine.forEach(function (a) { box.appendChild(clientCard(a, panel)); });
+    });
+  };
+  function clientCard(a, panel) {
+    var el = document.createElement("article"), open = OPEN_ST.indexOf(a.status) > -1, ended = ["declined", "withdrawn", "closed"].indexOf(a.status) > -1;
+    var issued = a.status === "issued" || a.status === "returned";
+    el.className = "ap" + (a.status === "info_needed" || a.status === "quoted" ? " ap-act" : "");
+    var banner = "";
+    if (a.status === "info_needed") {
+      var q = apLast(a, "info_needed");
+      banner = '<div class="ap-banner"><b>' + esc(t("ap.act_info")) + "</b>" + (q && q.body ? '<p class="msg">“' + esc(q.body) + "”</p>" : "") +
+        '<form class="form ap-reply"><label><span class="sr">' + esc(t("ap.reply_ph")) + '</span><textarea name="body" rows="2" placeholder="' + attr(t("ap.reply_ph")) + '"></textarea></label>' +
+        '<div class="row-actions"><label class="btn btn-ghost ap-file">' + esc(t("ap.add_photos")) + '<input type="file" name="files" multiple accept="image/jpeg,image/png,image/webp,application/pdf" hidden></label>' +
+        '<button class="btn btn-gold" type="submit">' + esc(t("ap.reply")) + '</button><span class="note" role="status"></span></div></form></div>';
+    } else if (a.status === "quoted") {
+      var qn = apLast(a, "quoted");
+      banner = '<div class="ap-banner"><b>' + esc(t("ap.act_quote")) + "</b>" +
+        '<dl class="mini"><dt>' + esc(t("ap.fee")) + "</dt><dd>" + esc(money(a.fee, a.currency)) + "</dd>" +
+          (a.expert_name ? "<dt>" + esc(t("ap.expert")) + "</dt><dd>" + esc(a.expert_name) + "</dd>" : "") +
+          (a.basis ? "<dt>" + esc(t("ap.basis")) + "</dt><dd>" + esc(t("basis." + a.basis)) + "</dd>" : "") + "</dl>" +
+        (qn && qn.body ? '<p class="msg">' + esc(qn.body) + "</p>" : "") +
+        '<p class="muted small">' + esc(t("ap.pay_note")) + "</p>" +
+        '<div class="row-actions"><button class="btn btn-gold" data-act="accept" type="button">' + esc(t("ap.accept")) + '</button><button class="link-btn" data-act="refuse" type="button">' + esc(t("ap.refuse")) + '</button><span class="note" role="status"></span></div></div>';
+    } else if (ended) {
+      var why = apLast(a, a.status);
+      if (why && why.body) banner = '<div class="ap-banner ap-ended"><b>' + esc(t("ap.reason")) + '</b><p class="msg">' + esc(why.body) + "</p></div>";
+    }
+    el.innerHTML =
+      '<div class="order-head">' + apThumb(a) + '<div class="order-main">' +
+        '<p class="order-no"><span dir="ltr">' + esc(a.number) + "</span> · " + esc(t("ap.requested", { date: date(a.created_at) })) + "</p>" +
+        "<h3>" + esc(a.piece.title) + '</h3><p class="muted">' + esc(apMeta(a)) + "</p>" +
+      "</div>" + apPill(a, true) + "</div>" +
+      banner +
+      (ended ? "" : apStops(a)) +
+      (issued ? '<div class="ap-issued">' + apCertificate(a) + '<div class="row-actions"><button class="btn btn-gold" data-print type="button">' + esc(t("ap.print")) + "</button>" +
+        (a.certificate_no ? '<a class="link-btn" href="/verify?no=' + attr(encodeURIComponent(a.certificate_no)) + '">' + esc(t("ap.verify_link")) + " ↗</a>" : "") +
+        (a.status === "returned" && a.carrier ? '<span class="muted small">' + esc(t("ap.returned_via", { carrier: a.carrier })) + (a.tracking_number ? ' · <code dir="ltr">' + esc(a.tracking_number) + "</code>" : "") + "</span>" : "") +
+        "</div></div>" : "") +
+      '<div class="ap-cols">' +
+        "<section><h4>" + esc(t("ap.journey")) + "</h4>" + apJourney(a) + "</section>" +
+        "<section><h4>" + esc(t("ap.photos")) + "</h4>" + apGallery(a) + "</section>" +
+        "<section><h4>" + esc(t("ap.messages")) + "</h4>" + apMessages(a) +
+          (open ? '<form class="ap-send"><label><span class="sr">' + esc(t("ap.msg_ph")) + '</span><input name="body" placeholder="' + attr(t("ap.msg_ph")) + '"></label><button class="link-btn" type="submit">' + esc(t("ap.send")) + '</button></form><p class="note" role="status"></p>' : "") +
+        "</section>" +
+      "</div>" +
+      (["submitted", "info_needed", "quoted"].indexOf(a.status) > -1 ? '<div class="row-actions"><button class="link-btn danger" data-act="withdraw" type="button">' + esc(t("ap.withdraw")) + "</button></div>" : "");
+
+    function again() { return RENDER.appraisals(panel); }
+    function oops(note) { return function (e) { if (note) flash(note, errText(e), true); else alert(errText(e)); }; }
+    $$("[data-act]", el).forEach(function (b) {
+      b.addEventListener("click", function () {
+        var k = b.getAttribute("data-act");
+        if (k === "withdraw" && !confirm(t("ap.confirm_withdraw"))) return;
+        if (k === "refuse" && !confirm(t("ap.confirm_refuse"))) return;
+        b.disabled = true;
+        act(a, k).then(again).catch(function (e) { b.disabled = false; alert(errText(e)); });
+      });
+    });
+    var reply = $(".ap-reply", el);
+    if (reply) reply.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var note = $(".note", reply), btn = $('button[type="submit"]', reply);
+      btn.disabled = true; note.textContent = reply.files.files.length ? t("rq.uploading") : "";
+      apUpload(reply.files.files).then(function (ph) { return act(a, "reply", { body: reply.body.value, photos: ph }); })
+        .then(again).catch(function (e) { btn.disabled = false; flash(note, errText(e), true); });
+    });
+    var send = $(".ap-send", el);
+    if (send) send.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      if (!send.body.value.trim()) return;
+      act(a, "message", { body: send.body.value }).then(again).catch(oops(send.nextElementSibling));
+    });
+    var pr = $("[data-print]", el);
+    if (pr) pr.addEventListener("click", function () { printCard(el); });
+    return el;
+  }
+
+  // ---- The Expertise desk ----
+  var DESK_FILTERS = {
+    open: OPEN_ST, screen: ["submitted", "info_needed"], quoted: ["quoted"], piece: ["accepted", "received"],
+    exam: ["examination", "peer_review"], ready: ["ready"], done: ["issued", "returned", "declined", "withdrawn", "closed"]
+  };
+  var deskOpen = {};
+  RENDER.desk_appraisals = function (panel, filter) {
+    filter = filter || RENDER.desk_appraisals.last || "open";
+    RENDER.desk_appraisals.last = filter;
+    var staff = user.role === "sales" || user.role === "admin";
+    return Promise.all([api("GET", "/api/appraisals"), staff ? api("GET", "/api/users?experts=1") : Promise.resolve({ users: [] })]).then(function (r) {
+      var all = r[0].appraisals.filter(function (a) { return a.on_file; }), experts = r[1].users;
+      var count = function (k) { return all.filter(function (a) { return DESK_FILTERS[k].indexOf(a.status) > -1; }).length; };
+      var list = all.filter(function (a) { return DESK_FILTERS[filter].indexOf(a.status) > -1; });
+      panel.innerHTML = '<div class="bar"><h2>' + esc(t("tab.desk_appraisals")) + "</h2></div>" +
+        '<div class="ap-filters" role="group">' + Object.keys(DESK_FILTERS).map(function (k) {
+          return '<button type="button" data-f="' + k + '" aria-pressed="' + (k === filter) + '">' + esc(t("dk.f_" + k)) + " <span>" + count(k) + "</span></button>";
+        }).join("") + "</div>" +
+        (list.length ? "" : '<p class="empty">' + esc(t("dk.empty")) + "</p>") + '<div class="aps"></div>';
+      $$(".ap-filters button", panel).forEach(function (b) { b.addEventListener("click", function () { RENDER.desk_appraisals(panel, b.getAttribute("data-f")); }); });
+      var box = $(".aps", panel);
+      list.forEach(function (a) { box.appendChild(deskCard(a, panel, experts)); });
+    });
+  };
+  function deskCard(a, panel, experts) {
+    var me = user.id, isAdmin = user.role === "admin", isStaff = isAdmin || user.role === "sales";
+    var isExpert = a.expert_id === me, isReviewer = a.reviewer_id === me, op = a.service === "opinion", p = a.piece || {};
+    var el = document.createElement("details");
+    el.className = "ap ap-desk";
+    el.open = !!deskOpen[a.id];
+    el.addEventListener("toggle", function () { deskOpen[a.id] = el.open; });
+    function sel(name, chosen, blank) {
+      return '<select name="' + name + '">' + (blank ? '<option value="">' + esc(t("d.unassigned")) + "</option>" : "") + experts.map(function (x) {
+        return '<option value="' + attr(x.id) + '"' + (x.id === chosen ? " selected" : "") + ">" + esc(x.name + " · " + t("role." + x.role)) + "</option>";
+      }).join("") + "</select>";
+    }
+    function field(label, name, value, area) {
+      return "<label><span>" + esc(t(label)) + "</span>" + (area ? '<textarea name="' + name + '" rows="2">' + esc(value || "") + "</textarea>" : '<input name="' + name + '" value="' + attr(value || "") + '">') + "</label>";
+    }
+    var f = a.findings || {}, actions = "";
+    // What can be done at this stage, by this person.
+    if ((a.status === "submitted" || a.status === "info_needed") && isStaff) {
+      actions += '<p class="muted small">' + esc(t("dk.check")) + "</p>" +
+        '<form class="form acc-form" data-form="screen"><label><span>' + esc(t("dk.message")) + '</span><textarea name="body" rows="2"></textarea></label><div class="row-actions">' +
+        (a.status === "submitted" ? '<button class="btn btn-ghost" data-do="ask" type="button">' + esc(t("dk.ask")) + "</button>" : "") +
+        '<button class="link-btn danger" data-do="decline" type="button">' + esc(t("dk.decline")) + '</button><span class="note" role="status"></span></div></form>';
+    }
+    if (a.status === "submitted" && isAdmin) {
+      actions += '<form class="form acc-form" data-form="quote"><h4>' + esc(t("dk.quote")) + "</h4>" +
+        '<div class="ed-row"><label><span>' + esc(t("dk.expert")) + "</span>" + sel("expert_id", a.expert_id, true) + "</label><label><span>" + esc(t("dk.reviewer")) + "</span>" + sel("reviewer_id", a.reviewer_id, true) + "</label></div>" +
+        '<div class="ed-row"><label><span>' + esc(t("ap.fee")) + '</span><input name="fee" type="number" min="0" step="0.01" dir="ltr" required></label><label><span>' + esc(t("dk.currency")) + '</span><input name="currency" value="EUR" maxlength="3" dir="ltr"></label></div>' +
+        (a.service === "appraisal" ? '<label><span>' + esc(t("ap.basis")) + '</span><select name="basis">' + ["insurance", "market", "auction"].map(function (k) { return '<option value="' + k + '"' + (a.purpose === "selling" && k === "market" || a.purpose !== "selling" && k === "insurance" ? " selected" : "") + ">" + esc(t("basis." + k)) + "</option>"; }).join("") + "</select></label>" : "") +
+        field("dk.note_client", "body", "", true) +
+        '<div class="row-actions"><button class="btn btn-gold" type="submit">' + esc(t("dk.quote")) + '</button><span class="note" role="status"></span></div></form>';
+    }
+    if (a.status === "accepted" && !op && isStaff) {
+      actions += '<form class="form acc-form" data-form="received">' + field("dk.condition", "body", "", true) +
+        '<div class="row-actions"><button class="btn btn-gold" type="submit">' + esc(t("dk.received")) + '</button><span class="note" role="status"></span></div></form>';
+    }
+    if ((a.status === "received" || a.status === "accepted" && op) && (isExpert || isAdmin)) {
+      actions += '<div class="row-actions"><button class="btn btn-gold" data-do="start" type="button">' + esc(t("dk.start")) + '</button><span class="note" role="status"></span></div>';
+    }
+    if (a.status === "examination") {
+      if (isExpert || isAdmin) {
+        var cities = window.ARTRA_ROAD ? ARTRA_ROAD.cities.map(function (c) { return '<option value="' + c.key + '"' + (c.key === (f.origin || p.city) ? " selected" : "") + ">" + esc(ARTRA_ROAD.name(c.key)) + "</option>"; }).join("") : "";
+        actions += '<form class="form acc-form" data-form="findings"><h4>' + esc(t("dk.findings")) + "</h4>" +
+          field("ap.attribution", "attribution", f.attribution, true) +
+          '<div class="ed-row"><label><span>' + esc(t("ap.origin")) + '</span><select name="origin"><option value="">—</option>' + cities + "</select></label>" + field("ap.period", "period", f.period) + "</div>" +
+          '<div class="ed-row">' + field("ap.materials", "materials", f.materials) + field("ap.technique", "technique", f.technique) + "</div>" +
+          field("ap.marks", "marks", f.marks) + field("ap.condition", "condition", f.condition, true) +
+          (a.service === "appraisal" ? '<div class="ed-row"><label><span>' + esc(t("ap.value")) + '</span><input name="value" type="number" min="0" step="1" dir="ltr" value="' + attr(f.value == null ? "" : f.value) + '"></label><label><span>' + esc(t("dk.currency")) + '</span><input name="value_currency" maxlength="3" dir="ltr" value="' + attr(f.value_currency || a.currency || "EUR") + '"></label></div>' : "") +
+          field("ap.summary", "summary", f.summary, true) +
+          '<div class="row-actions"><button class="btn btn-ghost" type="submit">' + esc(t("dk.save_findings")) + '</button><button class="btn btn-gold" data-do="to_review" type="button">' + esc(t("dk.to_review")) + '</button><span class="note" role="status"></span></div></form>';
+      } else actions += '<p class="muted">' + esc(t("dk.not_yours")) + "</p>";
+    }
+    if (a.status === "peer_review" || a.status === "ready" || a.status === "issued" || a.status === "returned") actions += '<div class="ap-findings"><h4>' + esc(t("dk.findings")) + "</h4>" + apFindings(a) + "</div>";
+    if (a.status === "peer_review") {
+      if ((isReviewer || isAdmin) && !isExpert) {
+        actions += '<form class="form acc-form" data-form="review">' + field("dk.message", "body", "", true) +
+          '<div class="row-actions"><button class="btn btn-gold" data-do="agree" type="button">' + esc(t("dk.agree")) + '</button><button class="btn btn-ghost" data-do="send_back" type="button">' + esc(t("dk.send_back")) + '</button><span class="note" role="status"></span></div></form>';
+      } else actions += '<p class="muted">' + esc(t("dk.review_wait")) + "</p>";
+    }
+    if (a.status === "ready" && isAdmin) actions += '<div class="row-actions"><button class="btn btn-gold" data-do="issue" type="button">' + esc(t("dk.issue")) + '</button><span class="note" role="status"></span></div>';
+    if (a.status === "issued" && !op && isStaff) {
+      actions += '<form class="form acc-form" data-form="returned"><div class="ed-row">' + field("o.carrier", "carrier", "") + field("o.tracking", "tracking_number", "") + "</div>" +
+        '<label><span>' + esc(t("o.track_link")) + '</span><input name="tracking_url" dir="ltr" placeholder="https://"></label>' +
+        '<div class="row-actions"><button class="btn btn-gold" type="submit">' + esc(t("dk.returned")) + '</button><span class="note" role="status"></span></div></form>';
+    }
+    if (OPEN_ST.indexOf(a.status) > -1 && isAdmin && a.status !== "submitted") {
+      actions += '<form class="form acc-form" data-form="assign"><div class="ed-row"><label><span>' + esc(t("dk.expert")) + "</span>" + sel("expert_id", a.expert_id, true) + "</label><label><span>" + esc(t("dk.reviewer")) + "</span>" + sel("reviewer_id", a.reviewer_id, true) + "</label></div>" +
+        '<div class="row-actions"><button class="btn btn-ghost" type="submit">' + esc(t("dk.assign")) + '</button><span class="note" role="status"></span></div></form>';
+    }
+    var notes = (a.events || []).filter(function (e) { return e.kind === "note"; });
+    el.innerHTML =
+      '<summary class="order-head">' + apThumb(a) + '<div class="order-main">' +
+        '<p class="order-no"><span dir="ltr">' + esc(a.number) + "</span> · " + esc(date(a.created_at)) + " · " + esc(a.client_name) + ' · <span dir="ltr">' + esc(a.client_email) + "</span></p>" +
+        "<h3>" + esc(p.title) + '</h3><p class="muted">' + esc([t("svc." + a.service), t("purpose." + a.purpose), a.expert_name ? t("dk.expert") + ": " + a.expert_name : "", a.reviewer_name ? t("dk.reviewer") + ": " + a.reviewer_name : ""].filter(Boolean).join(" · ")) + "</p>" +
+      "</div>" + apPill(a, false) + "</summary>" +
+      '<div class="ap-desk-body">' +
+        '<div class="ap-cols ap-cols-2"><section><dl class="mini">' + [["rq.craft", p.craft ? t("c." + p.craft) : ""], ["rq.city", p.city && window.ARTRA_ROAD && ARTRA_ROAD.city(p.city) ? ARTRA_ROAD.name(p.city) : ""],
+            ["dk.age", p.age ? t("age." + p.age) : ""], ["dk.size", p.size], ["rq.marks", p.marks], ["dk.viewing", op ? "" : t("viewing." + a.viewing)], ["dk.needed", p.needed_by],
+            ["ap.fee", a.fee != null ? money(a.fee, a.currency) : ""], ["ap.basis", a.basis ? t("basis." + a.basis) : ""], ["ap.registry", a.certificate_no]]
+          .filter(function (r) { return r[1]; }).map(function (r) { return "<dt>" + esc(t(r[0])) + "</dt><dd>" + esc(r[1]) + "</dd>"; }).join("") + "</dl>" +
+          (p.story ? "<h4>" + esc(t("rq.p2")) + '</h4><p class="msg">' + esc(p.story) + "</p>" : "") + (p.provenance ? "<h4>" + esc(t("dk.prov")) + '</h4><p class="msg">' + esc(p.provenance) + "</p>" : "") +
+        "</section><section><h4>" + esc(t("ap.photos")) + "</h4>" + apGallery(a) + "</section></div>" +
+        '<div class="ap-actions">' + actions + "</div>" +
+        '<div class="ap-cols ap-cols-2"><section><h4>' + esc(t("ap.messages")) + "</h4>" + apMessages(a) +
+          (OPEN_ST.indexOf(a.status) > -1 ? '<form class="ap-send" data-form="message"><label><span class="sr">' + esc(t("dk.message")) + '</span><input name="body" placeholder="' + attr(t("dk.message")) + '"></label><button class="link-btn" type="submit">' + esc(t("ap.send")) + "</button></form>" : "") +
+          "<h4>" + esc(t("dk.note_label")) + '</h4><ul class="ap-events">' + notes.map(function (e) { return '<li><p class="msg">' + esc(e.body) + "</p><time>" + esc(e.by + " · " + dateTime(e.created_at)) + "</time></li>"; }).join("") + "</ul>" +
+          '<form class="ap-send" data-form="note"><label><span class="sr">' + esc(t("dk.internal")) + '</span><input name="body" placeholder="' + attr(t("dk.internal")) + '"></label><button class="link-btn" type="submit">' + esc(t("dk.add_note")) + "</button></form>" +
+        "</section><section><h4>" + esc(t("dk.history")) + "</h4>" + apJourney(a) + "</section></div>" +
+        (OPEN_ST.indexOf(a.status) > -1 && isAdmin ? '<form class="ap-send ap-cancel" data-form="cancel"><label><span class="sr">' + esc(t("ap.reason")) + '</span><input name="body" placeholder="' + attr(t("ap.reason")) + '"></label><button class="link-btn danger" type="submit">' + esc(t("dk.cancel")) + "</button></form>" : "") +
+      "</div>";
+
+    function again() { deskOpen[a.id] = true; return RENDER.desk_appraisals(panel); }
+    function run(action, extra, form) {
+      var note = form ? $(".note", form) : $(".ap-actions .note", el);
+      return act(a, action, extra).then(again).catch(function (e) { if (note) flash(note, errText(e), true); else alert(errText(e)); });
+    }
+    function val(form, n) { return form[n] ? form[n].value : ""; }
+    $$("[data-form]", el).forEach(function (form) {
+      var kind = form.getAttribute("data-form");
+      form.addEventListener("submit", function (ev) {
+        ev.preventDefault();
+        if (kind === "quote") return run("quote", { expert_id: val(form, "expert_id"), reviewer_id: val(form, "reviewer_id") || null, fee: val(form, "fee"), currency: val(form, "currency"), basis: val(form, "basis"), body: val(form, "body") }, form);
+        if (kind === "received") return run("received", { body: val(form, "body") }, form);
+        if (kind === "returned") return run("returned", { carrier: val(form, "carrier"), tracking_number: val(form, "tracking_number"), tracking_url: val(form, "tracking_url") }, form);
+        if (kind === "assign") return run("assign", { expert_id: val(form, "expert_id") || null, reviewer_id: val(form, "reviewer_id") || null }, form);
+        if (kind === "findings") return saveFindings(form);
+        if (kind === "message" || kind === "note" || kind === "cancel") { if (!val(form, "body").trim()) return; return run(kind, { body: val(form, "body") }, form); }
+      });
+    });
+    function findingsOf(form) {
+      var out = {};
+      ["attribution", "origin", "period", "materials", "technique", "marks", "condition", "summary", "value", "value_currency"].forEach(function (k) { if (form[k]) out[k] = form[k].value; });
+      return out;
+    }
+    function saveFindings(form) { return act(a, "findings", { findings: findingsOf(form) }).then(function () { flash($(".note", form), t("p.saved")); }).catch(function (e) { flash($(".note", form), errText(e), true); }); }
+    $$("[data-do]", el).forEach(function (b) {
+      b.addEventListener("click", function () {
+        var k = b.getAttribute("data-do"), form = b.closest("form");
+        if (k === "to_review") {
+          // Save what is written, then send it on.
+          return act(a, "findings", { findings: findingsOf(form) }).then(function () { return run("to_review", {}, form); }).catch(function (e) { flash($(".note", form), errText(e), true); });
+        }
+        run(k, form ? { body: val(form, "body") } : {}, form);
+      });
+    });
+    return el;
+  }
+
   // ---- Admin: people and roles ----
   RENDER.people = function (panel, term) {
     term = term || "";
     return api("GET", "/api/users?q=" + encodeURIComponent(term)).then(function (j) {
-      var roles = ["client", "provider", "sales", "admin"];
+      var roles = ["client", "provider", "sales", "expert", "admin"];
       panel.innerHTML = '<div class="bar"><h2>' + esc(t("tab.people")) + '</h2><input id="ppSearch" type="search" placeholder="' + attr(t("pp.search")) + '" value="' + attr(term) + '"></div>' +
         '<div class="table-wrap"><table class="people"><thead><tr><th>' + esc(t("a.name")) + "</th><th>" + esc(t("a.email")) + "</th><th>" + esc(t("pp.role")) + "</th><th>" + esc(t("pp.orders")) + "</th><th>" + esc(t("pp.joined")) + "</th></tr></thead><tbody>" +
         j.users.map(function (u) {
