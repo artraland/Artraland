@@ -165,3 +165,27 @@ html:lang(ar) .rq-form label, html:lang(fa) .rq-form label { font-size: 14px; }
   .ex-band { font-size: 21px; }
 }
 @media print { .silk::before, .silk::after { display: none; } }
+
+/* The experts */
+.ex-experts { background: linear-gradient(180deg, var(--black), var(--coal)); }
+.expert { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 56px; padding: 44px; border: 1px solid rgba(212, 180, 103, .3);
+  background: linear-gradient(160deg, var(--gray), var(--coal) 70%); }
+.expert-side { display: grid; gap: 8px; align-content: start; justify-items: start; }
+.expert-mono { width: 132px; margin-bottom: 14px; }
+.expert-side h3 { font-size: 36px; }
+.expert-field { margin: 0; color: var(--gold-2); font-size: 15px; }
+.expert-main { display: grid; gap: 16px; color: var(--beige-3); font-size: 16px; }
+.expert-main p { margin: 0; }
+.expert-role { font: 500 22px/1.35 var(--serif); color: var(--ivory); }
+.expert-facts { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px; }
+.expert-facts li { padding: 12px 0 12px 22px; border-top: 1px solid rgba(90, 120, 190, .35); position: relative; font-size: 14.5px; }
+[dir="rtl"] .expert-facts li { padding: 12px 22px 12px 0; }
+.expert-facts li::before { content: "✦"; position: absolute; inset-inline-start: 0; top: 13px; color: var(--gold); font-size: 11px; }
+.expert-more { border-top: 1px solid rgba(90, 120, 190, .35); padding-top: 14px; }
+.expert-more summary { cursor: pointer; font: 500 20px var(--serif); color: var(--gold-2); }
+.expert-more ul { margin: 12px 0; padding-inline-start: 20px; display: grid; gap: 6px; font-size: 14.5px; }
+@media (max-width: 860px) {
+  .expert { grid-template-columns: 1fr; gap: 28px; padding: 28px 22px; }
+  .expert-facts { grid-template-columns: 1fr; }
+  .expert-mono { width: 104px; }
+}
