@@ -435,3 +435,14 @@ html:lang(ar) .road-card, html:lang(fa) .road-card { text-align: right; }
 }
 .nav a { white-space: nowrap; }
 @media (max-width: 1240px) and (min-width: 721px) { .nav { gap: 20px; font-size: 12.5px; letter-spacing: .12em; } .top-in { gap: 18px; } .lang { margin-inline-start: 14px; } }
+
+/* Phones: the map is drawn larger and slides sideways under the finger, opening on the chosen city.
+   Its edges fade to show there is more of the road. */
+.road-pan { direction: ltr; }
+@media (max-width: 720px) {
+  .road-pan { overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; scroll-behavior: smooth;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 28px, #000 calc(100% - 28px), transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 28px, #000 calc(100% - 28px), transparent); }
+  .road-pan::-webkit-scrollbar { display: none; }
+  .road-pan svg { width: 250%; max-width: none; }
+}

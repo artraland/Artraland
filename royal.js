@@ -151,9 +151,13 @@
     var card = $("#roadCard"), chips = $("#roadChips"), picked = null, drawn = false;
     function render() { R.draw(svg, { highlight: picked, counts: counts, onPick: pick, animate: !reduced && drawn }); }
 
+    var pan = $("#roadPan");
     function pick(key) {
       picked = key;
       render();
+      // Phones: slide the larger map so the chosen city sits in the middle.
+      var at = R.at(key);
+      if (pan && at && pan.scrollWidth > pan.clientWidth + 1) pan.scrollTo({ left: at.x * svg.clientWidth - pan.clientWidth / 2, behavior: reduced ? "auto" : "smooth" });
       var c = R.city(key), n = counts[key] || 0;
       var craftNames = (c.crafts || []).map(function (k) { return t("c." + k); }).join(" · ");
       card.innerHTML =
