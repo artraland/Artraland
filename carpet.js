@@ -42,7 +42,7 @@
   var DESIGNS = [
     // The real carpet: its knots are read from /photos/carpet-knots.png, a flat view made from the photograph
     // (straightened, then mirrored, as the carpet is symmetric), one pixel a knot. The story ends on the photograph.
-    { key: "real", W: 72, H: 110, image: "/photos/carpet-knots.png", photo: "/photos/carpet-hall.jpg", link: "/piece?p=carpet", cta: "cp.enquire",
+    { key: "real", W: 72, H: 110, image: "/photos/carpet-knots.png", photo: "/photos/carpet-hall-xl.jpg", link: "/piece?p=carpet", cta: "cp.enquire",
       colors: [["#2f8466", "green"], ["#8a1e2b", "madder"], ["#c4473f", "madder_light"], ["#ece0c2", "ivory"], ["#c99a52", "pomegranate"], ["#2a2420", "walnut"]],
       specs: [["sp.field", "spv.field"], ["sp.medallion", "spv.medallion"], ["sp.corners", "spv.corners"], ["sp.border", "spv.border"]] },
     { key: "garden", W: 60, H: 90, city: "isfahan", fibre: "sp.woolsilk", knots: "sp.knots_o", link: "/#commission", cta: "cp.commission",
@@ -395,7 +395,70 @@
     }
   }
 
-  var SCENES = [scene0, scene1, scene2, scene3, scene4, scene5, scene6];
+  // ---------------------------------------------------------------------------------------------------------------
+  // Real imagery. The real carpet's photograph opens the story (a slow camera drift) and gives the close-up for
+  // shearing and washing. Filmed or generated clips, when there are any, replace a chapter's drawing: list them in
+  // CLIPS by chapter (0–6), encoded with a keyframe on every frame so they can be scrubbed both ways:
+  //   ffmpeg -i in.mp4 -an -vf "scale=1920:-2,fps=30" -c:v libx264 -g 1 -crf 23 -pix_fmt yuv420p -movflags +faststart carpet-N.mp4
+  // ---------------------------------------------------------------------------------------------------------------
+  var CLIPS = {};          // e.g. { 0: "/photos/carpet-0.mp4", 6: "/photos/carpet-6.mp4" }
+  var VIDS = {};
+  Object.keys(CLIPS).forEach(function (k) {
+    var v = document.createElement("video");
+    v.muted = true; v.playsInline = true; v.preload = "auto"; v.src = CLIPS[k];
+    v.addEventListener("loadeddata", function () { v.ready = true; frame0(); });
+    v.addEventListener("seeked", function () { frame0(); });
+    VIDS[k] = v;
+  });
+  // Fill the stage with an image or video frame, framed by a focus point and zoom; darken the side the words are on.
+  function cover(src, sw, sh, zoom, fx, fy, a) {
+    var s = Math.max(vw / sw, vh / sh) * zoom, w = sw * s, h = sh * s;
+    var x = vw / 2 - fx * w + (fx - .5) * vw * .0, y = vh / 2 - fy * h;
+    x = Math.min(0, Math.max(vw - w, x)); y = Math.min(0, Math.max(vh - h, y));
+    ctx.save(); ctx.globalAlpha = a; ctx.imageSmoothingEnabled = true;
+    ctx.drawImage(src, x, y, w, h);
+    var wide = vw > 900, g = wide ? ctx.createLinearGradient(rtl ? vw : 0, 0, rtl ? 0 : vw, 0) : ctx.createLinearGradient(0, 0, 0, vh);
+    g.addColorStop(0, "rgba(3,12,39,.9)"); g.addColorStop(wide ? .42 : .46, "rgba(3,12,39,.55)"); g.addColorStop(wide ? .7 : .7, "rgba(3,12,39,.05)"); g.addColorStop(1, "rgba(3,12,39,.25)");
+    ctx.fillStyle = g; ctx.fillRect(0, 0, vw, vh);
+    ctx.restore();
+  }
+  function clipScene(i) {
+    return function (R, a, p) {
+      var v = VIDS[i];
+      if (!v.ready || !v.duration) return DRAWN[i](R, a, p);
+      var tt = clamp(p, 0, 1) * (v.duration - .05);
+      if (Math.abs(v.currentTime - tt) > .03 && !v.seeking) v.currentTime = tt;
+      cover(v, v.videoWidth, v.videoHeight, 1, .62, .5, a);
+    };
+  }
+  function photoReady() { var ph = cur.photo; return ph && ph.complete && ph.naturalWidth ? ph : null; }
+  // 0 · the real carpet in its hall: a slow drift towards the medallion
+  function photo0(R, a, p) {
+    var ph = photoReady(); if (!ph) return scene0(R, a, p);
+    var drift = reduced ? 0 : Math.sin(time / 6000) * .01;
+    cover(ph, ph.naturalWidth, ph.naturalHeight, 1.08 + p * .18 + drift, .5 + drift, .45 - p * .1, a);
+  }
+  // 5 · close on the real pile and border; the shears' work is done, then a sheen of water passes
+  function photo5(R, a, p) {
+    var ph = photoReady(); if (!ph) return scene5(R, a, p);
+    cover(ph, ph.naturalWidth, ph.naturalHeight, 1.7 - p * .35, .4 + p * .12, .84 - p * .08, a);
+    var wash = clamp((p - .2) / .8, 0, 1);
+    if (wash > 0 && wash < 1) {
+      ctx.save(); ctx.globalAlpha = a * Math.sin(wash * Math.PI) * .22;
+      var gx = -vw * .6 + wash * vw * 2.2, g = ctx.createLinearGradient(gx, 0, gx + vw * .5, vh);
+      g.addColorStop(0, "rgba(190,215,255,0)"); g.addColorStop(.5, "rgba(225,238,255,.85)"); g.addColorStop(1, "rgba(190,215,255,0)");
+      ctx.fillStyle = g; ctx.fillRect(0, 0, vw, vh); ctx.restore();
+    }
+  }
+  var DRAWN = [scene0, scene1, scene2, scene3, scene4, scene5, scene6];
+  // Which scene each chapter shows: a clip if there is one, else the real photograph (real carpet), else the drawing.
+  function sceneFor(i) {
+    if (VIDS[i] && cur.d.photo) return clipScene(i);
+    if (cur.d.photo && i === 0) return photo0;
+    if (cur.d.photo && i === 5) return photo5;
+    return DRAWN[i];
+  }
+  var SCENES = { length: 7 };
   var c = 0;
   function frame0() {
     if (!vw || !cur) return;
@@ -403,7 +466,7 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, vw, vh);
     var R = rect();
-    for (var i = 0; i < SCENES.length; i++) { var w = weight(c, i); if (w > 0.01) SCENES[i](R, w, local(c, i)); }
+    for (var i = 0; i < SCENES.length; i++) { var w = weight(c, i); if (w > 0.01) sceneFor(i)(R, w, local(c, i)); }
     // The words: one chapter at a time, rising into place
     chs.forEach(function (el, i) {
       var w = clamp(1 - Math.abs(c - i) * 2.4, 0, 1), dy = (i - c) * 40;
