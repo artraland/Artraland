@@ -450,12 +450,155 @@
       ctx.fillStyle = g; ctx.fillRect(0, 0, vw, vh); ctx.restore();
     }
   }
+  // ---------------------------------------------------------------------------------------------------------------
+  // 3 · for the real carpet: the design drawn in ink, stroke by stroke, then filled with its colours.
+  // The drawing follows the carpet's layout as measured on the photograph (on a 600 × 920 plan): the bands of the
+  // border, the eight-pointed medallion (radius 97), the pendants on the long axis, the ivory corners and the flowers.
+  // Strokes are made for one quarter and drawn four times at once, mirrored, as the carpet is symmetric.
+  // ---------------------------------------------------------------------------------------------------------------
+  var PW = 600, PH = 920, MX = 300, MY = 460, INK = null;
+  function makeInk() {
+    var S = [];                                   // [{ g: group, p: [x0, y0, x1, y1, ...] }]
+    function add(g, pts) { if (pts.length >= 4) S.push({ g: g, p: pts }); }
+    function poly(g, f, n) { var a = []; for (var i = 0; i <= n; i++) { var q = f(i / n); a.push(q[0], q[1]); } add(g, a); }
+    // A path along the border: from the middle of the top edge to the corner, then down to the middle of the side.
+    function along(ox, oy) {
+      var top = MX - ox, side = MY - oy, L = top + side;
+      return { L: L, at: function (s) {
+        if (s < top) return { x: MX - s, y: oy, nx: 0, ny: 1 };
+        return { x: ox, y: oy + (s - top), nx: 1, ny: 0 };
+      } };
+    }
+    function frameL(ox, oy) { add(1, [MX, oy, ox, oy, ox, MY]); }
+    // 1 · the frame: guard lines and the edges of the border
+    [[4, 8], [18, 28], [66, 82], [88, 100]].forEach(function (o) { frameL(o[0], o[1]); });
+    // 2 · the guards: a running wave outside, a chain of small rosettes inside
+    (function () {
+      var a = along(11, 18), pts = [];
+      for (var s = 0; s <= a.L; s += 2) { var q = a.at(s), w = Math.sin(s / 5) * 3; pts.push(q.x + q.nx * w, q.y + q.ny * w); }
+      add(2, pts);
+      var b = along(77, 91);
+      for (var t = 6; t < b.L; t += 15) { var c = b.at(t); poly(2, function (u) { var A = u * Math.PI * 2; return [c.x + Math.cos(A) * 3.2, c.y + Math.sin(A) * 3.2]; }, 12); }
+    })();
+    // 3 · the border: a vine along the middle of the band, with palmettes on alternate sides and rosettes between
+    (function () {
+      var a = along(42, 55), vine = [], P = 64;
+      for (var s = 0; s <= a.L; s += 2) { var q = a.at(s), w = Math.sin(s / P * Math.PI * 2) * 11; vine.push(q.x + q.nx * w, q.y + q.ny * w); }
+      add(3, vine);
+      for (var k = 0, s2 = P / 4; s2 < a.L; s2 += P / 2, k++) {
+        var q2 = a.at(s2), side = k % 2 ? 1 : -1, bx = q2.x + q2.nx * 11 * side, by = q2.y + q2.ny * 11 * side;
+        var dx = q2.nx * side, dy = q2.ny * side, tx = -q2.ny, ty = q2.nx;
+        // a palmette: a teardrop leaning off the vine, with an inner line
+        [[1, 1], [.62, .58]].forEach(function (m) {
+          poly(4, function (u) {
+            var A = u * Math.PI * 2, len = 19 * m[0], wid = 9 * m[1];
+            var along2 = (1 - Math.cos(A)) / 2 * len, across = Math.sin(A) * wid * (1 - (1 - Math.cos(A)) / 2 * .55);
+            return [bx + dx * along2 * .9 + tx * across, by + dy * along2 * .9 + ty * across];
+          }, 26);
+        });
+        // a small rosette on the far side
+        var rx = q2.x - q2.nx * 9 * side, ry = q2.y - q2.ny * 9 * side;
+        poly(4, function (u) { var A = u * Math.PI * 2, r = 5.5 * Math.abs(Math.cos(A * 3)); return [rx + Math.cos(A) * (r + 1.4), ry + Math.sin(A) * (r + 1.4)]; }, 40);
+      }
+    })();
+    // 4 · the ivory corners: a scalloped arabesque reaching along the top and down the side, with scrolls inside
+    (function () {
+      var ox = 92, oy = 102;
+      [[1, 9, 1], [.72, 7, .7]].forEach(function (m) {
+        poly(5, function (u) {
+          var A = u * Math.PI / 2, rx = 150 * m[0], ry = 168 * m[0], sc = Math.sin(u * Math.PI * m[1]) * 7 * m[2];
+          return [ox + Math.cos(A) * (rx + sc), oy + Math.sin(A) * (ry + sc)];
+        }, 120);
+      });
+      [[150, 140, 15, 1], [118, 200, 13, -1], [196, 120, 12, -1], [126, 132, 9, 1]].forEach(function (c) {
+        poly(5, function (u) { var A = u * Math.PI * 4 * c[3], r = c[2] * (1 - u * .82); return [c[0] + Math.cos(A) * r, c[1] + Math.sin(A) * r]; }, 70);
+      });
+    })();
+    // 5 · the medallion: an eight-pointed star, a second star inside, a ring and a rosette (one quarter, mirrored)
+    (function () {
+      function star(R1, R2, n) {
+        poly(6, function (u) {
+          var A = Math.PI + u * Math.PI / 2, k = (A - Math.PI) / (Math.PI / 2) * n, f = Math.abs((k % 1) - .5) * 2;
+          var r = R2 + (R1 - R2) * f; return [MX + Math.cos(A) * r, MY + Math.sin(A) * r];
+        }, 80);
+      }
+      star(104, 76, 2); star(97, 66, 2); star(64, 44, 2);
+      poly(6, function (u) { var A = Math.PI + u * Math.PI / 2; return [MX + Math.cos(A) * 34, MY + Math.sin(A) * 34]; }, 30);
+      poly(6, function (u) { var A = Math.PI + u * Math.PI / 2, r = 24 * Math.abs(Math.cos(A * 4)) + 4; return [MX + Math.cos(A) * r, MY + Math.sin(A) * r]; }, 60);
+      for (var i = 0; i < 3; i++) { var A = Math.PI + (i + .5) * Math.PI / 6, x = MX + Math.cos(A) * 82, y = MY + Math.sin(A) * 82;
+        poly(6, function (u) { var B = u * Math.PI * 2; return [x + Math.cos(B) * 5, y + Math.sin(B) * 5]; }, 14); }
+    })();
+    // 6 · the pendants on the long axis: a lozenge flower, then a spearhead finial (left halves, mirrored)
+    (function () {
+      poly(7, function (u) { var y = 210 + u * 58, w = Math.sin(u * Math.PI) * 24 * (1 - u * .25); return [MX - w, y]; }, 40);
+      poly(7, function (u) { var y = 222 + u * 34, w = Math.sin(u * Math.PI) * 13; return [MX - w, y]; }, 30);
+      poly(7, function (u) { var y = 268 + u * 30; return [MX - 3, y]; }, 4);
+      poly(7, function (u) { var y = 128 + u * 52, w = Math.pow(Math.sin(u * Math.PI * .5), .6) * 12 * (1 - u * .1); return [MX - w * (u < .85 ? 1 : (1 - u) / .15), y]; }, 30);
+      poly(7, function (u) { var A = Math.PI / 2 + u * Math.PI; return [MX + Math.cos(A) * 6, 300 + Math.sin(A) * 6]; }, 14);
+    })();
+    // 7 · the flowers of the field, and the vines that join them
+    var F = [[150, 383, 17], [205, 205, 15], [226, 318, 14], [150, 262, 13], [252, 140, 11], [128, 455, 12], [210, 425, 11], [160, 160, 9], [255, 395, 10]];
+    F.forEach(function (f) {
+      poly(8, function (u) { var A = u * Math.PI * 2, r = f[2] * (.55 + .45 * Math.abs(Math.cos(A * 4))); return [f[0] + Math.cos(A) * r, f[1] + Math.sin(A) * r]; }, 64);
+      poly(8, function (u) { var A = u * Math.PI * 2; return [f[0] + Math.cos(A) * f[2] * .3, f[1] + Math.sin(A) * f[2] * .3]; }, 16);
+    });
+    [[0, 3], [3, 1], [1, 4], [1, 2], [2, 8], [0, 6], [0, 5], [3, 7], [6, 8]].forEach(function (e, i) {
+      var a = F[e[0]], b = F[e[1]], mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2, nx = -(b[1] - a[1]), ny = b[0] - a[0], l = Math.hypot(nx, ny) || 1, bend = (i % 2 ? 1 : -1) * 18;
+      poly(9, function (u) { var w = 4 * u * (1 - u) * bend; return [a[0] + (b[0] - a[0]) * u + nx / l * w, a[1] + (b[1] - a[1]) * u + ny / l * w]; }, 30);
+      var sx = mx + nx / l * bend * .9, sy = my + ny / l * bend * .9;
+      poly(9, function (u) { var A = u * Math.PI * 3, r = 7 * (1 - u * .8); return [sx + Math.cos(A) * r, sy + Math.sin(A) * r]; }, 30);
+    });
+    // Order: group by group, and inside a group from the frame inwards; measure each stroke for drawing.
+    S.forEach(function (st) { var L = 0, P2 = st.p; for (var i = 2; i < P2.length; i += 2) L += Math.hypot(P2[i] - P2[i - 2], P2[i + 1] - P2[i - 1]); st.L = L; });
+    S.sort(function (a, b) { return a.g - b.g; });
+    var total = 0; S.forEach(function (st) { st.from = total; total += st.L; });
+    return { strokes: S, total: total };
+  }
+  function inkMap(R, a, p) {
+    if (!INK) INK = makeInk();
+    // The paper stays solid while the pen works: the drawing runs from 15% to 72% of the chapter, the colour after.
+    a = clamp(a * 2.2, 0, 1);
+    var draw = ease(clamp((p - .15) / .57, 0, 1)) * INK.total, colour = clamp((p - .74) / .24, 0, 1);
+    var sx = R.w / PW, sy = R.h / PH;
+    ctx.save(); ctx.globalAlpha = a;
+    ctx.fillStyle = "#f1ead8"; ctx.shadowColor = "rgba(0,0,0,.5)"; ctx.shadowBlur = 30; ctx.shadowOffsetY = 18;
+    ctx.fillRect(R.x, R.y, R.w, R.h); ctx.shadowColor = "transparent";
+    // The knot grid, faint, as on a designer's chart
+    ctx.lineWidth = 1; ctx.strokeStyle = "rgba(60,50,40,.07)";
+    for (var gx = 0; gx <= W; gx++) { ctx.beginPath(); ctx.moveTo(R.x + gx * R.w / W, R.y); ctx.lineTo(R.x + gx * R.w / W, R.y + R.h); ctx.stroke(); }
+    for (var gy = 0; gy <= H; gy++) { ctx.beginPath(); ctx.moveTo(R.x, R.y + gy * R.h / H); ctx.lineTo(R.x + R.w, R.y + gy * R.h / H); ctx.stroke(); }
+    // Colour comes in under the drawing at the end, knot by knot
+    if (colour > 0) { ctx.globalAlpha = a * ease(colour) * .9; ctx.imageSmoothingEnabled = false; ctx.drawImage(cur.tex, R.x, R.y, R.w, R.h); ctx.globalAlpha = a; }
+    ctx.strokeStyle = colour > .5 ? "rgba(28,34,53," + (1 - (colour - .5) * 1.2) + ")" : "#1c2235";
+    ctx.lineWidth = Math.max(.8, R.w / 520); ctx.lineCap = "round"; ctx.lineJoin = "round";
+    var tip = null;
+    INK.strokes.forEach(function (st) {
+      if (st.from >= draw) return;
+      var left = draw - st.from, P2 = st.p;
+      for (var m = 0; m < 4; m++) {
+        var fx = m & 1 ? -1 : 1, fy = m & 2 ? -1 : 1;
+        ctx.beginPath();
+        var acc = 0, x0 = P2[0], y0 = P2[1];
+        ctx.moveTo(R.x + (MX + (x0 - MX) * fx) * sx, R.y + (MY + (y0 - MY) * fy) * sy);
+        for (var i = 2; i < P2.length; i += 2) {
+          var x1 = P2[i], y1 = P2[i + 1], d = Math.hypot(x1 - x0, y1 - y0);
+          if (acc + d > left) { var f = (left - acc) / d; x1 = x0 + (x1 - x0) * f; y1 = y0 + (y1 - y0) * f; ctx.lineTo(R.x + (MX + (x1 - MX) * fx) * sx, R.y + (MY + (y1 - MY) * fy) * sy); if (m === 0) tip = [x1, y1]; break; }
+          acc += d; ctx.lineTo(R.x + (MX + (x1 - MX) * fx) * sx, R.y + (MY + (y1 - MY) * fy) * sy); x0 = x1; y0 = y1;
+        }
+        ctx.stroke();
+      }
+    });
+    // The pen's nib, where the line is being drawn
+    if (tip && draw < INK.total) { ctx.fillStyle = "#c9a24a"; ctx.beginPath(); ctx.arc(R.x + tip[0] * sx, R.y + tip[1] * sy, Math.max(2, R.w / 180), 0, Math.PI * 2); ctx.fill(); }
+    ctx.restore();
+  }
   var DRAWN = [scene0, scene1, scene2, scene3, scene4, scene5, scene6];
   // Which scene each chapter shows: a clip if there is one, else the real photograph (real carpet), else the drawing.
   function sceneFor(i) {
     if (VIDS[i] && cur.d.photo) return clipScene(i);
     if (cur.d.photo && i === 0) return photo0;
     if (cur.d.photo && i === 5) return photo5;
+    if (cur.d.photo && i === 3) return inkMap;
     return DRAWN[i];
   }
   var SCENES = { length: 7 };
