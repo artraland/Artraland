@@ -40,28 +40,12 @@
     return -1;   // inside the field
   }
   var DESIGNS = [
-    { key: "throne", city: "kashan", fibre: "sp.silk", knots: "sp.knots1", total: 1200000, link: "/piece?p=carpet", cta: "cp.enquire",
-      colors: [["#8e1f26", "madder"], ["#1d2c62", "indigo"], ["#c9a24a", "pomegranate"], ["#efe5cb", "ivory"], ["#4a2e1f", "walnut"], ["#5f86c4", "larkspur"]],
-      P: { field: 0, band: 1, guard: 2, rose: 0, line: 4 },
-      field: function (x, y) {
-        var cx = (W - 1) / 2, cy = (H - 1) / 2, u = Math.abs(x - cx), v = Math.abs(y - cy), m = u / 15 + v / 22;
-        if (m < 1) {                                   // the medallion
-          if (m < .16) return 2;
-          if (m < .34) return 3;
-          if (m < .62) return (Math.abs(u - v * .7) < 1.2) ? 2 : 1;
-          if (m < .7) return 2;
-          if (m < .9) return (((x + y) % 4) === 0) ? 2 : 3;
-          return 4;
-        }
-        if (u < 2.6 && v >= 21 && v < 27) return v < 23 ? 4 : 2;   // the pendants above and below
-        var xx = Math.min(x - 13, W - 14 - x), yy = Math.min(y - 13, H - 14 - y), q = xx / 15 + yy / 21;
-        if (q < 1) return q > .86 ? 2 : (q < .4 ? 5 : 1);           // the corner spandrels
-        var a = (x + 300) % 6 - 3, c = (y + 300) % 6 - 3;
-        if (a === 0 && c === 0) return 3;
-        if (Math.abs(a) + Math.abs(c) === 1) return 2;
-        return 0;
-      } },
-    { key: "garden", city: "isfahan", fibre: "sp.woolsilk", knots: "sp.knots_o", link: "/#commission", cta: "cp.commission",
+    // The real carpet: its knots are read from /photos/carpet-knots.png, a flat view made from the photograph
+    // (straightened, then mirrored, as the carpet is symmetric), one pixel a knot. The story ends on the photograph.
+    { key: "real", W: 72, H: 110, image: "/photos/carpet-knots.png", photo: "/photos/carpet-hall.jpg", link: "/piece?p=carpet", cta: "cp.enquire",
+      colors: [["#2f8466", "green"], ["#8a1e2b", "madder"], ["#c4473f", "madder_light"], ["#ece0c2", "ivory"], ["#c99a52", "pomegranate"], ["#2a2420", "walnut"]],
+      specs: [["sp.field", "spv.field"], ["sp.medallion", "spv.medallion"], ["sp.corners", "spv.corners"], ["sp.border", "spv.border"]] },
+    { key: "garden", W: 60, H: 90, city: "isfahan", fibre: "sp.woolsilk", knots: "sp.knots_o", link: "/#commission", cta: "cp.commission",
       colors: [["#ebe0c4", "ivory"], ["#2b4f8c", "indigo"], ["#c79a3e", "weld"], ["#4f6b3a", "vine"], ["#a6403a", "madder"], ["#3b2a1e", "walnut"]],
       P: { field: 0, band: 1, guard: 2, rose: 4, line: 5 },
       field: function (x, y) {
@@ -80,7 +64,7 @@
         if (r < 3.9 && (px === Math.round(cx) || py === Math.round(cyy))) return 3;
         return bg;
       } },
-    { key: "herati", city: "tabriz", fibre: "sp.wool", knots: "sp.knots_o", link: "/#commission", cta: "cp.commission",
+    { key: "herati", W: 60, H: 90, city: "tabriz", fibre: "sp.wool", knots: "sp.knots_o", link: "/#commission", cta: "cp.commission",
       colors: [["#1c2654", "indigo"], ["#e9dfc4", "ivory"], ["#b0564f", "madder"], ["#c49a46", "pomegranate"], ["#6b8cc1", "larkspur"], ["#352419", "walnut"]],
       P: { field: 0, band: 2, guard: 3, rose: 1, line: 5 },
       field: function (x, y) {
@@ -95,19 +79,35 @@
 
   // Build a carpet: its knots, a woven texture (4 px a knot, lit from above), and a small thumbnail.
   var KS = 4;
-  function build(d) {
-    var grid = new Uint8Array(W * H);
-    for (var y = 0; y < H; y++) for (var x = 0; x < W; x++) {
-      var f = frame(x, y, d.P);
-      grid[y * W + x] = f >= 0 ? f : d.field(x, y);
-    }
-    var rgb = d.colors.map(function (c) { var n = parseInt(c[0].slice(1), 16); return [n >> 16, (n >> 8) & 255, n & 255]; });
+  function hex(c) { var n = parseInt(c.slice(1), 16); return [n >> 16, (n >> 8) & 255, n & 255]; }
+  // A drawn carpet: each knot's colour comes from its pattern.
+  function fromPattern(d) {
+    W = d.W; H = d.H;
+    var pal = d.colors.map(function (c) { return hex(c[0]); }), cells = [];
+    for (var y = 0; y < H; y++) for (var x = 0; x < W; x++) { var f = frame(x, y, d.P); cells.push(pal[f >= 0 ? f : d.field(x, y)]); }
+    return build(d, cells);
+  }
+  // The real carpet: each knot's colour comes from one pixel of its flat view.
+  function fromImage(d) {
+    return new Promise(function (ok, no) {
+      var im = new Image();
+      im.onload = function () {
+        var c = document.createElement("canvas"); c.width = d.W; c.height = d.H;
+        var g = c.getContext("2d"); g.drawImage(im, 0, 0);
+        var px = g.getImageData(0, 0, d.W, d.H).data, cells = [];
+        for (var i = 0; i < d.W * d.H; i++) cells.push([px[i * 4], px[i * 4 + 1], px[i * 4 + 2]]);
+        W = d.W; H = d.H; ok(build(d, cells));
+      };
+      im.onerror = no; im.src = d.image;
+    });
+  }
+  function build(d, cells) {
     var tex = document.createElement("canvas"); tex.width = W * KS; tex.height = H * KS;
     var tc = tex.getContext("2d"), img = tc.createImageData(tex.width, tex.height), D = img.data;
     var seed = 7;
     function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
     for (var yy = 0; yy < tex.height; yy++) for (var xx = 0; xx < tex.width; xx++) {
-      var c = rgb[grid[(yy / KS | 0) * W + (xx / KS | 0)]], ky = yy % KS, kx = xx % KS;
+      var c = cells[(yy / KS | 0) * W + (xx / KS | 0)], ky = yy % KS, kx = xx % KS;
       var k = 1 + (ky === 0 ? .1 : ky === KS - 1 ? -.16 : 0) + (kx === KS - 1 ? -.07 : 0) + (rnd() - .5) * .06;
       var o = (yy * tex.width + xx) * 4;
       D[o] = Math.min(255, c[0] * k); D[o + 1] = Math.min(255, c[1] * k); D[o + 2] = Math.min(255, c[2] * k); D[o + 3] = 255;
@@ -117,40 +117,45 @@
     var fuzz = document.createElement("canvas"); fuzz.width = tex.width; fuzz.height = tex.height;
     var fc = fuzz.getContext("2d");
     for (var i = 0; i < 2600; i++) {
-      var fx = rnd() * fuzz.width, fy = rnd() * fuzz.height, col = rgb[grid[(fy / KS | 0) * W + (fx / KS | 0)]];
+      var fx = rnd() * fuzz.width, fy = rnd() * fuzz.height, col = cells[(fy / KS | 0) * W + (fx / KS | 0)];
       fc.strokeStyle = "rgba(" + (col[0] + 40) + "," + (col[1] + 40) + "," + (col[2] + 40) + ",.75)";
       fc.lineWidth = 1; fc.beginPath(); fc.moveTo(fx, fy); fc.lineTo(fx + (rnd() - .5) * 7, fy - rnd() * 7); fc.stroke();
     }
     var th = document.createElement("canvas"); th.width = W; th.height = H;
     th.getContext("2d").drawImage(tex, 0, 0, W, H);
-    return { d: d, grid: grid, tex: tex, fuzz: fuzz, thumb: th.toDataURL() };
+    var out = { d: d, tex: tex, fuzz: fuzz, thumb: th.toDataURL() };
+    if (d.photo) { out.photo = new Image(); out.photo.src = d.photo; }
+    return out;
   }
-  var BUILT = DESIGNS.map(build), cur = BUILT[0];
+  var BUILT, cur = null;
+  function use(b) { cur = b; W = b.d.W; H = b.d.H; }
 
   // ---------------------------------------------------------------------------------------------------------------
   // The picker and the chapters
   // ---------------------------------------------------------------------------------------------------------------
   var pick = $("#cpPick");
-  BUILT.forEach(function (b, i) {
+  function makePicker() { BUILT.forEach(function (b, i) {
     var btn = document.createElement("button");
     btn.type = "button";
     btn.setAttribute("aria-pressed", i === 0);
     btn.innerHTML = '<img src="' + b.thumb + '" alt=""><span>' + esc(t("cp.d" + (i + 1))) + "<small>" + esc(t("cp.d" + (i + 1) + "_s")) + "</small></span>";
     btn.addEventListener("click", function () {
-      cur = b;
+      use(b);
       $$("button", pick).forEach(function (x) { x.setAttribute("aria-pressed", x === btn); });
       details(); frame0();
     });
     pick.appendChild(btn);
-  });
+  }); }
   function cityName(k) { return window.ARTRA_ROAD && ARTRA_ROAD.city(k) ? ARTRA_ROAD.name(k) : k; }
   function details() {
     var d = cur.d, dyes = d.colors.map(function (c) { return t("dye." + c[1]); }).filter(function (v, i, a) { return a.indexOf(v) === i; });
-    $("#cpSpecs").innerHTML = [["sp.city", cityName(d.city)], ["sp.fibre", t(d.fibre)], ["sp.knots", t(d.knots)], ["sp.dyes", dyes.join(" · ")]]
+    // The real carpet is described by what the photograph shows; the drawn ones by their making.
+    var rows = d.specs ? d.specs.map(function (r) { return [r[0], t(r[1])]; })
+      : [["sp.city", cityName(d.city)], ["sp.fibre", t(d.fibre)], ["sp.knots", t(d.knots)], ["sp.dyes", dyes.join(" · ")]];
+    $("#cpSpecs").innerHTML = rows
       .map(function (r) { return "<div><dt>" + esc(t(r[0])) + "</dt><dd>" + esc(r[1]) + "</dd></div>"; }).join("");
     $("#cpCta").innerHTML = '<a class="btn btn-gold" href="' + d.link + '">' + esc(t(d.cta)) + "</a>";
   }
-  details();
 
   var chs = $$(".cp-ch"), dots = $$(".cp-dots li"), story = $("#story");
   var cv = $("#cpCanvas"), ctx = cv.getContext("2d"), vw = 0, vh = 0, dpr = 1;
@@ -335,8 +340,7 @@
       ctx.beginPath(); ctx.moveTo(R.x - cw * 3, ry - cw * 1.6); ctx.lineTo(R.x + R.w + cw * 3, ry - cw * 1.6); ctx.stroke();
     }
     ctx.restore();
-    if (cur.d.total) countEl.textContent = t("cp.knots", { n: Math.round(cur.d.total * rows / H).toLocaleString(T.lang) });
-    else countEl.textContent = "";
+    countEl.textContent = t("cp.rows", { r: rows.toLocaleString(T.lang), n: H.toLocaleString(T.lang) });
   }
 
   // 5 · shearing: the loose pile falls away; then washing: a sheen of water passes over it
@@ -370,12 +374,31 @@
     g.addColorStop(0, "rgba(255,255,255,.12)"); g.addColorStop(.5, "rgba(255,255,255,0)"); g.addColorStop(1, "rgba(0,0,0,.18)");
     ctx.fillStyle = g; ctx.fillRect(R.x, R.y, R.w, R.h);
     ctx.restore();
+    // The real carpet: the drawing gives way to the photograph, framed in gold.
+    var ph = cur.photo, f = clamp((p - .18) / .3, 0, 1);
+    if (ph && ph.complete && ph.naturalWidth && f > 0) {
+      // Beside the words on wide screens (never over them), below them on phones.
+      var textEdge = Math.max(32, (vw - 1180) / 2) + Math.min(470, vw * .4) + 40;
+      var fw = R.wide ? Math.min(vw - textEdge - 70, 900) : vw - 32, fh = fw / (R.wide ? 1.6 : 1.45);
+      if (R.wide && fh > vh * .62) { fh = vh * .62; fw = fh * 1.6; }
+      if (!R.wide) fh = Math.min(fh, vh * .34);
+      var fx = R.wide ? (rtl ? vw - textEdge - fw : textEdge + (vw - textEdge - 70 - fw) / 2) : 16, fy = R.wide ? vh * .5 - fh / 2 : vh * .66 - fh / 2;
+      // Fill the frame with the middle of the photograph, where the carpet is.
+      var sr = fw / fh, sw = ph.naturalWidth, sh = ph.naturalHeight, cw2 = Math.min(sw, sh * sr), ch2 = cw2 / sr;
+      ctx.save(); ctx.globalAlpha = a * ease(f);
+      ctx.shadowColor = "rgba(0,0,0,.6)"; ctx.shadowBlur = 40; ctx.shadowOffsetY = 20;
+      ctx.fillStyle = "#081a42"; ctx.fillRect(fx - 6, fy - 6, fw + 12, fh + 12); ctx.shadowColor = "transparent";
+      ctx.imageSmoothingEnabled = true;
+      ctx.drawImage(ph, (sw - cw2) / 2, Math.max(0, sh - ch2), cw2, ch2, fx, fy, fw, fh);
+      ctx.strokeStyle = "#c9a24a"; ctx.lineWidth = 1.2; ctx.strokeRect(fx - 6, fy - 6, fw + 12, fh + 12);
+      ctx.restore();
+    }
   }
 
   var SCENES = [scene0, scene1, scene2, scene3, scene4, scene5, scene6];
   var c = 0;
   function frame0() {
-    if (!vw) return;
+    if (!vw || !cur) return;
     c = progress();
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, vw, vh);
@@ -399,5 +422,12 @@
   addEventListener("resize", resize);
   new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible && !raf && !reduced) raf = requestAnimationFrame(tick); }).observe(story);
   resize();
-  if (!reduced) raf = requestAnimationFrame(tick);
+  // The drawn carpets are made at once; the real one waits for its image. It comes first.
+  var drawn = DESIGNS.filter(function (d) { return !d.image; }).map(fromPattern);
+  var real = DESIGNS.filter(function (d) { return d.image; });
+  Promise.all(real.map(function (d) { return fromImage(d).catch(function () { return null; }); })).then(function (r) {
+    BUILT = r.filter(Boolean).concat(drawn);
+    use(BUILT[0]); makePicker(); details(); frame0();
+    if (!reduced) raf = requestAnimationFrame(tick);
+  });
 })();

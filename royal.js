@@ -123,6 +123,11 @@
         $(".piece-art", card).appendChild(img);
       }
       grid.appendChild(card);
+    } else if (p.cutout || p.photo) {
+      // A drawn piece that now has a real photograph shows the photograph.
+      var box = $(".piece-art", card), ph = new Image();
+      box.innerHTML = ""; box.classList.add("piece-photo"); if (p.cutout) box.classList.add("cutout");
+      ph.src = p.cutout || p.photo; ph.alt = p.name; ph.loading = "lazy"; box.appendChild(ph);
     }
     card.setAttribute("data-piece", p.slug);
     card.href = p.url;
@@ -225,7 +230,7 @@
   function show(i) {
     if (!PRODUCTS.length) return;
     current = (i + PRODUCTS.length) % PRODUCTS.length;
-    var p = PRODUCTS[current], art = ARTRA_ART.make(p.key);
+    var p = PRODUCTS[current], art = p.cutout || p.photo ? null : ARTRA_ART.make(p.key);   // a real photograph comes first
     stageArt.innerHTML = "";
     if (art) stageArt.appendChild(art);
     else if (p.cutout || p.photo) { var img = new Image(); img.src = p.cutout || p.photo; img.alt = p.name; img.className = p.cutout ? "photo cutout" : "photo"; stageArt.appendChild(img); }

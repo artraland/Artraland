@@ -52,6 +52,11 @@
     box.appendChild(a);
     box.classList.toggle("is-photo", a.tagName === "IMG" && !cut);
     box.classList.toggle("is-cutout", cut);
+    // A wide photograph (a carpet in a room, say) is shown wide rather than shrunk into the piece's frame.
+    if (a.tagName === "IMG" && !cut) {
+      var wide = function () { box.classList.toggle("is-wide", a.naturalWidth > a.naturalHeight * 1.8); };
+      if (a.complete && a.naturalWidth) wide(); else a.addEventListener("load", wide);
+    }
   }
 
   // ---- Hero ----

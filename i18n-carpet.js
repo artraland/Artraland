@@ -3,9 +3,10 @@
 (function () {
   var X = {
     en: {
+      "cp.d1_s": "Emerald field · red star medallion · ivory corners", "cp.rows": "Row {r} of {n}", "dye.green": "Indigo over weld", "dye.madder_light": "Madder, a lighter bath", "sp.field": "Field", "sp.medallion": "Medallion", "sp.corners": "Corners", "sp.border": "Border", "spv.field": "Emerald green, with scrolling vines and flowers", "spv.medallion": "A red star, with pendants above and below", "spv.corners": "Ivory arabesques", "spv.border": "Wine red, with palmettes between gold guards",
       "cp.meta_title": "The making of a carpet — ARTRA", "cp.meta_desc": "Choose a carpet and scroll: from spun thread and plant dyes to the chart, the knots and the finished carpet.",
       "cp.choose": "Choose your carpet", "cp.scroll": "Scroll to watch it being made",
-      "cp.d1": "The Throne Rug", "cp.d1_s": "Kashan · silk on silk · central medallion",
+      "cp.d1": "The Throne Rug",
       "cp.d2": "The Garden of Isfahan", "cp.d2_s": "Isfahan · wool and silk · garden panels · to commission",
       "cp.d3": "The Herati of Tabriz", "cp.d3_s": "Tabriz · wool · herati lattice · to commission",
       "cp.k0": "Kashan · Isfahan · Tabriz", "cp.h0": "Every thread has a road.", "cp.p0": "Choose a carpet below, then scroll: follow it from a single thread to the floor of a house.",
@@ -22,9 +23,10 @@
       "cp.aria": "The making of the carpet, drawn as you scroll"
     },
     fr: {
+      "cp.d1_s": "Champ émeraude · médaillon étoilé rouge · écoinçons ivoire", "cp.rows": "Rang {r} sur {n}", "dye.green": "Indigo sur gaude", "dye.madder_light": "Garance, bain plus léger", "sp.field": "Champ", "sp.medallion": "Médaillon", "sp.corners": "Écoinçons", "sp.border": "Bordure", "spv.field": "Vert émeraude, rinceaux et fleurs", "spv.medallion": "Une étoile rouge, avec pendentifs en haut et en bas", "spv.corners": "Arabesques ivoire", "spv.border": "Lie-de-vin, palmettes entre des galons dorés",
       "cp.meta_title": "La fabrication d'un tapis — ARTRA", "cp.meta_desc": "Choisissez un tapis et faites défiler : du fil filé et des teintures végétales au carton, aux nœuds et au tapis achevé.",
       "cp.choose": "Choisissez votre tapis", "cp.scroll": "Faites défiler pour le voir naître",
-      "cp.d1": "Le Tapis du Trône", "cp.d1_s": "Kachan · soie sur soie · médaillon central",
+      "cp.d1": "Le Tapis du Trône",
       "cp.d2": "Le Jardin d'Ispahan", "cp.d2_s": "Ispahan · laine et soie · panneaux de jardin · sur commande",
       "cp.d3": "Le Hérati de Tabriz", "cp.d3_s": "Tabriz · laine · treillis hérati · sur commande",
       "cp.k0": "Kachan · Ispahan · Tabriz", "cp.h0": "Chaque fil a sa route.", "cp.p0": "Choisissez un tapis ci-dessous, puis faites défiler : suivez-le d'un simple fil jusqu'au sol d'une maison.",
@@ -41,9 +43,10 @@
       "cp.aria": "La fabrication du tapis, dessinée au fil du défilement"
     },
     es: {
+      "cp.d1_s": "Campo esmeralda · medallón de estrella rojo · esquinas marfil", "cp.rows": "Hilera {r} de {n}", "dye.green": "Índigo sobre gualda", "dye.madder_light": "Rubia, un baño más ligero", "sp.field": "Campo", "sp.medallion": "Medallón", "sp.corners": "Esquinas", "sp.border": "Cenefa", "spv.field": "Verde esmeralda, con roleos y flores", "spv.medallion": "Una estrella roja, con colgantes arriba y abajo", "spv.corners": "Arabescos marfil", "spv.border": "Rojo vino, con palmetas entre galones dorados",
       "cp.meta_title": "Cómo nace una alfombra — ARTRA", "cp.meta_desc": "Elija una alfombra y desplácese: del hilo hilado y los tintes vegetales al cartón, los nudos y la alfombra terminada.",
       "cp.choose": "Elija su alfombra", "cp.scroll": "Desplácese para verla nacer",
-      "cp.d1": "La Alfombra del Trono", "cp.d1_s": "Kashán · seda sobre seda · medallón central",
+      "cp.d1": "La Alfombra del Trono",
       "cp.d2": "El Jardín de Isfahán", "cp.d2_s": "Isfahán · lana y seda · paneles de jardín · por encargo",
       "cp.d3": "El Herati de Tabriz", "cp.d3_s": "Tabriz · lana · celosía herati · por encargo",
       "cp.k0": "Kashán · Isfahán · Tabriz", "cp.h0": "Cada hilo tiene su ruta.", "cp.p0": "Elija una alfombra abajo y desplácese: sígala desde un solo hilo hasta el suelo de una casa.",
@@ -60,9 +63,10 @@
       "cp.aria": "Cómo nace la alfombra, dibujado al desplazarse"
     },
     ar: {
+      "cp.d1_s": "أرضية زمردية · ميدالية نجمية حمراء · زوايا عاجية", "cp.rows": "الصف {r} من {n}", "dye.green": "النيلة فوق البليحاء", "dye.madder_light": "الفوّة، حوض أخف", "sp.field": "الأرضية", "sp.medallion": "الميدالية", "sp.corners": "الزوايا", "sp.border": "الإطار", "spv.field": "أخضر زمردي، بأغصان ملتفة وزهور", "spv.medallion": "نجمة حمراء، بمعلّقات في الأعلى والأسفل", "spv.corners": "أرابيسك عاجي", "spv.border": "أحمر نبيذي، بنخيلات بين حواشٍ ذهبية",
       "cp.meta_title": "صناعة سجادة — آرترا", "cp.meta_desc": "اختر سجادة ومرّر الصفحة: من الخيط المغزول والأصباغ النباتية إلى المخطط والعُقد والسجادة المكتملة.",
       "cp.choose": "اختر سجادتك", "cp.scroll": "مرّر لتراها تُصنع",
-      "cp.d1": "سجادة العرش", "cp.d1_s": "كاشان · حرير على حرير · ميدالية في الوسط",
+      "cp.d1": "سجادة العرش",
       "cp.d2": "حديقة أصفهان", "cp.d2_s": "أصفهان · صوف وحرير · ألواح الحديقة · حسب الطلب",
       "cp.d3": "هراتي تبريز", "cp.d3_s": "تبريز · صوف · شبكة هراتي · حسب الطلب",
       "cp.k0": "كاشان · أصفهان · تبريز", "cp.h0": "لكل خيطٍ طريقه.", "cp.p0": "اختر سجادة في الأسفل ثم مرّر الصفحة: تابعها من خيطٍ واحد إلى أرض بيت.",
@@ -79,9 +83,10 @@
       "cp.aria": "صناعة السجادة، مرسومة مع التمرير"
     },
     fa: {
+      "cp.d1_s": "زمینهٔ زمردی · ترنج ستاره‌ای لاکی · لچک‌های شیری", "cp.rows": "رج {r} از {n}", "dye.green": "نیل روی اسپرک", "dye.madder_light": "روناس، خُم کم‌رنگ‌تر", "sp.field": "زمینه", "sp.medallion": "ترنج", "sp.corners": "لچک‌ها", "sp.border": "حاشیه", "spv.field": "سبز زمردی، با اسلیمی و گل", "spv.medallion": "ستارهٔ لاکی، با سرترنج در بالا و پایین", "spv.corners": "اسلیمی شیری", "spv.border": "لاکی تیره، با بته‌جقه میان حاشیه‌های طلایی",
       "cp.meta_title": "ساخت یک فرش — آرترا", "cp.meta_desc": "فرشی برگزینید و صفحه را پایین ببرید: از نخ ریسیده و رنگ‌های گیاهی تا نقشه، گره‌ها و فرش پایان‌یافته.",
       "cp.choose": "فرش خود را برگزینید", "cp.scroll": "پایین بروید تا ساخته شدنش را ببینید",
-      "cp.d1": "قالیچهٔ تخت", "cp.d1_s": "کاشان · ابریشم بر ابریشم · ترنج میانی",
+      "cp.d1": "قالیچهٔ تخت",
       "cp.d2": "باغ اصفهان", "cp.d2_s": "اصفهان · پشم و ابریشم · خشتی باغی · سفارشی",
       "cp.d3": "هراتی تبریز", "cp.d3_s": "تبریز · پشم · نقش هراتی · سفارشی",
       "cp.k0": "کاشان · اصفهان · تبریز", "cp.h0": "هر نخی راهی دارد.", "cp.p0": "فرشی را در پایین برگزینید و صفحه را پایین ببرید: آن را از یک رشته نخ تا کف یک خانه دنبال کنید.",
