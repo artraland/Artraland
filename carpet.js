@@ -406,6 +406,7 @@
     1: { src: "/photos/carpet-1.mp4", fx: .72 },     // spinning: wool drawn into thread onto the spindle (made with Gemini)
     2: { src: "/photos/carpet-2.mp4", fx: .7 },      // dyeing: skeins dipped in copper vats, then hung dripping (made with Gemini)
     4: { src: "/photos/carpet-4.mp4", fx: .8, dz: .86 },  // the loom: a knot tied and cut, then the row beaten down with the comb (two Gemini clips)
+    5: { src: "/photos/carpet-5.mp4", fx: .78, dz: .88 },  // the finish: the tufts sheared, then water poured across the carpet (made with Gemini)
     3: { src: "/photos/carpet-3.mp4", fx: .66, dz: .74 }  // the chart: the design painted on graph paper (made with Gemini); shown smaller on wide screens to keep the bright paper clear of the words
   };
   var VIDS = {};
