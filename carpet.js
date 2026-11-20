@@ -403,17 +403,17 @@
   // ---------------------------------------------------------------------------------------------------------------
   // fx: where the subject sits across the frame (0 left, 1 right), kept in view when a narrow screen crops the clip.
   var CLIPS = {
-    1: { src: "/photos/carpet-1b.mp4", fx: .72 },             // spinning: wool drawn into thread onto the spindle (made with Gemini)
-    2: { src: "/photos/carpet-2b.mp4", fx: .7 },              // dyeing: skeins dipped in copper vats, then hung dripping (made with Gemini)
-    3: { src: "/photos/carpet-3b.mp4", fx: .66 },             // the chart: the design painted on graph paper (made with Gemini)
-    4: { src: "/photos/carpet-4b.mp4", fx: .8 },              // the loom: a knot tied and cut, then the row beaten down with the comb (two Gemini clips)
-    5: { src: "/photos/carpet-5b.mp4", fx: .78 },             // the finish: the tufts sheared, then water poured across the carpet (made with Gemini)
-    6: { src: "/photos/carpet-6.mp4", fx: .6, hold: .25 }     // laid down: the carpet unrolled across a marble hall (made with Gemini); ends early to hold on the hall
+    1: { src: "/photos/carpet-1b.mp4", fx: .72, dz: .72 },     // spinning: wool drawn into thread onto the spindle (made with Gemini)
+    2: { src: "/photos/carpet-2b.mp4", fx: .7, dz: .72 },      // dyeing: skeins dipped in copper vats, then hung dripping (made with Gemini)
+    4: { src: "/photos/carpet-4b.mp4", fx: .8, dz: .72 },  // the loom: a knot tied and cut, then the row beaten down with the comb (two Gemini clips)
+    5: { src: "/photos/carpet-5b.mp4", fx: .78, dz: .72 },  // the finish: the tufts sheared, then water poured across the carpet (made with Gemini)
+    6: { src: "/photos/carpet-6.mp4", fx: .6, band: true, hold: .25 },  // laid down: the carpet unrolled across a marble hall (made with Gemini); a wide band, ending early to hold on the hall
+    3: { src: "/photos/carpet-3b.mp4", fx: .66, dz: .58, fade: .48 }  // the chart: the design painted on graph paper (made with Gemini); shown smaller on wide screens to keep the bright paper clear of the words
   };
   var VIDS = {};
   Object.keys(CLIPS).forEach(function (k) {
     var v = document.createElement("video");
-    v.muted = true; v.playsInline = true; v.setAttribute("playsinline", ""); v.preload = "auto"; v.src = CLIPS[k].src; v.fx = CLIPS[k].fx; v.hold = CLIPS[k].hold || 0;
+    v.muted = true; v.playsInline = true; v.setAttribute("playsinline", ""); v.preload = "auto"; v.src = CLIPS[k].src; v.fx = CLIPS[k].fx; v.dz = CLIPS[k].dz || 1; v.band = !!CLIPS[k].band; v.fade = CLIPS[k].fade || .3; v.hold = CLIPS[k].hold || 0;
     v.addEventListener("loadeddata", function () { v.ready = true; frame0(); });
     v.addEventListener("seeked", function () { frame0(); });
     v.load();
@@ -438,7 +438,21 @@
     ctx.fillStyle = g; ctx.fillRect(0, 0, vw, vh);
     ctx.restore();
   }
-
+  // A clip shown smaller than the screen: against the side away from the words, its edges melting into the ground.
+  function inset(src, sw, sh, zoom, a, fade) {
+    fade = fade || .3;
+    // The clips come from small previews: never enlarge one past 1.6 times its own size.
+    var s = Math.min(Math.max(vw / sw, vh / sh) * zoom, 1.6), w = sw * s, h = sh * s, x = rtl ? 0 : vw - w, y = (vh - h) / 2;
+    // On its own layer, its edges faded out, so it melts into the ground behind it (navy or ivory).
+    var b = layer(w, h); b.drawImage(src, 0, 0, w, h);
+    var m = b.createLinearGradient(0, 0, 0, h);
+    m.addColorStop(0, "rgba(0,0,0,0)"); m.addColorStop(.2, "rgba(0,0,0,1)"); m.addColorStop(.8, "rgba(0,0,0,1)"); m.addColorStop(1, "rgba(0,0,0,0)");
+    b.globalCompositeOperation = "destination-in"; b.fillStyle = m; b.fillRect(0, 0, w, h);
+    var mx = rtl ? b.createLinearGradient(w, 0, w * (1 - fade), 0) : b.createLinearGradient(0, 0, w * fade, 0);
+    mx.addColorStop(0, "rgba(0,0,0,0)"); mx.addColorStop(1, "rgba(0,0,0,1)");
+    b.fillStyle = mx; b.fillRect(0, 0, w, h); b.globalCompositeOperation = "source-over";
+    ctx.save(); ctx.globalAlpha = a; ctx.drawImage(bandC, 0, 0, Math.ceil(w * dpr), Math.ceil(h * dpr), x, y, w, h); ctx.restore();
+  }
   // Three versions of the page's colours; THEME picks the one the site shows:
   //   "navy":  the whole story in navy;
   //   "mixed": navy, with the chapters whose footage is light (III, the chart; VI, the hall) on ivory;
@@ -454,32 +468,28 @@
     var r = Math.round(3 + (241 - 3) * warm), g = Math.round(12 + (233 - 12) * warm), b = Math.round(39 + (219 - 39) * warm);
     return "rgba(" + r + "," + g + "," + b + "," + o + ")";
   }
-  // A clip shown as a picture in its own frame: beside the words on wide screens, between the words and the carpet
-  // choice on phones. The frame is filled with the clip (cropped around fx when the shapes differ).
-  function frameRect(i, sw, sh) {
-    var el = chs[i], pk = $(".cp-pick"), r = el.getBoundingClientRect(), top = pk ? pk.getBoundingClientRect().top : vh;
-    var asp = Math.min(sw / sh, 1.9);
-    if (vw > 900) {
-      var textEdge = rtl ? vw - r.left : r.right, left = (rtl ? 70 : textEdge + 56), right = (rtl ? vw - textEdge - 56 : vw - 70);
-      var w = Math.min(right - left, 720), h = w / asp, hmax = Math.min(vh * .56, top - 76 - 60);
-      if (h > hmax) { h = hmax; w = h * asp; }
-      var x = left + (right - left - w) / 2, y = 76 + (top - 76 - h) / 2;
-      return { x: x, y: y, w: w, h: h };
-    }
-    var y0 = r.bottom + 22, y1 = top - 18, w2 = vw - 32, h2 = Math.min(y1 - y0, vh * .34, w2 / 1.05);
-    h2 = Math.max(h2, Math.min(150, y1 - y0));
-    return { x: 16, y: y0 + (y1 - y0 - h2) / 2, w: w2, h: h2 };
+  var bandC = document.createElement("canvas"), bandX = bandC.getContext("2d");
+  function layer(w, h) {
+    var bw = Math.ceil(w * dpr), bh = Math.ceil(h * dpr);
+    if (bandC.width < bw || bandC.height < bh) { bandC.width = Math.max(bandC.width, bw); bandC.height = Math.max(bandC.height, bh); }
+    var b = bandX; b.setTransform(dpr, 0, 0, dpr, 0, 0); b.globalCompositeOperation = "source-over"; b.clearRect(0, 0, w + 2, h + 2);
+    b.imageSmoothingEnabled = true; return b;
   }
-  function framed(i, src, sw, sh, fx, a) {
-    var F = frameRect(i, sw, sh);
-    // Fill the frame: crop the clip's sides (or top and bottom) around where its subject sits
-    var fr = F.w / F.h, cw = Math.min(sw, sh * fr), ch = cw / fr, cx = clamp(fx * sw - cw / 2, 0, sw - cw), cy = (sh - ch) / 2;
-    ctx.save(); ctx.globalAlpha = a;
-    ctx.shadowColor = warm > .5 ? "rgba(60,40,10,.28)" : "rgba(0,0,0,.6)"; ctx.shadowBlur = 36; ctx.shadowOffsetY = 16;
-    ctx.fillStyle = warm > .5 ? "#efe6d5" : "#081a42"; ctx.fillRect(F.x - 6, F.y - 6, F.w + 12, F.h + 12); ctx.shadowColor = "transparent";
-    ctx.imageSmoothingEnabled = true; ctx.drawImage(src, cx, cy, cw, ch, F.x, F.y, F.w, F.h);
-    ctx.strokeStyle = warm > .5 ? "#a8843a" : "#c9a24a"; ctx.lineWidth = 1.2; ctx.strokeRect(F.x - 6, F.y - 6, F.w + 12, F.h + 12);
-    ctx.restore();
+  function band(src, sw, sh, fx, a) {
+    var wide = vw > 900, s = wide ? Math.min(Math.max(vw / sw, vh * .5 / sh), 1.7) : vh * .36 / sh, w = sw * s, h = sh * s;
+    var x = Math.min(0, Math.max(vw - w, vw * .5 - fx * w)), y = wide ? (vh - h) / 2 : vh * .7 - h / 2;
+    // Drawn on its own layer, then faded out at the top and bottom, so the band melts into the page behind it.
+    var b = layer(vw, h), bw = Math.ceil(vw * dpr), bh = Math.ceil(h * dpr); b.drawImage(src, x, 0, w, h);
+    if (wide) {
+      // Darker behind the words and the carpet's details
+      var g = b.createLinearGradient(rtl ? vw : 0, 0, rtl ? 0 : vw, 0);
+      g.addColorStop(0, shade(.94)); g.addColorStop(.36, shade(.86)); g.addColorStop(.56, shade(.25)); g.addColorStop(.7, shade(0));
+      b.fillStyle = g; b.fillRect(0, 0, vw, h);
+    }
+    var m = b.createLinearGradient(0, 0, 0, h);
+    m.addColorStop(0, "rgba(0,0,0,0)"); m.addColorStop(.24, "rgba(0,0,0,1)"); m.addColorStop(.76, "rgba(0,0,0,1)"); m.addColorStop(1, "rgba(0,0,0,0)");
+    b.globalCompositeOperation = "destination-in"; b.fillStyle = m; b.fillRect(0, 0, vw, h); b.globalCompositeOperation = "source-over";
+    ctx.save(); ctx.globalAlpha = a; ctx.drawImage(bandC, 0, 0, bw, bh, 0, y, vw, h); ctx.restore();
   }
   function clipScene(i) {
     return function (R, a, p) {
@@ -488,7 +498,9 @@
       if (i === SCENES.length - 1) p *= 2;                           // the last chapter's progress stops at .5 at the foot of the page
       var tt = clamp(p / (1 - v.hold), 0, 1) * (v.duration - .05);
       if (Math.abs(v.currentTime - tt) > .03 && !v.seeking) v.currentTime = tt;
-      framed(i, v, v.videoWidth, v.videoHeight, v.fx, a);
+      if (v.band) band(v, v.videoWidth, v.videoHeight, v.fx, a);
+      else if (vw > 900 && v.dz < 1) inset(v, v.videoWidth, v.videoHeight, v.dz - .12 * warm * (v.fade < .4), a, v.fade + .2 * warm * (v.fade < .4));   // smaller and softer on ivory
+      else cover(v, v.videoWidth, v.videoHeight, 1, vw > 900 ? .6 : v.fx, .5, a);
     };
   }
   function photoReady() { var ph = cur.photo; return ph && ph.complete && ph.naturalWidth ? ph : null; }
