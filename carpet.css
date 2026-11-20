@@ -117,3 +117,16 @@ html:lang(ar) .cp-pick > p, html:lang(fa) .cp-pick > p { font-size: 13px; }
   .cp-ch:not([data-ch="0"]) h2, .cp-ch:not([data-ch="0"]) .cp-p, .cp-ch:not([data-ch="0"]) .eyebrow, .cp-specs dt, .cp-specs dd, .cp-count {
     text-shadow: 0 0 16px rgba(3, 12, 39, .95), 0 0 5px rgba(3, 12, 39, .9), 0 1px 2px rgba(3, 12, 39, .85); }
 }
+
+/* Computers: a clip shown full screen (chapter V) has the words on top, with a soft glow to keep them readable */
+@media (min-width: 901px) {
+  .cp-ch[data-ch="5"] h2, .cp-ch[data-ch="5"] .cp-p, .cp-ch[data-ch="5"] .eyebrow {
+    text-shadow: 0 0 18px rgba(3, 12, 39, .9), 0 0 5px rgba(3, 12, 39, .85), 0 1px 2px rgba(3, 12, 39, .8); }
+  .cp-stage.is-warm .cp-ch[data-ch="5"] h2, .cp-stage.is-warm .cp-ch[data-ch="5"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="5"] .eyebrow {
+    text-shadow: 0 0 18px rgba(250, 245, 234, 1), 0 0 6px rgba(250, 245, 234, .95), 0 0 2px rgba(250, 245, 234, .95); }
+  .cp-stage.is-warm .cp-ch[data-ch="5"] .cp-p { color: #1d2234; }
+  .cp-ch[data-ch="5"] .cp-p { font-weight: 400;
+    text-shadow: 0 0 10px rgba(3, 12, 39, 1), 0 0 10px rgba(3, 12, 39, 1), 0 0 4px rgba(3, 12, 39, 1), 0 0 2px rgba(3, 12, 39, 1); }
+  .cp-stage.is-warm .cp-ch[data-ch="5"] .cp-p {
+    text-shadow: 0 0 10px rgba(250, 245, 234, 1), 0 0 10px rgba(250, 245, 234, 1), 0 0 4px rgba(250, 245, 234, 1), 0 0 2px rgba(250, 245, 234, 1); }
+}
