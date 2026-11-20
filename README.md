@@ -84,9 +84,9 @@ wash, and laid down. The Throne Rug is the real carpet (`photos/carpet-hall.jpg`
 as the carpet is symmetric, one pixel a knot. So the dyes, the chart and the knotting show its own design. Chapters 1–6 also
 have short filmed clips (`photos/carpet-*.mp4`, made with Gemini), played forward and back with the scroll; the last
 one unrolls the carpet across a marble hall and is shown as a wide band. The page's colours come in three versions, chosen
-by `THEME` in `carpet.js`: `navy` (the whole story in navy), `mixed` (the site's choice: navy, with chapters III, the
+by `THEME` in `carpet.js`: `navy` (the whole story in navy), `mixed` (navy, with chapters III, the
 chart, and VI, the hall, whose footage is light, on ivory; there the ground, the words and the top menu turn ivory and
-the logo navy) and `beige` (ivory throughout, the dark clips shown smaller and further from the words). Add
+the logo navy) and `beige` (the site's choice: ivory throughout, the dark clips shown smaller and further from the words). Add
 `?theme=navy`, `?theme=mixed` or `?theme=beige` to the address to preview one (artraland.com/carpet?theme=beige). The
 all-navy version as it was is also kept on the `carpet-navy` branch. Two drawn designs, the Garden of Isfahan and the Herati of Tabriz, can also be
 chosen (to commission). The Throne Rug's card in the collection opens this page; its button leads on to the rug's

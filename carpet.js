@@ -459,7 +459,7 @@
   //   "beige": the whole story on ivory, the dark clips shown smaller and further from the words.
   // Any version can be previewed with ?theme=navy, ?theme=mixed or ?theme=beige in the address.
   var THEMES = { navy: [], mixed: [3, 6], beige: [0, 1, 2, 3, 4, 5, 6] };
-  var THEME = "mixed";
+  var THEME = "beige";
   var asked = (new URLSearchParams(location.search).get("theme") || "").toLowerCase();
   var IVORY = THEMES[THEMES.hasOwnProperty(asked) ? asked : THEME];
   var warm = 0, stageEl = document.querySelector(".cp-stage");
