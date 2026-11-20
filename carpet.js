@@ -166,9 +166,13 @@
     frame0();
   }
   // How far through the story we are: 0 at the start, 6 at the end (one unit a chapter).
+  // The story's scroll, in chapters: 0 → 6, then TAIL more after the last chapter has arrived, so its clip (the
+  // carpet unrolled in the hall) plays slowly and then holds. The page is 125vh of scroll a chapter (carpet.css).
+  var TAIL = 1.6, cRaw = 0;
   function progress() {
     var r = story.getBoundingClientRect(), span = story.offsetHeight - innerHeight;
-    return Math.max(0, Math.min(6, (-r.top / Math.max(1, span)) * 6.4 - .2));
+    cRaw = Math.max(0, Math.min(6 + TAIL, (-r.top / Math.max(1, span)) * (6.4 + TAIL) - .2));
+    return Math.min(6, cRaw);
   }
   function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
   function ease(v) { return v < .5 ? 2 * v * v : 1 - Math.pow(-2 * v + 2, 2) / 2; }
@@ -499,7 +503,7 @@
     return function (R, a, p) {
       var v = VIDS[i];
       if (!v.ready || !v.duration) return baseScene(i)(R, a, p);      // until the clip has loaded
-      if (i === SCENES.length - 1) p *= 2;                           // the last chapter's progress stops at .5 at the foot of the page
+      if (i === SCENES.length - 1) p = clamp((cRaw - 5.5) / (.5 + TAIL), 0, 1);   // the last clip runs on through the tail
       var tt = clamp(p / (1 - v.hold), 0, 1) * (v.duration - .05);
       if (Math.abs(v.currentTime - tt) > .03 && !v.seeking) v.currentTime = tt;
       if (vw <= 900) cover(v, v.videoWidth, v.videoHeight, 1, v.fx, .5, a, true);   // on phones, the whole screen, the words on top

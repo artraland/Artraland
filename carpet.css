@@ -1,7 +1,7 @@
 /* ARTRA — /carpet: the making of a carpet, told as you scroll. The story is one tall section with a stage that stays
    in view (position: sticky); carpet.js draws the scenes on the canvas and fades the chapters in and out. */
 .cp-page { background: var(--black); }
-.cp-story { position: relative; height: 900vh; }
+.cp-story { position: relative; height: 1100vh; }   /* 125vh of scroll a chapter, plus 2 screens for the last clip (TAIL in carpet.js) */
 .cp-stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden;
   background: radial-gradient(ellipse 70% 80% at 68% 52%, #0a2150 0%, var(--black) 70%); }
 [dir="rtl"] .cp-stage { background: radial-gradient(ellipse 70% 80% at 32% 52%, #0a2150 0%, var(--black) 70%); }
