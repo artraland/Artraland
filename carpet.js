@@ -404,10 +404,10 @@
   // fx: where the subject sits across the frame (0 left, 1 right), kept in view when a narrow screen crops the clip.
   var CLIPS = {
     1: { src: "/photos/carpet-1b.mp4", fx: .72, dz: .72 },     // spinning: wool drawn into thread onto the spindle (made with Gemini)
-    2: { src: "/photos/carpet-2.mp4", fx: .7, dz: .72 },      // dyeing: skeins dipped in copper vats, then hung dripping (made with Gemini)
-    4: { src: "/photos/carpet-4.mp4", fx: .8, dz: .72 },  // the loom: a knot tied and cut, then the row beaten down with the comb (two Gemini clips)
-    5: { src: "/photos/carpet-5.mp4", fx: .78, dz: .72 },  // the finish: the tufts sheared, then water poured across the carpet (made with Gemini)
-    3: { src: "/photos/carpet-3.mp4", fx: .66, dz: .7 }  // the chart: the design painted on graph paper (made with Gemini); shown smaller on wide screens to keep the bright paper clear of the words
+    2: { src: "/photos/carpet-2b.mp4", fx: .7, dz: .72 },      // dyeing: skeins dipped in copper vats, then hung dripping (made with Gemini)
+    4: { src: "/photos/carpet-4b.mp4", fx: .8, dz: .72 },  // the loom: a knot tied and cut, then the row beaten down with the comb (two Gemini clips)
+    5: { src: "/photos/carpet-5b.mp4", fx: .78, dz: .72 },  // the finish: the tufts sheared, then water poured across the carpet (made with Gemini)
+    3: { src: "/photos/carpet-3b.mp4", fx: .66, dz: .7 }  // the chart: the design painted on graph paper (made with Gemini); shown smaller on wide screens to keep the bright paper clear of the words
   };
   var VIDS = {};
   Object.keys(CLIPS).forEach(function (k) {
