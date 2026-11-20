@@ -406,14 +406,14 @@
     1: { src: "/photos/carpet-1c.mp4", fx: .72, dz: .72 },     // spinning: wool drawn into thread onto the spindle (made with Gemini)
     2: { src: "/photos/carpet-2c.mp4", fx: .7, dz: .72 },      // dyeing: skeins dipped in copper vats, then hung dripping (made with Gemini)
     4: { src: "/photos/carpet-4c.mp4", fx: .8, dz: .72 },  // the loom: a knot tied and cut, then the row beaten down with the comb (two Gemini clips)
-    5: { src: "/photos/carpet-5c.mp4", fx: .78, dz: .72 },  // the finish: the tufts sheared, then water poured across the carpet (made with Gemini)
-    6: { src: "/photos/carpet-6c.mp4", fx: .6, band: true, hold: .25 },  // laid down: the carpet unrolled across a marble hall (made with Gemini); a wide band, ending early to hold on the hall
-    3: { src: "/photos/carpet-3c.mp4", fx: .66, dz: .58, fade: .48 }  // the chart: the design painted on graph paper (made with Gemini); shown smaller on wide screens to keep the bright paper clear of the words
+    5: { src: "/photos/carpet-5d.mp4", fx: .7, dz: .72 },  // the finish: the fringe trimmed with shears, then water poured across the carpet (made with Gemini)
+    6: { src: "/photos/carpet-6d.mp4", fx: .6, dz: .72, band: true, hold: .25 },  // laid down: the carpet unrolled across a marble hall (made with Gemini); beside the words on computers, below them on phones; ends early to hold on the hall
+    3: { src: "/photos/carpet-3c.mp4", fx: .66, dz: .58 }  // the chart: the design painted on graph paper (made with Gemini); shown smaller on wide screens to keep the bright paper clear of the words
   };
   var VIDS = {};
   Object.keys(CLIPS).forEach(function (k) {
     var v = document.createElement("video");
-    v.muted = true; v.playsInline = true; v.setAttribute("playsinline", ""); v.preload = "auto"; v.src = CLIPS[k].src; v.fx = CLIPS[k].fx; v.dz = CLIPS[k].dz || 1; v.band = !!CLIPS[k].band; v.fade = CLIPS[k].fade || .3; v.hold = CLIPS[k].hold || 0;
+    v.muted = true; v.playsInline = true; v.setAttribute("playsinline", ""); v.preload = "auto"; v.src = CLIPS[k].src; v.fx = CLIPS[k].fx; v.dz = CLIPS[k].dz || 1; v.band = !!CLIPS[k].band; v.hold = CLIPS[k].hold || 0;
     v.addEventListener("loadeddata", function () { v.ready = true; frame0(); });
     v.addEventListener("seeked", function () { frame0(); });
     v.load();
@@ -439,19 +439,22 @@
     ctx.restore();
   }
   // A clip shown smaller than the screen: against the side away from the words, its edges melting into the ground.
-  function inset(src, sw, sh, zoom, a, fade) {
-    fade = fade || .3;
+  function inset(src, sw, sh, zoom, a) {
     // The clips come from small previews: never enlarge one past 1.6 times its own size.
     var s = Math.min(Math.max(vw / sw, vh / sh) * zoom, 1.6), w = sw * s, h = sh * s, x = rtl ? 0 : vw - w, y = (vh - h) / 2;
-    // On its own layer, its edges faded out, so it melts into the ground behind it (navy or ivory).
-    var b = layer(w, h); b.drawImage(src, 0, 0, w, h);
+    // Only the part clear of the words is shown, in its own colours (no wash over it): it begins where the words end.
+    var textEdge = Math.max(32, (vw - 1180) / 2) + Math.min(470, vw * .4) + 40;
+    var x0 = rtl ? x : Math.max(x, textEdge), x1 = rtl ? Math.min(x + w, vw - textEdge) : x + w, vwid = x1 - x0;
+    if (vwid <= 0) return;
+    var b = layer(vwid, h); b.drawImage(src, (x0 - x) / s, 0, vwid / s, sh, 0, 0, vwid, h);
+    // Soft edges only: a short fade at the top, the bottom and the side towards the words
     var m = b.createLinearGradient(0, 0, 0, h);
-    m.addColorStop(0, "rgba(0,0,0,0)"); m.addColorStop(.2, "rgba(0,0,0,1)"); m.addColorStop(.8, "rgba(0,0,0,1)"); m.addColorStop(1, "rgba(0,0,0,0)");
-    b.globalCompositeOperation = "destination-in"; b.fillStyle = m; b.fillRect(0, 0, w, h);
-    var mx = rtl ? b.createLinearGradient(w, 0, w * (1 - fade), 0) : b.createLinearGradient(0, 0, w * fade, 0);
+    m.addColorStop(0, "rgba(0,0,0,0)"); m.addColorStop(.16, "rgba(0,0,0,1)"); m.addColorStop(.84, "rgba(0,0,0,1)"); m.addColorStop(1, "rgba(0,0,0,0)");
+    b.globalCompositeOperation = "destination-in"; b.fillStyle = m; b.fillRect(0, 0, vwid, h);
+    var f = Math.min(60, vwid * .08), mx = rtl ? b.createLinearGradient(vwid, 0, vwid - f, 0) : b.createLinearGradient(0, 0, f, 0);
     mx.addColorStop(0, "rgba(0,0,0,0)"); mx.addColorStop(1, "rgba(0,0,0,1)");
-    b.fillStyle = mx; b.fillRect(0, 0, w, h); b.globalCompositeOperation = "source-over";
-    ctx.save(); ctx.globalAlpha = a; ctx.drawImage(bandC, 0, 0, Math.ceil(w * dpr), Math.ceil(h * dpr), x, y, w, h); ctx.restore();
+    b.fillStyle = mx; b.fillRect(0, 0, vwid, h); b.globalCompositeOperation = "source-over";
+    ctx.save(); ctx.globalAlpha = a; ctx.drawImage(bandC, 0, 0, Math.ceil(vwid * dpr), Math.ceil(h * dpr), x0, y, vwid, h); ctx.restore();
   }
   // Three versions of the page's colours; THEME picks the one the site shows:
   //   "navy":  the whole story in navy;
@@ -498,8 +501,8 @@
       if (i === SCENES.length - 1) p *= 2;                           // the last chapter's progress stops at .5 at the foot of the page
       var tt = clamp(p / (1 - v.hold), 0, 1) * (v.duration - .05);
       if (Math.abs(v.currentTime - tt) > .03 && !v.seeking) v.currentTime = tt;
-      if (v.band) band(v, v.videoWidth, v.videoHeight, v.fx, a);
-      else if (vw > 900 && v.dz < 1) inset(v, v.videoWidth, v.videoHeight, v.dz - .12 * warm * (v.fade < .4), a, v.fade + .2 * warm * (v.fade < .4));   // smaller and softer on ivory
+      if (vw <= 900) band(v, v.videoWidth, v.videoHeight, v.fx, a);   // on phones, below the words
+      else if (v.dz < 1) inset(v, v.videoWidth, v.videoHeight, v.dz - .12 * warm * (v.dz > .6), a);   // a little smaller on ivory
       else cover(v, v.videoWidth, v.videoHeight, 1, vw > 900 ? .6 : v.fx, .5, a);
     };
   }
