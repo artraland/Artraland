@@ -22,6 +22,8 @@
 .cp-stage.is-warm .cp-pick small { color: #7a7466; }
 .cp-stage.is-warm .cp-dots li { border-color: rgba(154, 122, 53, .7); }
 .cp-stage.is-warm .cp-dots li.on { background: var(--gold-3); }
+/* The menu bar stays solid navy over the ivory chapters (navy and mixed versions) */
+.cp-page .top.scrolled { background: rgba(3, 12, 39, .97); }
 /* ... and the menu bar at the top warms with it */
 .cp-warm .top.scrolled { background: rgba(248, 243, 233, .9); border-color: rgba(154, 122, 53, .3); }
 .cp-warm .mark img { filter: brightness(0) invert(10%) sepia(40%) saturate(3500%) hue-rotate(215deg) brightness(80%); }   /* the site navy, #0b1d4a */

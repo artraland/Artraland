@@ -687,7 +687,7 @@
     else IVORY.forEach(function (k) {
       warm = Math.max(warm, k === SCENES.length - 1 ? ease(clamp((c - 5.45) / .4, 0, 1)) : ease(clamp((.62 - Math.abs(c - k) ) / .3, 0, 1)));
     });
-    stageEl.style.setProperty("--warm", warm.toFixed(3)); stageEl.classList.toggle("is-warm", warm > .5); var ivory = warm > .5;
+    stageEl.style.setProperty("--warm", warm.toFixed(3)); stageEl.classList.toggle("is-warm", warm > .5); var ivory = warm > .5 && IVORY.length >= SCENES.length;   // the menu bar, footer and browser bar turn ivory only when the whole story is
     if (ivory !== document.body.classList.contains("cp-warm")) {
       document.body.classList.toggle("cp-warm", ivory);
       if (themeMeta) themeMeta.setAttribute("content", ivory ? "#f8f3e9" : "#05112f");   // the browser's own bar, on phones
