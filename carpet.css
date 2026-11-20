@@ -103,3 +103,17 @@ html:lang(ar) .cp-pick > p, html:lang(fa) .cp-pick > p { font-size: 13px; }
   .cp-pick small { display: none; }
   .cp-pick img { width: 24px; height: 36px; }
 }
+
+/* Phones: the videos fill the screen behind the words, so the words there are always light, with a soft dark glow
+   that keeps them readable on any picture (chapter 0, a photograph with a wash, keeps the version's own colours). */
+@media (max-width: 900px) {
+  .cp-ch:not([data-ch="0"]) h2, .cp-stage.is-warm .cp-ch:not([data-ch="0"]) h2 { color: var(--ivory); }
+  .cp-ch:not([data-ch="0"]) .cp-p, .cp-stage.is-warm .cp-ch:not([data-ch="0"]) .cp-p,
+  .cp-specs dd, .cp-stage.is-warm .cp-specs dd { color: #f1ece2; }
+  .cp-ch:not([data-ch="0"]) .eyebrow, .cp-stage.is-warm .cp-ch:not([data-ch="0"]) .eyebrow,
+  .cp-specs dt, .cp-stage.is-warm .cp-specs dt { color: var(--gold-2); }
+  .cp-stage.is-warm .cp-ch:not([data-ch="0"]) .eyebrow::before { background: var(--gold-2); }
+  .cp-specs div, .cp-stage.is-warm .cp-specs div { border-color: rgba(232, 207, 138, .4); }
+  .cp-ch:not([data-ch="0"]) h2, .cp-ch:not([data-ch="0"]) .cp-p, .cp-ch:not([data-ch="0"]) .eyebrow, .cp-specs dt, .cp-specs dd, .cp-count {
+    text-shadow: 0 0 16px rgba(3, 12, 39, .95), 0 0 5px rgba(3, 12, 39, .9), 0 1px 2px rgba(3, 12, 39, .85); }
+}

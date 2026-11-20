@@ -426,12 +426,13 @@
   }
   addEventListener("touchstart", prime, { passive: true }); addEventListener("scroll", prime, { passive: true });
   // Fill the stage with an image or video frame, framed by a focus point and zoom; darken the side the words are on.
-  function cover(src, sw, sh, zoom, fx, fy, a) {
+  function cover(src, sw, sh, zoom, fx, fy, a, clear) {
     var s = Math.max(vw / sw, vh / sh) * zoom, w = sw * s, h = sh * s;
     var x = vw / 2 - fx * w + (fx - .5) * vw * .0, y = vh / 2 - fy * h;
     x = Math.min(0, Math.max(vw - w, x)); y = Math.min(0, Math.max(vh - h, y));
     ctx.save(); ctx.globalAlpha = a; ctx.imageSmoothingEnabled = true;
     ctx.drawImage(src, x, y, w, h);
+    if (clear) { ctx.restore(); return; }                             // the picture as it is, no shading
     var wide = vw > 900, g = wide ? ctx.createLinearGradient(rtl ? vw : 0, 0, rtl ? 0 : vw, 0) : ctx.createLinearGradient(0, 0, 0, vh);
     // Shaded only behind the words (more on an ivory ground); the picture keeps its colour on the far side.
     g.addColorStop(0, shade(.88 + .08 * warm)); g.addColorStop(wide ? .36 : .34, shade(.5 + .38 * warm)); g.addColorStop(wide ? .58 : .55, shade(0)); g.addColorStop(1, shade(0));
@@ -501,7 +502,7 @@
       if (i === SCENES.length - 1) p *= 2;                           // the last chapter's progress stops at .5 at the foot of the page
       var tt = clamp(p / (1 - v.hold), 0, 1) * (v.duration - .05);
       if (Math.abs(v.currentTime - tt) > .03 && !v.seeking) v.currentTime = tt;
-      if (vw <= 900) band(v, v.videoWidth, v.videoHeight, v.fx, a);   // on phones, below the words
+      if (vw <= 900) cover(v, v.videoWidth, v.videoHeight, 1, v.fx, .5, a, true);   // on phones, the whole screen, the words on top
       else if (v.dz < 1) inset(v, v.videoWidth, v.videoHeight, v.dz - .12 * warm * (v.dz > .6), a);   // a little smaller on ivory
       else cover(v, v.videoWidth, v.videoHeight, 1, vw > 900 ? .6 : v.fx, .5, a);
     };

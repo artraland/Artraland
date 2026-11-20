@@ -82,7 +82,8 @@ Enquiries desk; if that fails, they fall back to the visitor's email app.
 wash, and laid down. The Throne Rug is the real carpet (`photos/carpet-hall.jpg`). Its knots come from
 `photos/carpet-knots.png`, a flat 72 × 110 view made from that photograph: the photo was straightened, then mirrored,
 as the carpet is symmetric, one pixel a knot. So the dyes, the chart and the knotting show its own design. Chapters 1–6 also
-have short filmed clips (`photos/carpet-*.mp4`, made with Gemini), played forward and back with the scroll; the last
+have short filmed clips (`photos/carpet-*.mp4`, made with Gemini), played forward and back with the scroll (beside the words on computers; on phones filling the screen, the words
+light on top with a soft glow); the last
 one unrolls the carpet across a marble hall and is shown as a wide band. The page's colours come in three versions, chosen
 by `THEME` in `carpet.js`: `navy` (the whole story in navy), `mixed` (navy, with chapters III, the
 chart, and VI, the hall, whose footage is light, on ivory; there the ground and the words turn ivory, while the top
