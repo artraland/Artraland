@@ -403,7 +403,8 @@
   // ---------------------------------------------------------------------------------------------------------------
   // fx: where the subject sits across the frame (0 left, 1 right), kept in view when a narrow screen crops the clip.
   var CLIPS = {
-    1: { src: "/photos/carpet-1.mp4", fx: .72 }      // spinning: wool drawn into thread onto the spindle (made with Gemini)
+    1: { src: "/photos/carpet-1.mp4", fx: .72 },     // spinning: wool drawn into thread onto the spindle (made with Gemini)
+    2: { src: "/photos/carpet-2.mp4", fx: .7 }       // dyeing: skeins dipped in copper vats, then hung dripping (made with Gemini)
   };
   var VIDS = {};
   Object.keys(CLIPS).forEach(function (k) {
@@ -428,7 +429,8 @@
     ctx.save(); ctx.globalAlpha = a; ctx.imageSmoothingEnabled = true;
     ctx.drawImage(src, x, y, w, h);
     var wide = vw > 900, g = wide ? ctx.createLinearGradient(rtl ? vw : 0, 0, rtl ? 0 : vw, 0) : ctx.createLinearGradient(0, 0, 0, vh);
-    g.addColorStop(0, "rgba(3,12,39,.9)"); g.addColorStop(wide ? .42 : .46, "rgba(3,12,39,.55)"); g.addColorStop(wide ? .7 : .7, "rgba(3,12,39,.05)"); g.addColorStop(1, "rgba(3,12,39,.25)");
+    // Dark only behind the words; the picture keeps its colour on the far side.
+    g.addColorStop(0, "rgba(3,12,39,.88)"); g.addColorStop(wide ? .36 : .34, "rgba(3,12,39,.5)"); g.addColorStop(wide ? .58 : .55, "rgba(3,12,39,0)"); g.addColorStop(1, "rgba(3,12,39,0)");
     ctx.fillStyle = g; ctx.fillRect(0, 0, vw, vh);
     ctx.restore();
   }
