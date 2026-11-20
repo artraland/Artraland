@@ -401,15 +401,25 @@
   // CLIPS by chapter (0–6), encoded with a keyframe on every frame so they can be scrubbed both ways:
   //   ffmpeg -i in.mp4 -an -vf "scale=1920:-2,fps=30" -c:v libx264 -g 1 -crf 23 -pix_fmt yuv420p -movflags +faststart carpet-N.mp4
   // ---------------------------------------------------------------------------------------------------------------
-  var CLIPS = {};          // e.g. { 0: "/photos/carpet-0.mp4", 6: "/photos/carpet-6.mp4" }
+  // fx: where the subject sits across the frame (0 left, 1 right), kept in view when a narrow screen crops the clip.
+  var CLIPS = {
+    1: { src: "/photos/carpet-1.mp4", fx: .72 }      // spinning: wool drawn into thread onto the spindle (made with Gemini)
+  };
   var VIDS = {};
   Object.keys(CLIPS).forEach(function (k) {
     var v = document.createElement("video");
-    v.muted = true; v.playsInline = true; v.preload = "auto"; v.src = CLIPS[k];
+    v.muted = true; v.playsInline = true; v.setAttribute("playsinline", ""); v.preload = "auto"; v.src = CLIPS[k].src; v.fx = CLIPS[k].fx;
     v.addEventListener("loadeddata", function () { v.ready = true; frame0(); });
     v.addEventListener("seeked", function () { frame0(); });
+    v.load();
     VIDS[k] = v;
   });
+  // Some phones only decode a video's frames once it has been played: play and pause each clip at the first touch or scroll.
+  function prime() {
+    Object.keys(VIDS).forEach(function (k) { var v = VIDS[k], pr = v.play(); if (pr && pr.then) pr.then(function () { v.pause(); }).catch(function () {}); });
+    removeEventListener("touchstart", prime); removeEventListener("scroll", prime);
+  }
+  addEventListener("touchstart", prime, { passive: true }); addEventListener("scroll", prime, { passive: true });
   // Fill the stage with an image or video frame, framed by a focus point and zoom; darken the side the words are on.
   function cover(src, sw, sh, zoom, fx, fy, a) {
     var s = Math.max(vw / sw, vh / sh) * zoom, w = sw * s, h = sh * s;
@@ -428,7 +438,7 @@
       if (!v.ready || !v.duration) return DRAWN[i](R, a, p);
       var tt = clamp(p, 0, 1) * (v.duration - .05);
       if (Math.abs(v.currentTime - tt) > .03 && !v.seeking) v.currentTime = tt;
-      cover(v, v.videoWidth, v.videoHeight, 1, .62, .5, a);
+      cover(v, v.videoWidth, v.videoHeight, 1, vw > 900 ? .6 : v.fx, .5, a);
     };
   }
   function photoReady() { var ph = cur.photo; return ph && ph.complete && ph.naturalWidth ? ph : null; }
