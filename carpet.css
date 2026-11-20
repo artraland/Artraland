@@ -33,6 +33,12 @@
 .cp-warm .lang-btn { color: #3b4155; border-color: rgba(154, 122, 53, .45); }
 .cp-warm .lang-btn:hover, .cp-warm .lang-btn[aria-expanded="true"] { color: #0b1d4a; border-color: var(--gold-3); }
 .cp-warm .burger span { background: var(--gold-3); }
+/* ... and the footer and the page behind the story */
+.cp-page.cp-warm { background: #f1e9db; }
+.cp-warm .foot { background: #f1e9db; border-color: rgba(154, 122, 53, .3); }
+.cp-warm .foot .muted { color: #4b4f5c; }
+.cp-warm .foot a.muted:hover { color: #0b1d4a; }
+.foot, .cp-page { transition: background-color .5s; }
 @media (max-width: 720px) { .cp-warm .nav { background: rgba(248, 243, 233, .98); border-color: rgba(154, 122, 53, .3); } }
 .top, .mark img, .nav a, .lang-btn, .burger span { transition: background-color .5s, color .5s, border-color .5s, filter .5s; }
 .cp-ch h1, .cp-ch h2, .cp-p, .cp-specs dd, .cp-pick button { transition: color .5s, background-color .5s, border-color .5s; }

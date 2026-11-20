@@ -462,6 +462,7 @@
   var THEME = "beige";
   var asked = (new URLSearchParams(location.search).get("theme") || "").toLowerCase();
   var IVORY = THEMES[THEMES.hasOwnProperty(asked) ? asked : THEME];
+  var themeMeta = document.querySelector('meta[name="theme-color"]');
   var warm = 0, stageEl = document.querySelector(".cp-stage");
   function shade(o) {                // the ground colour behind the words: navy, or ivory in the chapters told on ivory
     var r = Math.round(3 + (241 - 3) * warm), g = Math.round(12 + (233 - 12) * warm), b = Math.round(39 + (219 - 39) * warm);
@@ -686,7 +687,11 @@
     else IVORY.forEach(function (k) {
       warm = Math.max(warm, k === SCENES.length - 1 ? ease(clamp((c - 5.45) / .4, 0, 1)) : ease(clamp((.62 - Math.abs(c - k) ) / .3, 0, 1)));
     });
-    stageEl.style.setProperty("--warm", warm.toFixed(3)); stageEl.classList.toggle("is-warm", warm > .5); document.body.classList.toggle("cp-warm", warm > .5);
+    stageEl.style.setProperty("--warm", warm.toFixed(3)); stageEl.classList.toggle("is-warm", warm > .5); var ivory = warm > .5;
+    if (ivory !== document.body.classList.contains("cp-warm")) {
+      document.body.classList.toggle("cp-warm", ivory);
+      if (themeMeta) themeMeta.setAttribute("content", ivory ? "#f8f3e9" : "#05112f");   // the browser's own bar, on phones
+    }
     for (var i = 0; i < SCENES.length; i++) { var w = weight(c, i); if (w > 0.01) sceneFor(i)(R, w, local(c, i)); }
     // The words: one chapter at a time, rising into place
     chs.forEach(function (el, i) {
