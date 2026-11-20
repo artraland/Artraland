@@ -453,8 +453,15 @@
     b.fillStyle = mx; b.fillRect(0, 0, w, h); b.globalCompositeOperation = "source-over";
     ctx.save(); ctx.globalAlpha = a; ctx.drawImage(bandC, 0, 0, Math.ceil(w * dpr), Math.ceil(h * dpr), x, y, w, h); ctx.restore();
   }
-  // The chapters told on an ivory ground. Make it [] to tell the whole story in navy again.
-  var IVORY = [3, 6];
+  // Three versions of the page's colours; THEME picks the one the site shows:
+  //   "navy":  the whole story in navy;
+  //   "mixed": navy, with the chapters whose footage is light (III, the chart; VI, the hall) on ivory;
+  //   "beige": the whole story on ivory, the dark clips shown smaller and further from the words.
+  // Any version can be previewed with ?theme=navy, ?theme=mixed or ?theme=beige in the address.
+  var THEMES = { navy: [], mixed: [3, 6], beige: [0, 1, 2, 3, 4, 5, 6] };
+  var THEME = "mixed";
+  var asked = (new URLSearchParams(location.search).get("theme") || "").toLowerCase();
+  var IVORY = THEMES[THEMES.hasOwnProperty(asked) ? asked : THEME];
   var warm = 0, stageEl = document.querySelector(".cp-stage");
   function shade(o) {                // the ground colour behind the words: navy, or ivory in the chapters told on ivory
     var r = Math.round(3 + (241 - 3) * warm), g = Math.round(12 + (233 - 12) * warm), b = Math.round(39 + (219 - 39) * warm);
@@ -491,7 +498,7 @@
       var tt = clamp(p / (1 - v.hold), 0, 1) * (v.duration - .05);
       if (Math.abs(v.currentTime - tt) > .03 && !v.seeking) v.currentTime = tt;
       if (v.band) band(v, v.videoWidth, v.videoHeight, v.fx, a);
-      else if (vw > 900 && v.dz < 1) inset(v, v.videoWidth, v.videoHeight, v.dz, a, v.fade);
+      else if (vw > 900 && v.dz < 1) inset(v, v.videoWidth, v.videoHeight, v.dz - .12 * warm * (v.fade < .4), a, v.fade + .2 * warm * (v.fade < .4));   // smaller and softer on ivory
       else cover(v, v.videoWidth, v.videoHeight, 1, vw > 900 ? .6 : v.fx, .5, a);
     };
   }
@@ -675,7 +682,8 @@
     var R = rect();
         // Light footage (the chart on paper, the hall) is told on ivory; the rest of the story stays in the navy night.
     warm = 0;
-    IVORY.forEach(function (k) {
+    if (IVORY.length >= SCENES.length) warm = 1;                    // every chapter on ivory
+    else IVORY.forEach(function (k) {
       warm = Math.max(warm, k === SCENES.length - 1 ? ease(clamp((c - 5.45) / .4, 0, 1)) : ease(clamp((.62 - Math.abs(c - k) ) / .3, 0, 1)));
     });
     stageEl.style.setProperty("--warm", warm.toFixed(3)); stageEl.classList.toggle("is-warm", warm > .5); document.body.classList.toggle("cp-warm", warm > .5);
