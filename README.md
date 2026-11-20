@@ -83,7 +83,9 @@ wash, and laid down. The Throne Rug is the real carpet (`photos/carpet-hall.jpg`
 `photos/carpet-knots.png`, a flat 72 × 110 view made from that photograph: the photo was straightened, then mirrored,
 as the carpet is symmetric, one pixel a knot. So the dyes, the chart and the knotting show its own design. Chapters 1–6 also
 have short filmed clips (`photos/carpet-*.mp4`, made with Gemini), played forward and back with the scroll; the last
-one unrolls the carpet across a marble hall and is shown as a wide band. Two drawn designs, the Garden of Isfahan and the Herati of Tabriz, can also be
+one unrolls the carpet across a marble hall and is shown as a wide band. The story is told in navy, except chapters III (the
+chart) and VI (the hall), whose footage is light: there the ground, the words and the top menu turn ivory (`IVORY` in
+`carpet.js`; set it to `[]` for navy throughout; the all-navy version is also tagged `carpet-navy` in git). Two drawn designs, the Garden of Isfahan and the Herati of Tabriz, can also be
 chosen (to commission). The Throne Rug's card in the collection opens this page; its button leads on to the rug's
 own page and enquiry form.
 

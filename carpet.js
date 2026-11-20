@@ -408,12 +408,12 @@
     4: { src: "/photos/carpet-4b.mp4", fx: .8, dz: .72 },  // the loom: a knot tied and cut, then the row beaten down with the comb (two Gemini clips)
     5: { src: "/photos/carpet-5b.mp4", fx: .78, dz: .72 },  // the finish: the tufts sheared, then water poured across the carpet (made with Gemini)
     6: { src: "/photos/carpet-6.mp4", fx: .6, band: true, hold: .25 },  // laid down: the carpet unrolled across a marble hall (made with Gemini); a wide band, ending early to hold on the hall
-    3: { src: "/photos/carpet-3b.mp4", fx: .66, dz: .7 }  // the chart: the design painted on graph paper (made with Gemini); shown smaller on wide screens to keep the bright paper clear of the words
+    3: { src: "/photos/carpet-3b.mp4", fx: .66, dz: .58, fade: .48 }  // the chart: the design painted on graph paper (made with Gemini); shown smaller on wide screens to keep the bright paper clear of the words
   };
   var VIDS = {};
   Object.keys(CLIPS).forEach(function (k) {
     var v = document.createElement("video");
-    v.muted = true; v.playsInline = true; v.setAttribute("playsinline", ""); v.preload = "auto"; v.src = CLIPS[k].src; v.fx = CLIPS[k].fx; v.dz = CLIPS[k].dz || 1; v.band = !!CLIPS[k].band; v.hold = CLIPS[k].hold || 0;
+    v.muted = true; v.playsInline = true; v.setAttribute("playsinline", ""); v.preload = "auto"; v.src = CLIPS[k].src; v.fx = CLIPS[k].fx; v.dz = CLIPS[k].dz || 1; v.band = !!CLIPS[k].band; v.fade = CLIPS[k].fade || .3; v.hold = CLIPS[k].hold || 0;
     v.addEventListener("loadeddata", function () { v.ready = true; frame0(); });
     v.addEventListener("seeked", function () { frame0(); });
     v.load();
@@ -433,42 +433,49 @@
     ctx.save(); ctx.globalAlpha = a; ctx.imageSmoothingEnabled = true;
     ctx.drawImage(src, x, y, w, h);
     var wide = vw > 900, g = wide ? ctx.createLinearGradient(rtl ? vw : 0, 0, rtl ? 0 : vw, 0) : ctx.createLinearGradient(0, 0, 0, vh);
-    // Dark only behind the words; the picture keeps its colour on the far side.
-    g.addColorStop(0, "rgba(3,12,39,.88)"); g.addColorStop(wide ? .36 : .34, "rgba(3,12,39,.5)"); g.addColorStop(wide ? .58 : .55, "rgba(3,12,39,0)"); g.addColorStop(1, "rgba(3,12,39,0)");
+    // Shaded only behind the words (more on an ivory ground); the picture keeps its colour on the far side.
+    g.addColorStop(0, shade(.88 + .08 * warm)); g.addColorStop(wide ? .36 : .34, shade(.5 + .38 * warm)); g.addColorStop(wide ? .58 : .55, shade(0)); g.addColorStop(1, shade(0));
     ctx.fillStyle = g; ctx.fillRect(0, 0, vw, vh);
     ctx.restore();
   }
-  // A clip shown smaller than the screen: against the side away from the words, its edges melting into the navy.
-  function inset(src, sw, sh, zoom, a) {
+  // A clip shown smaller than the screen: against the side away from the words, its edges melting into the ground.
+  function inset(src, sw, sh, zoom, a, fade) {
+    fade = fade || .3;
     // The clips come from small previews: never enlarge one past 1.6 times its own size.
     var s = Math.min(Math.max(vw / sw, vh / sh) * zoom, 1.6), w = sw * s, h = sh * s, x = rtl ? 0 : vw - w, y = (vh - h) / 2;
-    ctx.save(); ctx.globalAlpha = a; ctx.imageSmoothingEnabled = true;
-    ctx.drawImage(src, x, y, w, h);
-    var fade = h * .2, gt = ctx.createLinearGradient(0, y, 0, y + fade), gb = ctx.createLinearGradient(0, y + h - fade, 0, y + h);
-    gt.addColorStop(0, "rgba(3,12,39,1)"); gt.addColorStop(1, "rgba(3,12,39,0)"); gb.addColorStop(0, "rgba(3,12,39,0)"); gb.addColorStop(1, "rgba(3,12,39,1)");
-    ctx.fillStyle = gt; ctx.fillRect(x, y, w, fade); ctx.fillStyle = gb; ctx.fillRect(x, y + h - fade, w, fade);
-    var gx = rtl ? ctx.createLinearGradient(x + w, 0, x + w - w * .3, 0) : ctx.createLinearGradient(x, 0, x + w * .3, 0);
-    gx.addColorStop(0, "rgba(3,12,39,1)"); gx.addColorStop(1, "rgba(3,12,39,0)");
-    ctx.fillStyle = gx; ctx.fillRect(rtl ? x + w * .7 : x, y, w * .3, h);
-    ctx.fillStyle = "#030c27"; if (y > 0) { ctx.fillRect(0, 0, vw, Math.ceil(y)); ctx.fillRect(0, Math.floor(y + h), vw, vh); }
-    if (!rtl && x > 0) ctx.fillRect(0, 0, Math.ceil(x), vh); if (rtl && w < vw) ctx.fillRect(Math.floor(w), 0, vw, vh);
-    ctx.restore();
+    // On its own layer, its edges faded out, so it melts into the ground behind it (navy or ivory).
+    var b = layer(w, h); b.drawImage(src, 0, 0, w, h);
+    var m = b.createLinearGradient(0, 0, 0, h);
+    m.addColorStop(0, "rgba(0,0,0,0)"); m.addColorStop(.2, "rgba(0,0,0,1)"); m.addColorStop(.8, "rgba(0,0,0,1)"); m.addColorStop(1, "rgba(0,0,0,0)");
+    b.globalCompositeOperation = "destination-in"; b.fillStyle = m; b.fillRect(0, 0, w, h);
+    var mx = rtl ? b.createLinearGradient(w, 0, w * (1 - fade), 0) : b.createLinearGradient(0, 0, w * fade, 0);
+    mx.addColorStop(0, "rgba(0,0,0,0)"); mx.addColorStop(1, "rgba(0,0,0,1)");
+    b.fillStyle = mx; b.fillRect(0, 0, w, h); b.globalCompositeOperation = "source-over";
+    ctx.save(); ctx.globalAlpha = a; ctx.drawImage(bandC, 0, 0, Math.ceil(w * dpr), Math.ceil(h * dpr), x, y, w, h); ctx.restore();
   }
-  // A very wide clip: a band across the screen (the full width on computers, the lower part on phones), fading into
-  // the navy above and below, darker behind the words.
+  // The chapters told on an ivory ground. Make it [] to tell the whole story in navy again.
+  var IVORY = [3, 6];
+  var warm = 0, stageEl = document.querySelector(".cp-stage");
+  function shade(o) {                // the ground colour behind the words: navy, or ivory in the chapters told on ivory
+    var r = Math.round(3 + (241 - 3) * warm), g = Math.round(12 + (233 - 12) * warm), b = Math.round(39 + (219 - 39) * warm);
+    return "rgba(" + r + "," + g + "," + b + "," + o + ")";
+  }
   var bandC = document.createElement("canvas"), bandX = bandC.getContext("2d");
+  function layer(w, h) {
+    var bw = Math.ceil(w * dpr), bh = Math.ceil(h * dpr);
+    if (bandC.width < bw || bandC.height < bh) { bandC.width = Math.max(bandC.width, bw); bandC.height = Math.max(bandC.height, bh); }
+    var b = bandX; b.setTransform(dpr, 0, 0, dpr, 0, 0); b.globalCompositeOperation = "source-over"; b.clearRect(0, 0, w + 2, h + 2);
+    b.imageSmoothingEnabled = true; return b;
+  }
   function band(src, sw, sh, fx, a) {
     var wide = vw > 900, s = wide ? Math.min(Math.max(vw / sw, vh * .5 / sh), 1.7) : vh * .36 / sh, w = sw * s, h = sh * s;
     var x = Math.min(0, Math.max(vw - w, vw * .5 - fx * w)), y = wide ? (vh - h) / 2 : vh * .7 - h / 2;
     // Drawn on its own layer, then faded out at the top and bottom, so the band melts into the page behind it.
-    var bw = Math.ceil(vw * dpr), bh = Math.ceil(h * dpr);
-    if (bandC.width !== bw || bandC.height !== bh) { bandC.width = bw; bandC.height = bh; }
-    var b = bandX; b.setTransform(dpr, 0, 0, dpr, 0, 0); b.globalCompositeOperation = "source-over"; b.clearRect(0, 0, vw, h);
-    b.imageSmoothingEnabled = true; b.drawImage(src, x, 0, w, h);
+    var b = layer(vw, h), bw = Math.ceil(vw * dpr), bh = Math.ceil(h * dpr); b.drawImage(src, x, 0, w, h);
     if (wide) {
       // Darker behind the words and the carpet's details
       var g = b.createLinearGradient(rtl ? vw : 0, 0, rtl ? 0 : vw, 0);
-      g.addColorStop(0, "rgba(3,12,39,.94)"); g.addColorStop(.36, "rgba(3,12,39,.86)"); g.addColorStop(.56, "rgba(3,12,39,.25)"); g.addColorStop(.7, "rgba(3,12,39,0)");
+      g.addColorStop(0, shade(.94)); g.addColorStop(.36, shade(.86)); g.addColorStop(.56, shade(.25)); g.addColorStop(.7, shade(0));
       b.fillStyle = g; b.fillRect(0, 0, vw, h);
     }
     var m = b.createLinearGradient(0, 0, 0, h);
@@ -484,7 +491,7 @@
       var tt = clamp(p / (1 - v.hold), 0, 1) * (v.duration - .05);
       if (Math.abs(v.currentTime - tt) > .03 && !v.seeking) v.currentTime = tt;
       if (v.band) band(v, v.videoWidth, v.videoHeight, v.fx, a);
-      else if (vw > 900 && v.dz < 1) inset(v, v.videoWidth, v.videoHeight, v.dz, a);
+      else if (vw > 900 && v.dz < 1) inset(v, v.videoWidth, v.videoHeight, v.dz, a, v.fade);
       else cover(v, v.videoWidth, v.videoHeight, 1, vw > 900 ? .6 : v.fx, .5, a);
     };
   }
@@ -666,6 +673,12 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, vw, vh);
     var R = rect();
+        // Light footage (the chart on paper, the hall) is told on ivory; the rest of the story stays in the navy night.
+    warm = 0;
+    IVORY.forEach(function (k) {
+      warm = Math.max(warm, k === SCENES.length - 1 ? ease(clamp((c - 5.45) / .4, 0, 1)) : ease(clamp((.62 - Math.abs(c - k) ) / .3, 0, 1)));
+    });
+    stageEl.style.setProperty("--warm", warm.toFixed(3)); stageEl.classList.toggle("is-warm", warm > .5); document.body.classList.toggle("cp-warm", warm > .5);
     for (var i = 0; i < SCENES.length; i++) { var w = weight(c, i); if (w > 0.01) sceneFor(i)(R, w, local(c, i)); }
     // The words: one chapter at a time, rising into place
     chs.forEach(function (el, i) {
