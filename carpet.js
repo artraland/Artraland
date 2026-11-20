@@ -403,11 +403,11 @@
   // ---------------------------------------------------------------------------------------------------------------
   // fx: where the subject sits across the frame (0 left, 1 right), kept in view when a narrow screen crops the clip.
   var CLIPS = {
-    1: { src: "/photos/carpet-1b.mp4", fx: .72 },     // spinning: wool drawn into thread onto the spindle (made with Gemini)
-    2: { src: "/photos/carpet-2.mp4", fx: .7 },      // dyeing: skeins dipped in copper vats, then hung dripping (made with Gemini)
-    4: { src: "/photos/carpet-4.mp4", fx: .8, dz: .86 },  // the loom: a knot tied and cut, then the row beaten down with the comb (two Gemini clips)
-    5: { src: "/photos/carpet-5.mp4", fx: .78, dz: .88 },  // the finish: the tufts sheared, then water poured across the carpet (made with Gemini)
-    3: { src: "/photos/carpet-3.mp4", fx: .66, dz: .74 }  // the chart: the design painted on graph paper (made with Gemini); shown smaller on wide screens to keep the bright paper clear of the words
+    1: { src: "/photos/carpet-1b.mp4", fx: .72, dz: .72 },     // spinning: wool drawn into thread onto the spindle (made with Gemini)
+    2: { src: "/photos/carpet-2.mp4", fx: .7, dz: .72 },      // dyeing: skeins dipped in copper vats, then hung dripping (made with Gemini)
+    4: { src: "/photos/carpet-4.mp4", fx: .8, dz: .72 },  // the loom: a knot tied and cut, then the row beaten down with the comb (two Gemini clips)
+    5: { src: "/photos/carpet-5.mp4", fx: .78, dz: .72 },  // the finish: the tufts sheared, then water poured across the carpet (made with Gemini)
+    3: { src: "/photos/carpet-3.mp4", fx: .66, dz: .7 }  // the chart: the design painted on graph paper (made with Gemini); shown smaller on wide screens to keep the bright paper clear of the words
   };
   var VIDS = {};
   Object.keys(CLIPS).forEach(function (k) {
@@ -439,7 +439,8 @@
   }
   // A clip shown smaller than the screen: against the side away from the words, its edges melting into the navy.
   function inset(src, sw, sh, zoom, a) {
-    var s = Math.max(vw / sw, vh / sh) * zoom, w = sw * s, h = sh * s, x = rtl ? 0 : vw - w, y = (vh - h) / 2;
+    // The clips come from small previews: never enlarge one past 1.6 times its own size.
+    var s = Math.min(Math.max(vw / sw, vh / sh) * zoom, 1.6), w = sw * s, h = sh * s, x = rtl ? 0 : vw - w, y = (vh - h) / 2;
     ctx.save(); ctx.globalAlpha = a; ctx.imageSmoothingEnabled = true;
     ctx.drawImage(src, x, y, w, h);
     var fade = h * .2, gt = ctx.createLinearGradient(0, y, 0, y + fade), gb = ctx.createLinearGradient(0, y + h - fade, 0, y + h);
