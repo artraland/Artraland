@@ -81,8 +81,9 @@ Enquiries desk; if that fails, they fall back to the visitor's email app.
 (`carpet.js`, `carpet.css`, wording in `i18n-carpet.js`), in seven chapters: choose, spin, dye, chart, knot, shear and
 wash, and laid down. The Throne Rug is the real carpet (`photos/carpet-hall.jpg`). Its knots come from
 `photos/carpet-knots.png`, a flat 72 × 110 view made from that photograph: the photo was straightened, then mirrored,
-as the carpet is symmetric, one pixel a knot. So the dyes, the chart and the knotting show its own design, and the
-last chapter ends on the photograph. Two drawn designs, the Garden of Isfahan and the Herati of Tabriz, can also be
+as the carpet is symmetric, one pixel a knot. So the dyes, the chart and the knotting show its own design. Chapters 1–6 also
+have short filmed clips (`photos/carpet-*.mp4`, made with Gemini), played forward and back with the scroll; the last
+one unrolls the carpet across a marble hall and is shown as a wide band. Two drawn designs, the Garden of Isfahan and the Herati of Tabriz, can also be
 chosen (to commission). The Throne Rug's card in the collection opens this page; its button leads on to the rug's
 own page and enquiry form.
 

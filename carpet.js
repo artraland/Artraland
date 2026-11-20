@@ -407,12 +407,13 @@
     2: { src: "/photos/carpet-2b.mp4", fx: .7, dz: .72 },      // dyeing: skeins dipped in copper vats, then hung dripping (made with Gemini)
     4: { src: "/photos/carpet-4b.mp4", fx: .8, dz: .72 },  // the loom: a knot tied and cut, then the row beaten down with the comb (two Gemini clips)
     5: { src: "/photos/carpet-5b.mp4", fx: .78, dz: .72 },  // the finish: the tufts sheared, then water poured across the carpet (made with Gemini)
+    6: { src: "/photos/carpet-6.mp4", fx: .6, band: true, hold: .25 },  // laid down: the carpet unrolled across a marble hall (made with Gemini); a wide band, ending early to hold on the hall
     3: { src: "/photos/carpet-3b.mp4", fx: .66, dz: .7 }  // the chart: the design painted on graph paper (made with Gemini); shown smaller on wide screens to keep the bright paper clear of the words
   };
   var VIDS = {};
   Object.keys(CLIPS).forEach(function (k) {
     var v = document.createElement("video");
-    v.muted = true; v.playsInline = true; v.setAttribute("playsinline", ""); v.preload = "auto"; v.src = CLIPS[k].src; v.fx = CLIPS[k].fx; v.dz = CLIPS[k].dz || 1;
+    v.muted = true; v.playsInline = true; v.setAttribute("playsinline", ""); v.preload = "auto"; v.src = CLIPS[k].src; v.fx = CLIPS[k].fx; v.dz = CLIPS[k].dz || 1; v.band = !!CLIPS[k].band; v.hold = CLIPS[k].hold || 0;
     v.addEventListener("loadeddata", function () { v.ready = true; frame0(); });
     v.addEventListener("seeked", function () { frame0(); });
     v.load();
@@ -453,13 +454,37 @@
     if (!rtl && x > 0) ctx.fillRect(0, 0, Math.ceil(x), vh); if (rtl && w < vw) ctx.fillRect(Math.floor(w), 0, vw, vh);
     ctx.restore();
   }
+  // A very wide clip: a band across the screen (the full width on computers, the lower part on phones), fading into
+  // the navy above and below, darker behind the words.
+  var bandC = document.createElement("canvas"), bandX = bandC.getContext("2d");
+  function band(src, sw, sh, fx, a) {
+    var wide = vw > 900, s = wide ? Math.min(Math.max(vw / sw, vh * .5 / sh), 1.7) : vh * .36 / sh, w = sw * s, h = sh * s;
+    var x = Math.min(0, Math.max(vw - w, vw * .5 - fx * w)), y = wide ? (vh - h) / 2 : vh * .7 - h / 2;
+    // Drawn on its own layer, then faded out at the top and bottom, so the band melts into the page behind it.
+    var bw = Math.ceil(vw * dpr), bh = Math.ceil(h * dpr);
+    if (bandC.width !== bw || bandC.height !== bh) { bandC.width = bw; bandC.height = bh; }
+    var b = bandX; b.setTransform(dpr, 0, 0, dpr, 0, 0); b.globalCompositeOperation = "source-over"; b.clearRect(0, 0, vw, h);
+    b.imageSmoothingEnabled = true; b.drawImage(src, x, 0, w, h);
+    if (wide) {
+      // Darker behind the words and the carpet's details
+      var g = b.createLinearGradient(rtl ? vw : 0, 0, rtl ? 0 : vw, 0);
+      g.addColorStop(0, "rgba(3,12,39,.94)"); g.addColorStop(.36, "rgba(3,12,39,.86)"); g.addColorStop(.56, "rgba(3,12,39,.25)"); g.addColorStop(.7, "rgba(3,12,39,0)");
+      b.fillStyle = g; b.fillRect(0, 0, vw, h);
+    }
+    var m = b.createLinearGradient(0, 0, 0, h);
+    m.addColorStop(0, "rgba(0,0,0,0)"); m.addColorStop(.24, "rgba(0,0,0,1)"); m.addColorStop(.76, "rgba(0,0,0,1)"); m.addColorStop(1, "rgba(0,0,0,0)");
+    b.globalCompositeOperation = "destination-in"; b.fillStyle = m; b.fillRect(0, 0, vw, h); b.globalCompositeOperation = "source-over";
+    ctx.save(); ctx.globalAlpha = a; ctx.drawImage(bandC, 0, 0, bw, bh, 0, y, vw, h); ctx.restore();
+  }
   function clipScene(i) {
     return function (R, a, p) {
       var v = VIDS[i];
       if (!v.ready || !v.duration) return baseScene(i)(R, a, p);      // until the clip has loaded
-      var tt = clamp(p, 0, 1) * (v.duration - .05);
+      if (i === SCENES.length - 1) p *= 2;                           // the last chapter's progress stops at .5 at the foot of the page
+      var tt = clamp(p / (1 - v.hold), 0, 1) * (v.duration - .05);
       if (Math.abs(v.currentTime - tt) > .03 && !v.seeking) v.currentTime = tt;
-      if (vw > 900 && v.dz < 1) inset(v, v.videoWidth, v.videoHeight, v.dz, a);
+      if (v.band) band(v, v.videoWidth, v.videoHeight, v.fx, a);
+      else if (vw > 900 && v.dz < 1) inset(v, v.videoWidth, v.videoHeight, v.dz, a);
       else cover(v, v.videoWidth, v.videoHeight, 1, vw > 900 ? .6 : v.fx, .5, a);
     };
   }
