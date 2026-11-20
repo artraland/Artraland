@@ -404,12 +404,13 @@
   // fx: where the subject sits across the frame (0 left, 1 right), kept in view when a narrow screen crops the clip.
   var CLIPS = {
     1: { src: "/photos/carpet-1.mp4", fx: .72 },     // spinning: wool drawn into thread onto the spindle (made with Gemini)
-    2: { src: "/photos/carpet-2.mp4", fx: .7 }       // dyeing: skeins dipped in copper vats, then hung dripping (made with Gemini)
+    2: { src: "/photos/carpet-2.mp4", fx: .7 },      // dyeing: skeins dipped in copper vats, then hung dripping (made with Gemini)
+    3: { src: "/photos/carpet-3.mp4", fx: .66, dz: .74 }  // the chart: the design painted on graph paper (made with Gemini); shown smaller on wide screens to keep the bright paper clear of the words
   };
   var VIDS = {};
   Object.keys(CLIPS).forEach(function (k) {
     var v = document.createElement("video");
-    v.muted = true; v.playsInline = true; v.setAttribute("playsinline", ""); v.preload = "auto"; v.src = CLIPS[k].src; v.fx = CLIPS[k].fx;
+    v.muted = true; v.playsInline = true; v.setAttribute("playsinline", ""); v.preload = "auto"; v.src = CLIPS[k].src; v.fx = CLIPS[k].fx; v.dz = CLIPS[k].dz || 1;
     v.addEventListener("loadeddata", function () { v.ready = true; frame0(); });
     v.addEventListener("seeked", function () { frame0(); });
     v.load();
@@ -434,13 +435,29 @@
     ctx.fillStyle = g; ctx.fillRect(0, 0, vw, vh);
     ctx.restore();
   }
+  // A clip shown smaller than the screen: against the side away from the words, its edges melting into the navy.
+  function inset(src, sw, sh, zoom, a) {
+    var s = Math.max(vw / sw, vh / sh) * zoom, w = sw * s, h = sh * s, x = rtl ? 0 : vw - w, y = (vh - h) / 2;
+    ctx.save(); ctx.globalAlpha = a; ctx.imageSmoothingEnabled = true;
+    ctx.drawImage(src, x, y, w, h);
+    var fade = h * .2, gt = ctx.createLinearGradient(0, y, 0, y + fade), gb = ctx.createLinearGradient(0, y + h - fade, 0, y + h);
+    gt.addColorStop(0, "rgba(3,12,39,1)"); gt.addColorStop(1, "rgba(3,12,39,0)"); gb.addColorStop(0, "rgba(3,12,39,0)"); gb.addColorStop(1, "rgba(3,12,39,1)");
+    ctx.fillStyle = gt; ctx.fillRect(x, y, w, fade); ctx.fillStyle = gb; ctx.fillRect(x, y + h - fade, w, fade);
+    var gx = rtl ? ctx.createLinearGradient(x + w, 0, x + w - w * .3, 0) : ctx.createLinearGradient(x, 0, x + w * .3, 0);
+    gx.addColorStop(0, "rgba(3,12,39,1)"); gx.addColorStop(1, "rgba(3,12,39,0)");
+    ctx.fillStyle = gx; ctx.fillRect(rtl ? x + w * .7 : x, y, w * .3, h);
+    ctx.fillStyle = "#030c27"; if (y > 0) { ctx.fillRect(0, 0, vw, Math.ceil(y)); ctx.fillRect(0, Math.floor(y + h), vw, vh); }
+    if (!rtl && x > 0) ctx.fillRect(0, 0, Math.ceil(x), vh); if (rtl && w < vw) ctx.fillRect(Math.floor(w), 0, vw, vh);
+    ctx.restore();
+  }
   function clipScene(i) {
     return function (R, a, p) {
       var v = VIDS[i];
-      if (!v.ready || !v.duration) return DRAWN[i](R, a, p);
+      if (!v.ready || !v.duration) return baseScene(i)(R, a, p);      // until the clip has loaded
       var tt = clamp(p, 0, 1) * (v.duration - .05);
       if (Math.abs(v.currentTime - tt) > .03 && !v.seeking) v.currentTime = tt;
-      cover(v, v.videoWidth, v.videoHeight, 1, vw > 900 ? .6 : v.fx, .5, a);
+      if (vw > 900 && v.dz < 1) inset(v, v.videoWidth, v.videoHeight, v.dz, a);
+      else cover(v, v.videoWidth, v.videoHeight, 1, vw > 900 ? .6 : v.fx, .5, a);
     };
   }
   function photoReady() { var ph = cur.photo; return ph && ph.complete && ph.naturalWidth ? ph : null; }
@@ -606,8 +623,8 @@
   }
   var DRAWN = [scene0, scene1, scene2, scene3, scene4, scene5, scene6];
   // Which scene each chapter shows: a clip if there is one, else the real photograph (real carpet), else the drawing.
-  function sceneFor(i) {
-    if (VIDS[i] && cur.d.photo) return clipScene(i);
+  function sceneFor(i) { return VIDS[i] && cur.d.photo ? clipScene(i) : baseScene(i); }
+  function baseScene(i) {
     if (cur.d.photo && i === 0) return photo0;
     if (cur.d.photo && i === 5) return photo5;
     if (cur.d.photo && i === 3) return inkMap;
