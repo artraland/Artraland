@@ -178,7 +178,8 @@
   function ease(v) { return v < .5 ? 2 * v * v : 1 - Math.pow(-2 * v + 2, 2) / 2; }
   // Each chapter's own progress, 0 → 1, across the scroll that belongs to it.
   function local(c, i) { return clamp(c - i + .5, 0, 1); }
-  function weight(c, i) { return clamp(1 - Math.abs(c - i) * 1.7, 0, 1); }
+  // How much of a chapter's picture shows: all of it for most of the chapter, then a short crossfade into the next.
+  function weight(c, i) { return ease(clamp((.64 - Math.abs(c - i)) / .28, 0, 1)); }
 
   // Where the carpet sits: beside the words on wide screens, below them on phones.
   function rect() {
@@ -701,10 +702,15 @@
       document.body.classList.toggle("cp-warm", ivory);
       if (themeMeta) themeMeta.setAttribute("content", ivory ? "#f8f3e9" : "#05112f");   // the browser's own bar, on phones
     }
-    for (var i = 0; i < SCENES.length; i++) { var w = weight(c, i); if (w > 0.01) sceneFor(i)(R, w, local(c, i)); }
+    // The first picture is drawn solid and the next fades in over it, so the ground never shows through a crossfade.
+    var acc = 0;
+    for (var i = 0; i < SCENES.length; i++) {
+      var w = weight(c, i); if (w <= 0.01) continue;
+      acc += w; sceneFor(i)(R, acc === w ? Math.min(1, w * 4) : w / acc, local(c, i));
+    }
     // The words: one chapter at a time, rising into place
     chs.forEach(function (el, i) {
-      var w = clamp(1 - Math.abs(c - i) * 2.4, 0, 1), dy = (i - c) * 40;
+      var w = ease(clamp((.46 - Math.abs(c - i)) / .2, 0, 1)), dy = (i - c) * 40;   // the words stay clear for most of their chapter
       el.style.opacity = w.toFixed(3);
       el.style.transform = (R.wide ? "translateY(calc(-50% + " : "translateY(calc(0px + ") + dy.toFixed(1) + "px))";
       el.classList.toggle("live", w > .5);
