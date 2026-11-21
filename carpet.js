@@ -42,7 +42,7 @@
   var DESIGNS = [
     // The real carpet: its knots are read from /photos/carpet-knots.png, a flat view made from the photograph
     // (straightened, then mirrored, as the carpet is symmetric), one pixel a knot. The story ends on the photograph.
-    { key: "real", W: 72, H: 110, image: "/photos/carpet-knots.png", photo: "/photos/carpet-hall-v.jpg", link: "/piece?p=carpet", cta: "cp.enquire",
+    { key: "real", W: 72, H: 110, image: "/photos/carpet-knots.png", photo: "/photos/carpet-weaver.jpg", link: "/piece?p=carpet", cta: "cp.enquire",
       colors: [["#2f8466", "green"], ["#8a1e2b", "madder"], ["#c4473f", "madder_light"], ["#ece0c2", "ivory"], ["#c99a52", "pomegranate"], ["#2a2420", "walnut"]],
       specs: [["sp.field", "spv.field"], ["sp.medallion", "spv.medallion"], ["sp.corners", "spv.corners"], ["sp.border", "spv.border"]] },
     { key: "garden", W: 60, H: 90, city: "isfahan", fibre: "sp.woolsilk", knots: "sp.knots_o", link: "/#commission", cta: "cp.commission",
