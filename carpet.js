@@ -414,7 +414,7 @@
     4: { src: "/photos/carpet-4c.mp4", fx: .8, dz: .72, full: true },  // the loom: a knot tied and cut, then the row beaten down with the comb (two Gemini clips)
     5: { src: "/photos/carpet-5d.mp4", fx: .7, dz: .72, full: true },  // the finish: the fringe trimmed with shears, then water poured across the carpet (made with Gemini)
     6: { src: "/photos/carpet-6d.mp4", fx: .6, dz: .72, full: true, band: true, hold: .25 },  // laid down: the carpet unrolled across a marble hall (made with Gemini); beside the words on computers, below them on phones; ends early to hold on the hall
-    3: { src: "/photos/carpet-3c.mp4", fx: .66, dz: .58, full: true }  // the chart: the design painted on graph paper (made with Gemini); shown smaller on wide screens to keep the bright paper clear of the words
+    3: { src: "/photos/carpet-3d.mp4", fx: .58, dz: .72, full: true }  // the chart: the design painted square by square on graph paper (made with Gemini)
   };
   var VIDS = {};
   Object.keys(CLIPS).forEach(function (k) {
