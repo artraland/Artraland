@@ -119,12 +119,12 @@ html:lang(ar) .cp-pick > p, html:lang(fa) .cp-pick > p { font-size: 13px; }
 }
 
 /* Computers: the clips fill the screen, the words on top with a soft glow. The words are ivory with a dark glow,
-   except over the light clips (I spinning, II dyeing, III the chart, V shear and wash), where they keep the version's colours with a light glow. */
+   except over the light clips (I spinning, II dyeing, III the chart, IV knotting, V shear and wash), where they keep the version's colours with a light glow. */
 @media (min-width: 901px) {
-  .cp-ch[data-ch="4"] h2, .cp-stage.is-warm .cp-ch[data-ch="4"] h2, .cp-ch[data-ch="6"] h2, .cp-stage.is-warm .cp-ch[data-ch="6"] h2 { color: var(--ivory); }
-  .cp-ch[data-ch="4"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="4"] .cp-p, .cp-ch[data-ch="6"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="6"] .cp-p { color: #f1ece2; font-weight: 400; }
-  .cp-ch[data-ch="4"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="4"] .eyebrow, .cp-ch[data-ch="6"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="6"] .eyebrow { color: var(--gold-2); }
-  .cp-stage.is-warm .cp-ch[data-ch="4"] .eyebrow::before, .cp-stage.is-warm .cp-ch[data-ch="6"] .eyebrow::before { background: var(--gold-2); }
+  .cp-ch[data-ch="6"] h2, .cp-stage.is-warm .cp-ch[data-ch="6"] h2 { color: var(--ivory); }
+  .cp-ch[data-ch="6"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="6"] .cp-p { color: #f1ece2; font-weight: 400; }
+  .cp-ch[data-ch="6"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="6"] .eyebrow { color: var(--gold-2); }
+  .cp-stage.is-warm .cp-ch[data-ch="6"] .eyebrow::before { background: var(--gold-2); }
   .cp-specs dd, .cp-stage.is-warm .cp-specs dd { color: #f1ece2; }
   .cp-specs dt, .cp-stage.is-warm .cp-specs dt { color: var(--gold-2); }
   .cp-specs div, .cp-stage.is-warm .cp-specs div { border-color: rgba(232, 207, 138, .4); }
@@ -134,9 +134,9 @@ html:lang(ar) .cp-pick > p, html:lang(fa) .cp-pick > p { font-size: 13px; }
     text-shadow: 0 0 10px rgba(3, 12, 39, 1), 0 0 8px rgba(3, 12, 39, 1), 0 0 3px rgba(3, 12, 39, 1), 0 0 1px rgba(3, 12, 39, 1); }
   .cp-pick > p, .cp-stage.is-warm .cp-pick > p { color: var(--gold-2); }
   .cp-ch:not([data-ch="0"]) .cp-p, .cp-specs dd { text-shadow: 0 0 10px rgba(3, 12, 39, 1), 0 0 10px rgba(3, 12, 39, 1), 0 0 4px rgba(3, 12, 39, 1), 0 0 2px rgba(3, 12, 39, 1); }
-  .cp-stage.is-warm .cp-ch[data-ch="1"] h2, .cp-stage.is-warm .cp-ch[data-ch="1"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="2"] h2, .cp-stage.is-warm .cp-ch[data-ch="2"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="3"] h2, .cp-stage.is-warm .cp-ch[data-ch="3"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="5"] h2, .cp-stage.is-warm .cp-ch[data-ch="5"] .eyebrow {
+  .cp-stage.is-warm .cp-ch[data-ch="1"] h2, .cp-stage.is-warm .cp-ch[data-ch="1"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="2"] h2, .cp-stage.is-warm .cp-ch[data-ch="2"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="3"] h2, .cp-stage.is-warm .cp-ch[data-ch="3"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="4"] h2, .cp-stage.is-warm .cp-ch[data-ch="4"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="5"] h2, .cp-stage.is-warm .cp-ch[data-ch="5"] .eyebrow {
     text-shadow: 0 0 18px rgba(250, 245, 234, 1), 0 0 6px rgba(250, 245, 234, .95), 0 0 2px rgba(250, 245, 234, .95); }
-  .cp-stage.is-warm .cp-ch[data-ch="1"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="2"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="3"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="5"] .cp-p { color: #1d2234; font-weight: 400;
+  .cp-stage.is-warm .cp-ch[data-ch="1"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="2"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="3"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="4"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="5"] .cp-p { color: #1d2234; font-weight: 400;
     text-shadow: 0 0 10px rgba(250, 245, 234, 1), 0 0 10px rgba(250, 245, 234, 1), 0 0 4px rgba(250, 245, 234, 1), 0 0 2px rgba(250, 245, 234, 1); }
 }
 
@@ -151,12 +151,12 @@ html:lang(ar) .cp-pick > p, html:lang(fa) .cp-pick > p { font-size: 13px; }
   text-shadow: 0 0 10px rgba(3, 12, 39, 1), 0 0 10px rgba(3, 12, 39, 1), 0 0 4px rgba(3, 12, 39, 1), 0 0 2px rgba(3, 12, 39, 1); }
 .cp-pick > p, .cp-stage.is-warm .cp-pick > p { color: var(--gold-2); font-weight: 600; }
 
-/* Phones: over the light clips (I spinning, II dyeing, III the chart, V shear and wash) the words are navy with a light glow */
+/* Phones: over the light clips (I spinning, II dyeing, III the chart, IV knotting, V shear and wash) the words are navy with a light glow */
 @media (max-width: 900px) {
-  .cp-stage.is-warm .cp-ch[data-ch="1"] h2, .cp-stage.is-warm .cp-ch[data-ch="2"] h2, .cp-stage.is-warm .cp-ch[data-ch="3"] h2, .cp-stage.is-warm .cp-ch[data-ch="5"] h2 { color: #0b1d4a; }
-  .cp-stage.is-warm .cp-ch[data-ch="1"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="2"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="3"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="5"] .cp-p { color: #1d2234; }
-  .cp-stage.is-warm .cp-ch[data-ch="1"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="2"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="3"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="5"] .eyebrow { color: #7d6128; }
-  .cp-stage.is-warm .cp-ch[data-ch="1"] .eyebrow::before, .cp-stage.is-warm .cp-ch[data-ch="2"] .eyebrow::before, .cp-stage.is-warm .cp-ch[data-ch="3"] .eyebrow::before, .cp-stage.is-warm .cp-ch[data-ch="5"] .eyebrow::before { background: #7d6128; }
-  .cp-stage.is-warm .cp-ch[data-ch="1"] h2, .cp-stage.is-warm .cp-ch[data-ch="1"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="1"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="2"] h2, .cp-stage.is-warm .cp-ch[data-ch="2"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="2"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="3"] h2, .cp-stage.is-warm .cp-ch[data-ch="3"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="3"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="5"] h2, .cp-stage.is-warm .cp-ch[data-ch="5"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="5"] .eyebrow {
+  .cp-stage.is-warm .cp-ch[data-ch="1"] h2, .cp-stage.is-warm .cp-ch[data-ch="2"] h2, .cp-stage.is-warm .cp-ch[data-ch="3"] h2, .cp-stage.is-warm .cp-ch[data-ch="4"] h2, .cp-stage.is-warm .cp-ch[data-ch="5"] h2 { color: #0b1d4a; }
+  .cp-stage.is-warm .cp-ch[data-ch="1"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="2"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="3"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="4"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="5"] .cp-p { color: #1d2234; }
+  .cp-stage.is-warm .cp-ch[data-ch="1"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="2"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="3"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="4"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="5"] .eyebrow { color: #7d6128; }
+  .cp-stage.is-warm .cp-ch[data-ch="1"] .eyebrow::before, .cp-stage.is-warm .cp-ch[data-ch="2"] .eyebrow::before, .cp-stage.is-warm .cp-ch[data-ch="3"] .eyebrow::before, .cp-stage.is-warm .cp-ch[data-ch="4"] .eyebrow::before, .cp-stage.is-warm .cp-ch[data-ch="5"] .eyebrow::before { background: #7d6128; }
+  .cp-stage.is-warm .cp-ch[data-ch="1"] h2, .cp-stage.is-warm .cp-ch[data-ch="1"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="1"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="2"] h2, .cp-stage.is-warm .cp-ch[data-ch="2"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="2"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="3"] h2, .cp-stage.is-warm .cp-ch[data-ch="3"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="3"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="4"] h2, .cp-stage.is-warm .cp-ch[data-ch="4"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="4"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="5"] h2, .cp-stage.is-warm .cp-ch[data-ch="5"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="5"] .eyebrow {
     text-shadow: 0 0 10px rgba(250, 245, 234, 1), 0 0 10px rgba(250, 245, 234, 1), 0 0 4px rgba(250, 245, 234, 1), 0 0 2px rgba(250, 245, 234, 1); }
 }
