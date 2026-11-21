@@ -288,7 +288,7 @@ window.ARTRA_PRODUCTS = [
     name: { en: "The Throne Rug", fr: "Le Tapis du Trône", es: "La Alfombra del Trono", ar: "سجادة العرش", fa: "قالیچهٔ تخت" },
     category: { en: "Hand-knotted carpet", fr: "Tapis noué main", es: "Alfombra anudada a mano", ar: "سجادة معقودة يدوياً", fa: "فرش دست‌بافت" },
     id: "",
-    photo: "/photos/carpet-hall.jpg",
+    photo: "/photos/carpet-silk.jpg",
     artist: "",
     origin: "",
     history: {
