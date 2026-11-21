@@ -139,3 +139,14 @@ html:lang(ar) .cp-pick > p, html:lang(fa) .cp-pick > p { font-size: 13px; }
   .cp-stage.is-warm .cp-ch[data-ch="2"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="5"] .cp-p { color: #1d2234; font-weight: 400;
     text-shadow: 0 0 10px rgba(250, 245, 234, 1), 0 0 10px rgba(250, 245, 234, 1), 0 0 4px rgba(250, 245, 234, 1), 0 0 2px rgba(250, 245, 234, 1); }
 }
+
+/* Chapter 0: the picture has no wash behind the words, so, as over the clips, the words are ivory with a soft dark glow */
+.cp-ch[data-ch="0"] h1, .cp-stage.is-warm .cp-ch[data-ch="0"] h1 { color: var(--ivory); }
+.cp-ch[data-ch="0"] .cp-p, .cp-stage.is-warm .cp-ch[data-ch="0"] .cp-p { color: #f1ece2; font-weight: 400; }
+.cp-ch[data-ch="0"] .eyebrow, .cp-stage.is-warm .cp-ch[data-ch="0"] .eyebrow,
+.cp-ch[data-ch="0"] .cp-hint, .cp-stage.is-warm .cp-ch[data-ch="0"] .cp-hint { color: var(--gold-2); font-weight: 600; }
+.cp-stage.is-warm .cp-ch[data-ch="0"] .eyebrow::before { background: var(--gold-2); }
+.cp-ch[data-ch="0"] h1 { text-shadow: 0 0 18px rgba(3, 12, 39, .95), 0 0 6px rgba(3, 12, 39, .9), 0 1px 2px rgba(3, 12, 39, .85); }
+.cp-ch[data-ch="0"] .eyebrow, .cp-ch[data-ch="0"] .cp-p, .cp-ch[data-ch="0"] .cp-hint, .cp-pick > p {
+  text-shadow: 0 0 10px rgba(3, 12, 39, 1), 0 0 10px rgba(3, 12, 39, 1), 0 0 4px rgba(3, 12, 39, 1), 0 0 2px rgba(3, 12, 39, 1); }
+.cp-pick > p, .cp-stage.is-warm .cp-pick > p { color: var(--gold-2); font-weight: 600; }

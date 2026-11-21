@@ -517,8 +517,8 @@
   // 0 · the real carpet in its hall: a slow drift towards the medallion
   function photo0(R, a, p) {
     var ph = photoReady(); if (!ph) return scene0(R, a, p);
-    var drift = reduced ? 0 : Math.sin(time / 6000) * .01;
-    cover(ph, ph.naturalWidth, ph.naturalHeight, 1.08 + p * .18 + drift, .5 + drift, .45 - p * .1, a);
+    // At its own size and colours: no shading, and only the faintest zoom, so the picture stays sharp.
+    cover(ph, ph.naturalWidth, ph.naturalHeight, 1 + p * .04, .55, .5, a, true);
   }
   // 5 · close on the real pile and border; the shears' work is done, then a sheen of water passes
   function photo5(R, a, p) {
