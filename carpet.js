@@ -409,7 +409,7 @@
   // fx: where the subject sits across the frame (0 left, 1 right), kept in view when a narrow screen crops the clip.
   // full: the clip fills the screen on computers too, the words on top (dz, the size beside the words, if not).
   var CLIPS = {
-    1: { src: "/photos/carpet-1c.mp4", fx: .72, dz: .72, full: true },     // spinning: wool drawn into thread onto the spindle (made with Gemini)
+    1: { src: "/photos/carpet-1d.mp4", fx: .62, dz: .72, full: true },  // spinning: clouds of wool twisted into thread on a walnut drop spindle, ending on a skein (made with Gemini)
     2: { src: "/photos/carpet-2d.mp4", fx: .72, dz: .72, full: true },  // dyeing: ivory skeins dipped in copper vats, then hung on a pole to dry (made with Gemini)
     4: { src: "/photos/carpet-4c.mp4", fx: .8, dz: .72, full: true },  // the loom: a knot tied and cut, then the row beaten down with the comb (two Gemini clips)
     5: { src: "/photos/carpet-5d.mp4", fx: .7, dz: .72, full: true },  // the finish: the fringe trimmed with shears, then water poured across the carpet (made with Gemini)
